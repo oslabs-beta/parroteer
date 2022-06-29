@@ -52,7 +52,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/ui/popup.html'
+      template: './src/ui/popup.html',
+      filename: 'popup.html'
     })
   ],
 };
