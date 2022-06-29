@@ -2,6 +2,11 @@
   "name": "Parroteer",
   "version": "0.1.0",
   "manifest_version": 3,
+  "icons": {
+    "16": "./icons/parrot_16.png",
+    "48": "./icons/parrot_48.png",
+    "128": "./icons/parrot_128.png"
+  },
   "description": "No-code test automation solution for end-to-end testing",
   "homepage_url": "https://github.com/oslabs-beta/parroteer",
   "action": {

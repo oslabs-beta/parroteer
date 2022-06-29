@@ -1,3 +1,12 @@
+:root {
+  --parrot-yellow: #F8D13C;
+  --parrot-red: #EC5A3E;
+  --parrot-light-blue: #84CED7;
+  --parrot-blue: #425EA9;
+  --parrot-dark-blue: #344799;
+  --parrot-orange: #F0AD2C;
+}
+
 body {
   min-width: 400px;
   min-height: 400px;
