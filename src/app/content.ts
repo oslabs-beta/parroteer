@@ -1,3 +1,6 @@
+import eventListeners from './modules/eventListeners';
+import mutationObserver from './modules/mutationObserver';
+
 // This script has access to the DOM
 console.log('Running content script (see chrome devtools)');
 
