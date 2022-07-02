@@ -1,5 +1,5 @@
 import * as listeners from './modules/eventListeners';
-// import mutationObserver from './modules/mutationObserver';
+import observer, {targetNode, config} from './modules/mutationObserver';
 
 // This script has access to the DOM
 console.log('Running content script (see chrome devtools)');
@@ -20,6 +20,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'message':
       console.log('Content got a message! :', message.payload);
+      observer.observe(targetNode, config);
       break;
   }
   // sendResponse({});

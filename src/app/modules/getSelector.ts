@@ -11,7 +11,7 @@ export default function getSelector(target: EventTarget) { // EventTarget could 
       return selector;
       // TODO: If there is another element with the same id, warn the user
     }
-    else if (currElement.classList.value) {
+    else if (currElement.classList?.value) {
       // console.log(currElement.classList.value);
       selector = '.' + currElement.classList.value.replace(/\s/g, '.') + selector;
     }
