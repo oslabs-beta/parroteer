@@ -6,9 +6,14 @@ export default function App() {
     chrome.runtime.sendMessage({ type: 'begin-recording' });
   };
 
+  const onPickElClick = () => {
+    chrome.runtime.sendMessage({ type: 'begin-pick-elements' });
+  };
+
   return (
     <div className="popup-padded">
       <h1>Parroteer</h1>
+      <button onClick={onPickElClick}>Pick Elements</button>
       <button onClick={onRecordClick}>Record</button>
     </div>
   );

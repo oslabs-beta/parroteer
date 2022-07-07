@@ -4,6 +4,7 @@ console.log('Running background script (see chrome extensions page)');
 /// Globals
 let activeTabId: number;
 let recordedTabId: number;
+let recordingState: 'pre-recording' | 'recording' | 'off' = 'off';
 const events: (UserInputEvents | Mutation)[] = [];
 
 
@@ -61,20 +62,42 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   switch (message.type) {
     case 'begin-recording':
-      beginRecording();
+      recordingState = 'recording';
+      addRecordingListeners();
+      // disableHighlight();
+      // beginRecording();
+      break;
+    case 'begin-pick-elements':
+      recordingState = 'pre-recording';
+      addRecordingListeners();
+      // enableHighlight();
       break;
     case 'event-triggered':
       // TODO: Check to make sure activeTabId is recordedTabId
-      // Diff the state of all tracked elements
-      diffElementStates();
-      // Track the event that happened
-      // storeEvent(message.payload);
-      // TODO: Notify the popup of the event and any differences in element states
-      // sendElementStates();
+      switch (recordingState) {
+        case 'pre-recording':
+          if (message.payload.eventType === 'click') {
+            const selector = message.payload.selector;
+            chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: [selector] }, (currStates: { [key: string]: ElementState }) => {
+              elementStates.set(selector, currStates[selector]);
+            });
+            console.log(elementStates);
+          }
+          break;
+        case 'recording':
+          // Diff the state of all tracked elements
+          diffElementStates();
+          // Track the event that happened
+          // storeEvent(message.payload);
+          // TODO: Notify the popup of the event and any differences in element states
+          // sendElementStates();
+          break;
+      }
       break;
     case 'pause-recording':
       break;
     case 'stop-recording':
+      recordingState = 'off';
       break;
   }
   // sendResponse({});
@@ -84,7 +107,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 function diffElementStates() {
   // Message content script to request the current state for all tracked elements
-  chrome.tabs.sendMessage(activeTabId, {type: 'get-element-states', payload: Array.from(elementStates.keys())}, (currStates: { [key: string]: ElementState }) => {
+  chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: Array.from(elementStates.keys()) }, (currStates: { [key: string]: ElementState }) => {
     for (const selector in currStates) {
       const currState = currStates[selector];
       const prevState = elementStates.get(selector);
@@ -136,9 +159,9 @@ function diffState(prev: ElementState, curr: ElementState): ElementState | null 
 /**
  * Message the content script and instruct it to add event listeners and observer
  */
-function beginRecording() {
+function addRecordingListeners() {
   recordedTabId = activeTabId;
-  chrome.tabs.sendMessage(recordedTabId, { type: 'message', payload: 'hello' });
+  chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState } });
 }
 
 /// Tab event listeners

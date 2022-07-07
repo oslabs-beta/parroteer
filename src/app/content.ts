@@ -1,8 +1,15 @@
 import * as listeners from './modules/eventListeners';
-import observer, {targetNode, config} from './modules/mutationObserver';
+// import observer, {targetNode, config} from './modules/mutationObserver';
+import { enableHighlight, disableHighlight } from './modules/elementPicker';
 
 // This script has access to the DOM
 console.log('Running content script (see chrome devtools)');
+
+interface ElementState {
+  class?: string,
+  textContent?: string,
+  value?: string
+}
 
 // Came with the template, idk what it does
 // Runs on page load
@@ -16,11 +23,14 @@ console.log('Running content script (see chrome devtools)');
 }); */
 
 // Listen for messages from background script
+// DEBUG
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
-    case 'message':
-      console.log('Content got a message! :', message.payload);
-      observer.observe(targetNode, config);
+    case 'add-listeners':
+      listeners.startEventListeners(message.payload.recordingState);
+      enableHighlight();
+      // observer.observe(targetNode, config);
       break;
     case 'get-element-states':
       // message: { type: 'get-element-states', payload: ['.class > div', 'button > #smthng'] }
@@ -54,6 +64,3 @@ function getCurrState (el: HTMLElement | HTMLInputElement): ElementState {
   };
 }
 
-
-// DEBUG
-listeners.startEventListeners();

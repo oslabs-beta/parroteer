@@ -1,11 +1,20 @@
 import getSelector from './getSelector';
 
+let recordingState = 'off';
+
 export function stopEventListeners() {
   document.removeEventListener('click', clickListener);
 }
 
-export function startEventListeners(){
-  document.addEventListener('click', clickListener);
+export function startEventListeners(state: string) {
+  document.removeEventListener('click', clickListener);
+  recordingState = state;
+  console.log(state);
+  console.log(state === 'pre-recording');
+  document.addEventListener('click', clickListener, {
+    // return true if state is pre-recoriding, false otherwise
+    capture: state === 'pre-recording'
+  });
 }
 /*
 event: MouseEvent
@@ -23,6 +32,11 @@ type EventTarget = HTMLElement | Document
 // When click happens get info about the event for us to store
   // NOTE: What do we need to store in order to re-create it in Puppeteer?
 function clickListener(this: Document, event: MouseEvent) {
+  if (recordingState === 'pre-recording') {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+  
   const target = event.target as HTMLElement;
   const selector = getSelector(target);
   console.log('Element clicked:', selector);
