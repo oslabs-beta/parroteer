@@ -17,11 +17,11 @@ export default function getSelector(target: EventTarget) { // EventTarget could 
     }
     else {
       // Use tag name
-      selector = currElement.tagName + selector;
+      selector = currElement.tagName.toLowerCase() + selector;
     }
 
     // If we've reached the body, we can't go up any higher
-    if (currElement.tagName === 'body') return selector;
+    if (currElement.tagName === 'BODY') return selector;
 
     // On each iteration, grab the parent node and tell Typescript its going to be an Element, not Document or Window
     currElement = currElement.parentNode as Element;
