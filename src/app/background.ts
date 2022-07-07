@@ -62,6 +62,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   switch (message.type) {
     case 'begin-recording':
+      console.log('In begin-recording switch case');
       recordingState = 'recording';
       addRecordingListeners();
       // disableHighlight();
