@@ -7,7 +7,9 @@ export function stopEventListeners() {
 }
 
 export function startEventListeners(state: string) {
+  // Remove old event listeners in case any are already there
   document.removeEventListener('click', clickListener);
+
   recordingState = state;
   console.log(state);
   console.log(state === 'pre-recording');
@@ -16,6 +18,7 @@ export function startEventListeners(state: string) {
     capture: state === 'pre-recording'
   });
 }
+
 /*
 event: MouseEvent
 
