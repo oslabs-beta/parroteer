@@ -11,8 +11,9 @@ export function startEventListeners(state: string) {
   document.removeEventListener('click', clickListener);
 
   recordingState = state;
-  console.log(state);
-  console.log(state === 'pre-recording');
+  console.log(`recordingState: ${recordingState}`)
+  // console.log(state);
+  // console.log(state === 'pre-recording');
   document.addEventListener('click', clickListener, {
     // return true if state is pre-recoriding, false otherwise
     capture: state === 'pre-recording'
