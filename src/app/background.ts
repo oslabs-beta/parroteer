@@ -65,7 +65,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   switch (message.type) {
     case 'popup-opened':
-      setTimeout(() => console.log('this is something alright'));
+      // setTimeout(() => console.log('this is something alright'));
       sendResponse({recordingState, recordedTabId});
       break;
     case 'begin-recording':
@@ -106,6 +106,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     case 'stop-recording':
       recordingState = 'off';
+      // set tabid to null
       break;
   }
   // sendResponse({});
