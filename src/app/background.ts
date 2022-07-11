@@ -60,7 +60,7 @@ interface RuntimeMessage {
 }
 
 // Initialize a Map obj
-const elementStates = new Map<CSSSelector, ElementState>();
+const elementStates: { [key: CSSSelector]: ElementState } = {};
 
 // Listen for messages from popup or content script
 chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendResponse) => {
@@ -87,7 +87,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
           if (payload.eventType === 'click') {
             const selector = payload.selector;
             chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: [selector] }, (currStates: { [key: string]: ElementState }) => {
-              elementStates.set(selector, currStates[selector]);
+              elementStates[selector] = currStates[selector];
             });
             console.log('Picked elements:', elementStates);
           }
@@ -120,10 +120,10 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
 
 function diffElementStates() {
   // Message content script to request the current state for all tracked elements
-  chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: Array.from(elementStates.keys()) }, (currStates: { [key: string]: ElementState }) => {
+  chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: Object.keys(elementStates) }, (currStates: { [key: string]: ElementState }) => {
     for (const selector in currStates) {
       const currState = currStates[selector];
-      const prevState = elementStates.get(selector);
+      const prevState = elementStates[selector];
 
       // Store element changes
       const changedState = diffState(prevState, currState);
@@ -137,7 +137,7 @@ function diffElementStates() {
       }
       
       // TODO: Show whether stuff was added or removed?
-      elementStates.set(selector, currState);
+      elementStates[selector] = currState;
     }
   });
 }
