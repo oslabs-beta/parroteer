@@ -4,9 +4,10 @@ console.log('Running background script (see chrome extensions page)');
 /// Globals
 let activeTabId: number;
 let recordedTabId: number;
-let recordingState: 'pre-recording' | 'recording' | 'off' = 'off';
+let recordingState: RecordState = 'off';
 const events: (UserInputEvents | Mutation)[] = [];
 
+type RecordState = 'pre-recording' | 'recording' | 'off';
 
 // btn test blue
 // class: 'btn test blue'
@@ -64,13 +65,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'begin-recording':
       console.log('In begin-recording switch case');
       recordingState = 'recording';
-      addRecordingListeners();
+      addRecordingListeners(recordingState);
       // disableHighlight();
       // beginRecording();
       break;
     case 'begin-pick-elements':
       recordingState = 'pre-recording';
-      addRecordingListeners();
+      addRecordingListeners(recordingState);
       // enableHighlight();
       break;
     case 'event-triggered':
@@ -160,9 +161,9 @@ function diffState(prev: ElementState, curr: ElementState): ElementState | null 
 /**
  * Message the content script and instruct it to add event listeners and observer
  */
-function addRecordingListeners() {
+function addRecordingListeners(recState: RecordState) {
   recordedTabId = activeTabId;
-  chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState } });
+  chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
 }
 
 /// Tab event listeners

@@ -11,7 +11,12 @@ let lilPopUp: HTMLElement;
 <div>
 */
 
+/**
+ * Enable element highlighter
+ */
 export function enableHighlight() {
+  if (highlightElement) highlightElement.remove();
+
   highlightElement = document.createElement('div');
   lilPopUp = document.createElement('span');
   // highlightElement.id = 'highlighter';
@@ -45,6 +50,7 @@ export function enableHighlight() {
   highlightElement.appendChild(lilPopUp);
 
   // Add event listers
+  // (Remove old event listeners if present)
   document.removeEventListener('mouseover', hoverListener);
   document.addEventListener('mouseover', hoverListener);
   // TODO: Add mousemove and scroll events to track mouse position and update highlighted element based on calculated mouse position
@@ -52,17 +58,25 @@ export function enableHighlight() {
   document.addEventListener('scroll', hoverListener); */
 }
 
+/**
+ * Disable element highlighter
+ */
 export function disableHighlight() {
   // document.removeEventListener('scroll', hoverListener);
   document.removeEventListener('mouseover', hoverListener);
+  highlightElement.remove();
   // TODO: Remove highlighter from DOM
 }
 
+/**
+ * Determines the position of an element that is hovered over, then assigns the highlight element to the same position
+ */
 function hoverListener(this: Document, event: MouseEvent) {
   const target = event.target as HTMLElement;
   // console.log(target);
 
   // Set height, width, left, top of highlight element
+  // Adjust properties to account for 2px border
   const {height, width, left, top} = target.getBoundingClientRect();
   Object.assign(highlightElement.style, {
     height: `${height + 4}px`,

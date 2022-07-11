@@ -25,27 +25,37 @@ interface ElementState {
 // Listen for messages from background script
 // DEBUG
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+interface BackgroundMessage {
+  type: string,
+  payload?: unknown
+}
+
+chrome.runtime.onMessage.addListener((message: BackgroundMessage, sender, sendResponse) => {
   switch (message.type) {
-    case 'add-listeners':
-      listeners.startEventListeners(message.payload.recordingState);
-      enableHighlight();
+    case 'add-listeners': {
+      const { recordingState } = message.payload as { recordingState: RecordState };
+      listeners.startEventListeners(recordingState);
+      if (recordingState === 'pre-recording') enableHighlight();
+      else {
+        disableHighlight();
+        if (recordingState === 'off') listeners.stopEventListeners();
+      }
       // observer.observe(targetNode, config);
       break;
-    case 'get-element-states':
-      // message: { type: 'get-element-states', payload: ['.class > div', 'button > #smthng'] }
-      // iterate over all selectures in payload 
+    }
+    case 'get-element-states': {
+      // Iterate over all selectures in payload 
+      // Look up those elements in the DOM and get their state
+      const payload = message.payload as string[];
       const elementStates: { [key: string]: ElementState } = {};
-      for (const selector of message.payload) {
-        const el = document.querySelector(selector);
+      for (const selector of payload) {
+        const el = document.querySelector(selector) as HTMLElement;
         elementStates[selector] = getCurrState(el);
       }
 
-      // Take in some array of CSS selectors
-      // Look up those elements in the DOM and get their state
       // Send those states back to the background
       sendResponse(elementStates);
-      
+    }
 
     // TODO: Set up a message listener for the background to ask for the state of elements on the page
     // based on their CSS selector
