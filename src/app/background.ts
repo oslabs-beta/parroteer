@@ -1,6 +1,8 @@
 // This script does not communicate with the DOM
 console.log('Running background script (see chrome extensions page)');
 
+
+
 /// Globals
 let activeTabId: number;
 let recordedTabId: number;
@@ -62,6 +64,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('Background got a message!', message);
 
   switch (message.type) {
+    case 'popup-opened':
+      // setTimeout(() => console.log('this is something alright'));
+      sendResponse({recordingState, recordedTabId});
+      break;
     case 'begin-recording':
       console.log('In begin-recording switch case');
       recordingState = 'recording';
@@ -100,6 +106,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     case 'stop-recording':
       recordingState = 'off';
+      // set tabid to null
       break;
   }
   // sendResponse({});
