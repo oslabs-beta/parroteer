@@ -5,7 +5,7 @@ console.log('Running background script (see chrome extensions page)');
 let activeTabId: number;
 let recordedTabId: number;
 let recordingState: RecordState = 'off';
-const events: (UserInputEvents | Mutation)[] = [];
+const events: (UserInputEvent | Mutation)[] = [];
 
 type RecordState = 'pre-recording' | 'recording' | 'off';
 
@@ -23,8 +23,8 @@ interface StoredEvent {
   type: string,
 }
 
-interface UserInputEvents extends StoredEvent {
-  event: string
+interface UserInputEvent extends StoredEvent {
+  eventType: string
 }
 
 // Define the types in our elementState map obj
@@ -54,11 +54,16 @@ interface ElementState {
 
 type CSSSelector = string;
 
+interface RuntimeMessage {
+  type: string,
+  payload?: unknown
+}
+
 // Initialize a Map obj
 const elementStates = new Map<CSSSelector, ElementState>();
 
 // Listen for messages from popup or content script
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendResponse) => {
   console.log('Background got a message!', message);
 
   switch (message.type) {
@@ -76,30 +81,36 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     case 'event-triggered':
       // TODO: Check to make sure activeTabId is recordedTabId
+      const payload = message.payload as Omit<UserInputEvent, 'type'>;
       switch (recordingState) {
-        case 'pre-recording':
-          if (message.payload.eventType === 'click') {
-            const selector = message.payload.selector;
+        case 'pre-recording': {
+          if (payload.eventType === 'click') {
+            const selector = payload.selector;
             chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: [selector] }, (currStates: { [key: string]: ElementState }) => {
               elementStates.set(selector, currStates[selector]);
             });
-            console.log(elementStates);
+            console.log('Picked elements:', elementStates);
           }
           break;
-        case 'recording':
+        }
+        case 'recording': {
           // Diff the state of all tracked elements
           diffElementStates();
           // Track the event that happened
-          // storeEvent(message.payload);
+          storeEvent(payload);
+
+          console.log('Current event log:', events);
           // TODO: Notify the popup of the event and any differences in element states
           // sendElementStates();
           break;
+        }
       }
       break;
     case 'pause-recording':
       break;
     case 'stop-recording':
       recordingState = 'off';
+      // TODO: Get final states of elements. Just use diffElementStates() maybe?
       break;
   }
   // sendResponse({});
@@ -116,12 +127,14 @@ function diffElementStates() {
 
       // Store element changes
       const changedState = diffState(prevState, currState);
-      console.log(changedState);
-      events.push({
-        type: 'mutation',
-        ...changedState,
-        selector
-      });
+      if (changedState) {
+        console.log(`Watched element "${selector}" changed state. New properties:`, changedState);
+        events.push({
+          type: 'mutation',
+          ...changedState,
+          selector
+        });
+      }
       
       // TODO: Show whether stuff was added or removed?
       elementStates.set(selector, currState);
@@ -130,11 +143,12 @@ function diffElementStates() {
 }
 
 
- 
-
-/* function storeEvent() {
-  // TODO:
-} */
+function storeEvent(eventInfo: Omit<UserInputEvent, 'type'>) {
+  events.push({
+    ...eventInfo,
+    type: 'input'
+  });
+}
 
 
 // DEBUG

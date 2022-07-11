@@ -3,16 +3,17 @@ import getSelector from './getSelector';
 let recordingState = 'off';
 
 export function stopEventListeners() {
-  document.removeEventListener('click', clickListener);
+  document.removeEventListener('click', clickListener, { capture: true });
+  document.removeEventListener('click', clickListener, { capture: false });
 }
 
 export function startEventListeners(state: string) {
   // Remove old event listeners in case any are already there
-  document.removeEventListener('click', clickListener);
+  stopEventListeners();
 
   recordingState = state;
-  console.log(state);
-  console.log(state === 'pre-recording');
+  console.log('Starting event listeners with recording state:', recordingState);
+
   document.addEventListener('click', clickListener, {
     // return true if state is pre-recoriding, false otherwise
     capture: state === 'pre-recording'
@@ -48,7 +49,8 @@ function clickListener(this: Document, event: MouseEvent) {
     type: 'event-triggered',
     payload: {
       selector,
-      eventType: event.type
+      eventType: event.type,
+      timestamp: Date.now()
     }
   });
 
