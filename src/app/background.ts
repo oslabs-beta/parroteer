@@ -4,6 +4,8 @@ import { RuntimeMessage } from '../types/Runtime';
 // This script does not communicate with the DOM
 console.log('Running background script (see chrome extensions page)');
 
+
+
 /// Globals
 let activeTabId: number;
 let recordedTabId: number;
@@ -18,6 +20,10 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
   console.log('Background got a message!', message);
 
   switch (message.type) {
+    case 'popup-opened':
+      // setTimeout(() => console.log('this is something alright'));
+      sendResponse({recordingState, recordedTabId});
+      break;
     case 'begin-recording': {
       console.log('In begin-recording switch case');
       recordingState = 'recording';
@@ -67,6 +73,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
     case 'stop-recording':
       recordingState = 'off';
       // TODO: Get final states of elements. Just use diffElementStates() maybe?
+      // set tabid to null
       break;
   }
 });
