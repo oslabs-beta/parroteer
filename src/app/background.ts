@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
   switch (message.type) {
     case 'popup-opened':
       // setTimeout(() => console.log('this is something alright'));
-      sendResponse({recordingState, recordedTabId});
+      sendResponse({recordingState, recordedTabId, activeTabId});
       break;
     case 'begin-recording': {
       console.log('In begin-recording switch case');
@@ -72,8 +72,8 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       break;
     case 'stop-recording':
       recordingState = 'off';
+      recordedTabId = null;
       // TODO: Get final states of elements. Just use diffElementStates() maybe?
-      // set tabid to null
       break;
   }
 });
@@ -84,7 +84,9 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
  */
 function addRecordingListeners(recState: RecordingState) {
   recordedTabId = activeTabId;
+  console.log('ADDDING RECORDING LISTENERS FOR TABID', recordedTabId);
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
+
 }
 
 /// Tab event listeners

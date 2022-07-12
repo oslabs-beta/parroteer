@@ -47,13 +47,6 @@ const Recorder = (props: RecProps) => {
     chrome.action.setBadgeText({text: ''});
   };
 
-// interface Buttons {
-//   pick: JSX.Element
-//   record: JSX.Element/tracking
-//   pause: JSX.Element
-//   play: JSX.Element
-// }
-
   const buttonStyle = {
     background: 'none',
     border: 'none',
@@ -76,6 +69,7 @@ const Recorder = (props: RecProps) => {
   } else {
     curButtons = buttons.pick;
   }
+  
   
   return (
     <section id="recorderView">
