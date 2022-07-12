@@ -8,25 +8,23 @@ import UserTests from './userTests/UserTests';
 
 
 export default function App() {
-
   const [isLoaded, setIsLoaded] = useState(false);
   const [recordingState, setRecordingState] = useState('');
+  const [onCorrectTab, setOnCorrectTab] = useState(true);
 
   useEffect(() => {
     chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
-      console.log('RESPONSE RECORDING STATE', res.recordingState);
       setRecordingState(res.recordingState);
       setIsLoaded(true);
-      console.log('THIS IS THE RECORDING STATE', recordingState);
+      if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
       if (res.recordingState === 'recording') {
         chrome.action.setBadgeBackgroundColor({color: [255, 0, 0, 255]});
         chrome.action.setBadgeText({text: ''});
-        chrome.runtime.sendMessage({ type: 'pause-recording' });
+        chrome.runtime.sendMessage({ type: 'begin-pick-elements' });
         setRecordingState('pre-recording');
-      }// else if (res.recordingState === '')
+      }
     });
   }, []);
-
 
 
   const application =
@@ -46,6 +44,6 @@ export default function App() {
   </>;
 
   return (
-    isLoaded ? application : <h1>Hello there</h1>
+    isLoaded ? (onCorrectTab ? application : <h1>Wrong Tab</h1>) : <h1>Hello there</h1>
   );
 }
