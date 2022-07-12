@@ -1,41 +1,41 @@
 import getSelector from './getSelector';
+import { CSSSelector, ElementState, MutationEvent, RecordingState } from '../../types/Events';
 
-let recordingState = 'off';
+let recordingState: RecordingState = 'off';
+// TODO: Tracking an element by selector will break when selector changes!
+// TODO: When picking element, assign a data-parroteer-test-id property with a UUID for value, then use that to track it
+const elementStates: { [key: CSSSelector]: ElementState } = {};
 
+/**
+ * Stops element monitoring event listeners
+ */
 export function stopEventListeners() {
-  document.removeEventListener('click', clickListener);
+  document.removeEventListener('click', clickListener, { capture: true });
 }
 
-export function startEventListeners(state: string) {
+/**
+ * Starts element monitoring event listeners
+ */
+export function startEventListeners(state: RecordingState) {
   // Remove old event listeners in case any are already there
-  document.removeEventListener('click', clickListener);
+  stopEventListeners();
 
   recordingState = state;
-  console.log(`recordingState: ${recordingState}`)
-  // console.log(state);
-  // console.log(state === 'pre-recording');
-  document.addEventListener('click', clickListener, {
-    // return true if state is pre-recoriding, false otherwise
-    capture: state === 'pre-recording'
-  });
+  console.log('Starting event listeners with recording state:', recordingState);
+
+  document.addEventListener('click', clickListener, { capture: true });
 }
 
-/*
-event: MouseEvent
+/**
+ * Gets the selector of the target element, then sends a message to the background with the
+ * event details and details on any element changes that occurred.
+ * 
+ * If `recordingState` is 'pre-recording', prevents the event from going to any elements
+ * or triggering default behavior.
+ */
+function clickListener(event: MouseEvent) {
+  // TODO: Check event.isTrusted or whatever to see if event was created by user
 
-interface MouseEvent {
-  target: EventTarget
-}
-
-type EventTarget = HTMLElement | Document
-*/
-
-// TODO: Write an event.isTrusted function that checks if event was created by user!
-
-// Listen for click event
-// When click happens get info about the event for us to store
-  // NOTE: What do we need to store in order to re-create it in Puppeteer?
-function clickListener(this: Document, event: MouseEvent) {
   if (recordingState === 'pre-recording') {
     event.stopPropagation();
     event.preventDefault();
@@ -44,15 +44,84 @@ function clickListener(this: Document, event: MouseEvent) {
   const target = event.target as HTMLElement;
   const selector = getSelector(target);
   console.log('Element clicked:', selector);
+  const mutations = diffElementStates();
 
   chrome.runtime.sendMessage({
     type: 'event-triggered',
     payload: {
-      selector,
-      eventType: event.type
+      event: {
+        type: 'input',
+        selector,
+        eventType: event.type,
+        timestamp: Date.now()
+      },
+      prevMutations: mutations
     }
   });
+}
 
-  // TODO: Will need an array or DS to push all of our state changes into to create tests
-  // TODO: Also watch for new nodes using MutationObserver
+/**
+ * Tracks an element based on the provided selector and watches it for changes
+ */
+export function watchElement(selector: CSSSelector) {
+  elementStates[selector] = getCurrState(selector);
+  return elementStates[selector];
+}
+
+/**
+ * Gets the current state of an element by its CSS selector
+ */
+export function getCurrState(selector: CSSSelector): ElementState {
+  const el: HTMLElement | HTMLInputElement = document.querySelector(selector);
+  return {
+    class: el.classList?.value,
+    textContent: el.innerText,
+    value: 'value' in el ? el.value : undefined
+  };
+}
+
+/**
+ * Determines if/what changes have occurred with any watched elements between
+ * their current state and previously tracked state
+ */
+function diffElementStates() {
+  const changedStates: MutationEvent[] = [];
+
+  for (const selector in elementStates) {
+    const currState = getCurrState(selector);
+    const prevState = elementStates[selector];
+
+    // Determine and store element changes
+    const elChanges = diffState(prevState, currState);
+    if (elChanges) {
+      console.log(`Watched element "${selector}" changed state. New properties:`, elChanges);
+      changedStates.push({
+        type: 'mutation',
+        selector,
+        ...elChanges
+      });
+    }
+    
+    // TODO: Show whether stuff was added or removed?
+    elementStates[selector] = currState;
+  }
+
+  return changedStates;
+}
+
+/**
+ * Determines the difference in state for an element at 2 different points in time
+ */
+function diffState(prev: ElementState, curr: ElementState): Partial<ElementState> | null {
+  let differences: Partial<ElementState> | null = null;
+  // For every property in the previous state,
+  // check to see if it is different from the same property in the current state
+  for (const _key in prev) {
+    const key = _key as keyof ElementState;
+    if (prev[key] !== curr[key]) {
+      if (!differences) differences = {};
+      differences[key] = curr[key];
+    }
+  }
+  return differences;
 }

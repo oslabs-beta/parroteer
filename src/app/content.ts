@@ -1,39 +1,18 @@
+// This script has access to the DOM
+
 import * as listeners from './modules/eventListeners';
 // import observer, {targetNode, config} from './modules/mutationObserver';
 import { enableHighlight, disableHighlight } from './modules/elementPicker';
+import { RuntimeMessage } from '../types/Runtime';
+import { ElementState, RecordingState } from '../types/Events';
 
-// This script has access to the DOM
 console.log('Running content script (see chrome devtools)');
 
-interface ElementState {
-  class?: string,
-  textContent?: string,
-  value?: string
-}
-
-// Came with the template, idk what it does
-// Runs on page load
-/* chrome.runtime.sendMessage({}, (response) => {
-  const checkReady = setInterval(() => {
-    if (document.readyState === 'complete') {
-      clearInterval(checkReady);
-      console.log('We\'re in the injected content script!');
-    }
-  });
-}); */
-
 // Listen for messages from background script
-// DEBUG
-
-interface BackgroundMessage {
-  type: string,
-  payload?: unknown
-}
-
-chrome.runtime.onMessage.addListener((message: BackgroundMessage, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendResponse) => {
   switch (message.type) {
     case 'add-listeners': {
-      const { recordingState } = message.payload as { recordingState: RecordState };
+      const { recordingState } = message.payload as { recordingState: RecordingState };
       listeners.startEventListeners(recordingState);
       if (recordingState === 'pre-recording') enableHighlight();
       else {
@@ -49,28 +28,18 @@ chrome.runtime.onMessage.addListener((message: BackgroundMessage, sender, sendRe
       const payload = message.payload as string[];
       const elementStates: { [key: string]: ElementState } = {};
       for (const selector of payload) {
-        const el = document.querySelector(selector) as HTMLElement;
-        elementStates[selector] = getCurrState(el);
+        elementStates[selector] = listeners.getCurrState(selector);
       }
 
       // Send those states back to the background
       sendResponse(elementStates);
+      break;
     }
-
-    // TODO: Set up a message listener for the background to ask for the state of elements on the page
-    // based on their CSS selector
+    case 'watch-element': {
+      const selector = message.payload as string;
+      const elState = listeners.watchElement(selector);
+      sendResponse(elState);
+      break;
+    }
   }
-  // sendResponse({});
 });
-
-
-// Method to get the current state of an element based on its selector
-// Declare a function that takes in an HTMLElement and outputs an obj representing the element state
-function getCurrState (el: HTMLElement | HTMLInputElement): ElementState {
-  return {
-    class: el.classList?.value,
-    textContent: el.innerText,
-    value: 'value' in el ? el.value : undefined
-  };
-}
-

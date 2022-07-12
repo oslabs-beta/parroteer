@@ -1,3 +1,6 @@
+import { CSSSelector, ElementState, MutationEvent, RecordingState, UserInputEvent } from '../types/Events';
+import { RuntimeMessage } from '../types/Runtime';
+
 // This script does not communicate with the DOM
 console.log('Running background script (see chrome extensions page)');
 
@@ -6,61 +9,14 @@ console.log('Running background script (see chrome extensions page)');
 /// Globals
 let activeTabId: number;
 let recordedTabId: number;
-let recordingState: RecordState = 'off';
-const events: (UserInputEvents | Mutation)[] = [];
+let recordingState: RecordingState = 'off';
+const events: (UserInputEvent | MutationEvent)[] = [];
 
-type RecordState = 'pre-recording' | 'recording' | 'off';
-
-// btn test blue
-// class: 'btn test blue'
-// click
-// class: 'btn blue'
-// button.not.hasClass('test')
-// button.class.equals('btn blue')
-interface Mutation extends ElementState, StoredEvent {}
-
-interface StoredEvent {
-  selector: string,
-  timestamp?: number,
-  type: string,
-}
-
-interface UserInputEvents extends StoredEvent {
-  event: string
-}
-
-// Define the types in our elementState map obj
-interface ElementState {
-  class?: string,
-  textContent?: string,
-  value?: string
-}
-/*
-{
-  type: "input",
-  event: "click",
-  selector: ".fetchButton",
-  timestamp: 1907489238
-},
-{
-  type: "input",
-  event: "keydown",
-  keyValue: "m"
-},
-{
- type: "mutation",
- selector: "div.someCounter",
- newValue: 10
-}
-*/
-
-type CSSSelector = string;
-
-// Initialize a Map obj
-const elementStates = new Map<CSSSelector, ElementState>();
+// Initialize object to track element states
+const elementStates: { [key: CSSSelector]: ElementState } = {};
 
 // Listen for messages from popup or content script
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendResponse) => {
   console.log('Background got a message!', message);
 
   switch (message.type) {
@@ -68,107 +24,65 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       // setTimeout(() => console.log('this is something alright'));
       sendResponse({recordingState, recordedTabId});
       break;
-    case 'begin-recording':
+    case 'begin-recording': {
       console.log('In begin-recording switch case');
       recordingState = 'recording';
       addRecordingListeners(recordingState);
       // disableHighlight();
       // beginRecording();
       break;
-    case 'begin-pick-elements':
+    }
+    case 'begin-pick-elements': {
       recordingState = 'pre-recording';
       addRecordingListeners(recordingState);
       // enableHighlight();
       break;
-    case 'event-triggered':
+    }
+    case 'event-triggered': {
       // TODO: Check to make sure activeTabId is recordedTabId
+      const { event, prevMutations } = message.payload as { event: UserInputEvent, prevMutations?: MutationEvent[] };
       switch (recordingState) {
-        case 'pre-recording':
-          if (message.payload.eventType === 'click') {
-            const selector = message.payload.selector;
-            chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: [selector] }, (currStates: { [key: string]: ElementState }) => {
-              elementStates.set(selector, currStates[selector]);
+        case 'pre-recording': {
+          if (event.eventType === 'click') {
+            // When an element is clicked in pre-recording (aka pick mode), track element and notify the content script
+            const selector = event.selector;
+            chrome.tabs.sendMessage(activeTabId, { type: 'watch-element', payload: selector }, (currState: ElementState) => {
+              // TODO: Tracking an element by selector will break when selector changes!
+              // TODO: When picking element, assign a data-parroteer-test-id property with a UUID for value, then use that to track it
+              elementStates[selector] = currState;
+              console.log('Picked elements:', elementStates);
             });
-            console.log(elementStates);
           }
           break;
-        case 'recording':
-          // Diff the state of all tracked elements
-          diffElementStates();
-          // Track the event that happened
-          // storeEvent(message.payload);
+        }
+        case 'recording': {
+          // Message should include the event that occurred as well as any mutations that occurred prior to it
+          if (prevMutations) events.push(...prevMutations);
+          events.push(event);
+
+          console.log('Current event log:', events);
           // TODO: Notify the popup of the event and any differences in element states
           // sendElementStates();
           break;
+        }
       }
       break;
+    }
     case 'pause-recording':
       break;
     case 'stop-recording':
       recordingState = 'off';
+      // TODO: Get final states of elements. Just use diffElementStates() maybe?
       // set tabid to null
       break;
   }
-  // sendResponse({});
 });
 
-// TODO: Create data structure to track events and element changes
-
-function diffElementStates() {
-  // Message content script to request the current state for all tracked elements
-  chrome.tabs.sendMessage(activeTabId, { type: 'get-element-states', payload: Array.from(elementStates.keys()) }, (currStates: { [key: string]: ElementState }) => {
-    for (const selector in currStates) {
-      const currState = currStates[selector];
-      const prevState = elementStates.get(selector);
-
-      // Store element changes
-      const changedState = diffState(prevState, currState);
-      console.log(changedState);
-      events.push({
-        type: 'mutation',
-        ...changedState,
-        selector
-      });
-      
-      // TODO: Show whether stuff was added or removed?
-      elementStates.set(selector, currState);
-    }
-  });
-}
-
-
- 
-
-/* function storeEvent() {
-  // TODO:
-} */
-
-
-// DEBUG
-// const testSelector = 'HTML > BODY > ARTICLE';
-
-// Add key/val pair to the Map obj where the key is the el and the value is the element's state
-// elementStates.set(testSelector, {});
-
-
-
-// TODO: refactor to allow for mutilpe elements in a single state array
-function diffState(prev: ElementState, curr: ElementState): ElementState | null {
-  let differences: ElementState = null;
-  for (const _key in prev) {
-    const key = _key as keyof ElementState;
-    if (prev[key] !== curr[key]) {
-      if (!differences) differences = {};
-      differences[key] = curr[key];
-    }
-  }
-  return differences;
-}
 
 /**
  * Message the content script and instruct it to add event listeners and observer
  */
-function addRecordingListeners(recState: RecordState) {
+function addRecordingListeners(recState: RecordingState) {
   recordedTabId = activeTabId;
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
 }
