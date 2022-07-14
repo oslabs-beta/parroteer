@@ -1,30 +1,31 @@
-export default function getSelector(target: EventTarget) { // EventTarget could be: Element, Document, Window
+import { CssSelector } from '../../types/Events';
+
+export default function getSelector(target: EventTarget, height = 4) { // EventTarget could be: Element, Document, Window
   if (!(target instanceof Element)) return;
-  let selector = '';
+  const selectors: CssSelector[] = [];
 
   let currElement = target;
-  for (let i = 0; i <= 3; i++) {
-    if (i !== 0) selector = ' > ' + selector;
+  for (let i = 0; i < height; i++) {
+    let elSelector: CssSelector;
 
-    if (currElement.id) {
-      selector = '#' + currElement.id + selector;
-      return selector;
-      // TODO: If there is another element with the same id, warn the user
-    }
-    else if (currElement.classList?.value) {
-      // console.log(currElement.classList.value);
-      selector = '.' + currElement.classList.value.trim().replace(/\s+/g, '.') + selector;
-    }
-    else {
-      // Use tag name
-      selector = currElement.tagName.toLowerCase() + selector;
-    }
+    if (currElement.id)
+      elSelector = '#' + currElement.id;
+    else if (currElement.classList?.value)
+      elSelector = '.' + currElement.classList.value.trim().replace(/\s+/g, '.');
+    else
+      elSelector = currElement.tagName.toLowerCase();
 
-    // If we've reached the body, we can't go up any higher
-    if (currElement.tagName === 'BODY') return selector;
+    // TODO: Check if element has any siblings with the same selector
+
+
+    selectors.unshift(elSelector);
+
+    // If element had an id or we've reached the body, we can't go up any higher
+    if (currElement.id || currElement.tagName === 'BODY') break;
 
     // On each iteration, grab the parent node and tell Typescript its going to be an Element, not Document or Window
     currElement = currElement.parentNode as Element;
   }
-  return selector;
+
+  return selectors.join(' > ');
 }
