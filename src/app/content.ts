@@ -4,7 +4,7 @@ import * as listeners from './modules/eventListeners';
 // import observer, {targetNode, config} from './modules/mutationObserver';
 import { enableHighlight, disableHighlight } from './modules/elementPicker';
 import { RuntimeMessage } from '../types/Runtime';
-import { ElementState, RecordingState } from '../types/Events';
+import { ElementState, ParroteerId, RecordingState } from '../types/Events';
 
 console.log('Running content script (see chrome devtools)');
 
@@ -26,9 +26,9 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       // Iterate over all selectures in payload 
       // Look up those elements in the DOM and get their state
       const payload = message.payload as string[];
-      const elementStates: { [key: string]: ElementState } = {};
-      for (const selector of payload) {
-        elementStates[selector] = listeners.getCurrState(selector);
+      const elementStates: { [key: ParroteerId]: ElementState } = {};
+      for (const parroterId of payload) {
+        elementStates[parroterId] = listeners.getCurrState(parroterId);
       }
 
       // Send those states back to the background
@@ -37,8 +37,8 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
     }
     case 'watch-element': {
       const selector = message.payload as string;
-      const elState = listeners.watchElement(selector);
-      sendResponse(elState);
+      const elInfo = listeners.watchElement(selector);
+      sendResponse(elInfo);
       break;
     }
   }

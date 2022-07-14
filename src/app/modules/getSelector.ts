@@ -12,7 +12,8 @@ export default function getSelector(target: EventTarget) { // EventTarget could 
       // TODO: If there is another element with the same id, warn the user
     }
     else if (currElement.classList?.value) {
-      console.log(currElement.classList.value);   selector = '.' + currElement.classList.value.trim().replace(/\s+/g, '.') + selector;
+      // console.log(currElement.classList.value);
+      selector = '.' + currElement.classList.value.trim().replace(/\s+/g, '.') + selector;
     }
     else {
       // Use tag name
