@@ -1,5 +1,6 @@
 export interface StoredEvent {
-  selector: string,
+  selector: CssSelector,
+  parroteerId: ParroteerId,
   timestamp?: number,
   type: 'input' | 'mutation',
 }
@@ -10,7 +11,9 @@ export interface UserInputEvent extends StoredEvent {
   eventType: string
 }
 
-export type CSSSelector = string;
+export type CssSelector = string;
+
+export type ParroteerId = string;
 
 export interface ElementState {
   class?: string,
