@@ -106,8 +106,11 @@ function diffElementStates() {
   const changedStates: MutationEvent[] = [];
 
   for (const parroteerId in elementStates) {
-    const currState = getCurrState(parroteerId);
     const prevState = elementStates[parroteerId];
+    const currState = {
+      ...prevState,
+      ...getCurrState(parroteerId)
+    };
 
     // Determine and store element changes
     const elChanges = diffState(prevState, currState);
@@ -121,10 +124,7 @@ function diffElementStates() {
     }
     
     // TODO? Show whether stuff was added or removed?
-    elementStates[parroteerId] = {
-      ...prevState,
-      ...currState
-    };
+    elementStates[parroteerId] = currState;
   }
 
   return changedStates;
