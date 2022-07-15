@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import '../styles/popup.scss';
 import NavButtons from './components/NavButtons';
 import Loading from './components/Loading';
-import {Link, Routes, Route, useNavigate} from 'react-router-dom';
+import {Routes, Route, Navigate} from 'react-router-dom';
 import PickerView from './pickerView/PickerView';
 import RecorderView from './recorderView/RecorderView';
 import TestsView from './testsView/TestsView';
@@ -39,7 +39,7 @@ export default function App() {
       />}></Route>
       <Route path='/recorderView' element={<RecorderView />}></Route>
       <Route path='/testsView' element={<TestsView />}></Route>
-      {/* <Route path='*' element={<Navigate to='/pickerView' />}></Route> */}
+      <Route path='*' element={<Navigate to='/pickerView' />}></Route>
     </Routes>
 
     <NavButtons />

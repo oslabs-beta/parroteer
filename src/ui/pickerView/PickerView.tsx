@@ -5,11 +5,7 @@ interface RecProps {
   setRecordingState: (str: string) => void
 }
 
-// recording state is 'pre-recording' | 'recording' | 'off'
-
 const PickerView = (props: RecProps) => {
-  // const [recordingState, setRecordingState] = useState(props.recordingState);
-  // const [button, setButton] = useState('pick');
   const {recordingState, setRecordingState} = props;
   let curButtons;
 

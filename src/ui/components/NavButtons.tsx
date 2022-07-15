@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {Link, Routes, Route, useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 
 const NavButtons = () => {
