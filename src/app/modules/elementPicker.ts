@@ -1,4 +1,4 @@
-import getSelector from './getSelector';
+import getRelativeSelector from './getSelector';
 
 // Hover over an element
 // Add a highlight element / move highlight element on the page and copy the size and position of the element that was hovered
@@ -86,6 +86,6 @@ function hoverListener(this: Document, event: MouseEvent) {
   });
   
   // Call get selector and put into element
-  lilPopUp.textContent = getSelector(target);
+  lilPopUp.textContent = getRelativeSelector(target);
 }
 

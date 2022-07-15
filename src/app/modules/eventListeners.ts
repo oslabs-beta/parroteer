@@ -1,4 +1,4 @@
-import getSelector from './getSelector';
+import getRelativeSelector from './getSelector';
 import { CssSelector, ParroteerId, ElementState, MutationEvent, RecordingState } from '../../types/Events';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -41,7 +41,7 @@ function clickListener(event: MouseEvent) {
   }
   
   const target = event.target as HTMLElement;
-  const selector = getSelector(target);
+  const selector = getRelativeSelector(target);
   console.log('Element clicked:', selector);
   const mutations = diffElementStates();
 
