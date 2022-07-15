@@ -34,13 +34,16 @@ export function startEventListeners(state: RecordingState) {
  */
 function clickListener(event: MouseEvent) {
   // TODO: Check event.isTrusted or whatever to see if event was created by user
+  const target = event.target as HTMLElement;
 
   if (recordingState === 'pre-recording') {
+    // If picking elements and the element already has a parroteer ID, do nothing
+    if ('parroteerId' in target.dataset) return;
+    
     event.stopPropagation();
     event.preventDefault();
   }
   
-  const target = event.target as HTMLElement;
   const selector = getRelativeSelector(target);
   console.log('Element clicked:', selector);
   const mutations = diffElementStates();
