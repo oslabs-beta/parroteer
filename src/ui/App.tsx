@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import '../styles/popup.scss';
-import Navbar from './components/Navbar';
+import NavButtons from './components/NavButtons';
 import Loading from './components/Loading';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {Link, Routes, Route, useNavigate} from 'react-router-dom';
 import PickerView from './pickerView/PickerView';
 import RecorderView from './recorderView/RecorderView';
 import TestsView from './testsView/TestsView';
@@ -31,17 +31,18 @@ export default function App() {
   const application =
   <>
     <h1>Parroteer</h1>
-    <Navbar />
+ 
     <Routes>
       <Route path='/pickerView' element={<PickerView
         recordingState={recordingState}
         setRecordingState={setRecordingState}
-      
       />}></Route>
       <Route path='/recorderView' element={<RecorderView />}></Route>
       <Route path='/testsView' element={<TestsView />}></Route>
-      <Route path='*' element={<Navigate to='/pickerView' />}></Route>
+      {/* <Route path='*' element={<Navigate to='/pickerView' />}></Route> */}
     </Routes>
+
+    <NavButtons />
   </>;
 
   return (

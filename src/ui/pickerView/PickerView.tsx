@@ -73,6 +73,7 @@ const PickerView = (props: RecProps) => {
   
   return (
     <section id="pickerView">
+      <p>Picker View</p>
       {curButtons}
       {recordingState === 'off' ? null : buttons.end}
     </section>
