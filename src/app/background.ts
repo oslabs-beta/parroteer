@@ -1,4 +1,4 @@
-import { CSSSelector, ElementState, MutationEvent, RecordingState, UserInputEvent } from '../types/Events';
+import { ElementState, MutationEvent, ParroteerId, RecordingState, UserInputEvent } from '../types/Events';
 import { RuntimeMessage } from '../types/Runtime';
 
 // This script does not communicate with the DOM
@@ -13,7 +13,7 @@ let recordingState: RecordingState = 'off';
 const events: (UserInputEvent | MutationEvent)[] = [];
 
 // Initialize object to track element states
-const elementStates: { [key: CSSSelector]: ElementState } = {};
+const elementStates: { [key: ParroteerId]: ElementState } = {};
 
 // Listen for messages from popup or content script
 chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendResponse) => {
@@ -46,12 +46,12 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
           if (event.eventType === 'click') {
             // When an element is clicked in pre-recording (aka pick mode), track element and notify the content script
             const selector = event.selector;
-            chrome.tabs.sendMessage(activeTabId, { type: 'watch-element', payload: selector }, (currState: ElementState) => {
-              // TODO: Tracking an element by selector will break when selector changes!
-              // TODO: When picking element, assign a data-parroteer-test-id property with a UUID for value, then use that to track it
-              elementStates[selector] = currState;
-              console.log('Picked elements:', elementStates);
-            });
+            chrome.tabs.sendMessage( activeTabId, { type: 'watch-element', payload: selector },
+              (elInfo: { state: ElementState, parroteerId: ParroteerId }) => {
+                elementStates[elInfo.parroteerId] = elInfo.state;
+                console.log('Picked elements:', elementStates);
+              }
+            );
           }
           break;
         }

@@ -1,10 +1,9 @@
 import getSelector from './getSelector';
-import { CSSSelector, ElementState, MutationEvent, RecordingState } from '../../types/Events';
+import { CssSelector, ParroteerId, ElementState, MutationEvent, RecordingState } from '../../types/Events';
+import { v4 as uuidv4 } from 'uuid';
 
 let recordingState: RecordingState = 'off';
-// TODO: Tracking an element by selector will break when selector changes!
-// TODO: When picking element, assign a data-parroteer-test-id property with a UUID for value, then use that to track it
-const elementStates: { [key: CSSSelector]: ElementState } = {};
+const elementStates: { [key: ParroteerId ]: ElementState } = {};
 
 /**
  * Stops element monitoring event listeners
@@ -63,15 +62,34 @@ function clickListener(event: MouseEvent) {
 /**
  * Tracks an element based on the provided selector and watches it for changes
  */
-export function watchElement(selector: CSSSelector) {
-  elementStates[selector] = getCurrState(selector);
-  return elementStates[selector];
+export function watchElement(selector: CssSelector) {
+  const parroteerId = assignParroteerId(selector);
+  elementStates[parroteerId] = {
+    ...getCurrState(parroteerId),
+    initialSelector: selector
+  };
+  return {
+    state: elementStates[parroteerId],
+    parroteerId
+  };
+}
+
+/**
+ * Finds an element in the DOM and assigns it a unique "data-parroteer-id" property
+ */
+export function assignParroteerId (selector: CssSelector) {
+  const element = document.querySelector(selector) as HTMLElement;
+  const uuid = uuidv4();
+  element.dataset.parroteerId = uuid;
+  return uuid;
 }
 
 /**
  * Gets the current state of an element by its CSS selector
  */
-export function getCurrState(selector: CSSSelector): ElementState {
+export function getCurrState(parroteerId: ParroteerId): ElementState {
+  // [type="submit"]
+  const selector = `[data-parroteer-id="${parroteerId}"]`;
   const el: HTMLElement | HTMLInputElement = document.querySelector(selector);
   return {
     class: el.classList?.value,
@@ -87,23 +105,26 @@ export function getCurrState(selector: CSSSelector): ElementState {
 function diffElementStates() {
   const changedStates: MutationEvent[] = [];
 
-  for (const selector in elementStates) {
-    const currState = getCurrState(selector);
-    const prevState = elementStates[selector];
+  for (const parroteerId in elementStates) {
+    const prevState = elementStates[parroteerId];
+    const currState = {
+      ...prevState,
+      ...getCurrState(parroteerId)
+    };
 
     // Determine and store element changes
     const elChanges = diffState(prevState, currState);
     if (elChanges) {
-      console.log(`Watched element "${selector}" changed state. New properties:`, elChanges);
+      console.log(`Watched element "${parroteerId}" changed state. New properties:`, elChanges);
       changedStates.push({
         type: 'mutation',
-        selector,
+        parroteerId,
         ...elChanges
       });
     }
     
-    // TODO: Show whether stuff was added or removed?
-    elementStates[selector] = currState;
+    // TODO? Show whether stuff was added or removed?
+    elementStates[parroteerId] = currState;
   }
 
   return changedStates;
