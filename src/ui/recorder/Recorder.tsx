@@ -1,5 +1,3 @@
-import React, {FunctionComponent, ReactNode, useState} from 'react';
-
 interface RecProps {
   recordingState: string,
   setRecordingState: (str: string) => void

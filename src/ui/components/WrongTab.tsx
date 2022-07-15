@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface WrongTabProps {
     recordingTab: number,
     setOnCorrectTab: (str: boolean) => void,
