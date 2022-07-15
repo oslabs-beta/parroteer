@@ -1,4 +1,4 @@
-import { ElementState, MutationEvent, ParroteerId, RecordingState, UserInputEvent } from '../types/Events';
+import { ElementState, MutationEvent, ParroteerId, RecordingState, UserInputEvent, PickedElementEvent } from '../types/Events';
 import { RuntimeMessage } from '../types/Runtime';
 
 // This script does not communicate with the DOM
@@ -46,9 +46,18 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
           if (event.eventType === 'click') {
             // When an element is clicked in pre-recording (aka pick mode), track element and notify the content script
             const selector = event.selector;
+
+            // {type: 'picked-element event, parroteerId, initalSelector}
+
             chrome.tabs.sendMessage( activeTabId, { type: 'watch-element', payload: selector },
               (elInfo: { state: ElementState, parroteerId: ParroteerId }) => {
                 elementStates[elInfo.parroteerId] = elInfo.state;
+                const pickedElementEvent: PickedElementEvent = {
+                  type: 'picked-element',
+                  initialSelector: selector,
+                  parroteerId: elInfo.parroteerId
+                };
+                events.push(pickedElementEvent);
                 console.log('Picked elements:', elementStates);
               }
             );
