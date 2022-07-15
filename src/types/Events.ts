@@ -11,6 +11,7 @@ export interface UserInputEvent extends StoredEvent {
   eventType: string,
   key?: string,
   code?: string,
+  shift?: boolean
 }
 
 export type CssSelector = string;

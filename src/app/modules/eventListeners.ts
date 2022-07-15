@@ -63,10 +63,10 @@ function clickListener(event: MouseEvent) {
 
 function keydownListener(event: KeyboardEvent) {
   console.log('keydown event occurred', event);
-  let key = event.key;
-  if (event.shiftKey) key = 'shift + ' + event.key;
-
+  const key = event.key;
+  const shift = event.shiftKey;
   const code = event.code;
+
   const selector = getRelativeSelector(event.target);
   // OTHER: alt, shift, control keys also pressed?
   // const ctrlKey = event.ctrlKey;
@@ -78,6 +78,7 @@ function keydownListener(event: KeyboardEvent) {
       event: {
         type: 'input',
         key,
+        shift,
         code,
         selector,
         eventType: event.type,
@@ -87,8 +88,6 @@ function keydownListener(event: KeyboardEvent) {
     }
   });
 }
-
-
 
 
 /**
