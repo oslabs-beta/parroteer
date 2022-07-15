@@ -3,7 +3,7 @@ import '../styles/popup.scss';
 import Navbar from './components/Navbar';
 import Loading from './components/Loading';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Recorder from './recorder/Recorder';
+import PickerView from './pickerView/PickerView';
 import Tracking from './tracking/Tracking';
 import UserTests from './userTests/UserTests';
 
@@ -33,7 +33,7 @@ export default function App() {
     <h1>Parroteer</h1>
     <Navbar />
     <Routes>
-      <Route path='/recorder' element={<Recorder
+      <Route path='/pickerView' element={<PickerView
         recordingState={recordingState}
         setRecordingState={setRecordingState}
       

@@ -7,7 +7,7 @@ interface RecProps {
 
 // recording state is 'pre-recording' | 'recording' | 'off'
 
-const Recorder = (props: RecProps) => {
+const PickerView = (props: RecProps) => {
   // const [recordingState, setRecordingState] = useState(props.recordingState);
   // const [button, setButton] = useState('pick');
   const {recordingState, setRecordingState} = props;
@@ -72,11 +72,11 @@ const Recorder = (props: RecProps) => {
   
   
   return (
-    <section id="recorderView">
+    <section id="pickerView">
       {curButtons}
       {recordingState === 'off' ? null : buttons.end}
     </section>
   );
 };
 
-export default Recorder;
+export default PickerView;
