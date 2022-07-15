@@ -4,8 +4,8 @@ import Navbar from './components/Navbar';
 import Loading from './components/Loading';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import PickerView from './pickerView/PickerView';
-import Tracking from './tracking/Tracking';
-import UserTests from './userTests/UserTests';
+import RecorderView from './recorderView/RecorderView';
+import TestsView from './testsView/TestsView';
 
 
 export default function App() {
@@ -38,8 +38,8 @@ export default function App() {
         setRecordingState={setRecordingState}
       
       />}></Route>
-      <Route path='/tracking' element={<Tracking />}></Route>
-      <Route path='/userTests' element={<UserTests />}></Route>
+      <Route path='/recorderView' element={<RecorderView />}></Route>
+      <Route path='/testsView' element={<TestsView />}></Route>
       <Route path='*' element={<Navigate to='/pickerView' />}></Route>
     </Routes>
   </>;

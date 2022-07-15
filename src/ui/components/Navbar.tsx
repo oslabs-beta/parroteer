@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (<nav>
-    <Link to='/pickerView' id='pickerLink'>Setup</Link>
-    {/* <Link to='/tracking' id='trackingLink'>Recording</Link>
-    <Link to='/userTests' id='testsLink'>Tests</Link> */}
+    <Link to='/pickerView' id='pickerLink'>Element Picker</Link>
+    <Link to='/recorderView' id='recorderLink'>Recording</Link>
+    <Link to='/userTests' id='testsLink'>Tests</Link>
   </nav>);
 };
 

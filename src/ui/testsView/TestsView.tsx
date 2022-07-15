@@ -1,7 +1,7 @@
 import React from 'react';
 
-const UserTests = () => {
+const TestsView = () => {
   return (<section id="testsView">hello</section>);
 };
 
-export default UserTests;
+export default TestsView;
