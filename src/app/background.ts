@@ -1,5 +1,6 @@
 import { CSSSelector, ElementState, MutationEvent, RecordingState, UserInputEvent } from '../types/Events';
 import { RuntimeMessage } from '../types/Runtime';
+import sendFinalElementEvents from './modules/testGenerator';
 
 // This script does not communicate with the DOM
 console.log('Running background script (see chrome extensions page)');
@@ -73,6 +74,8 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
     case 'stop-recording':
       recordingState = 'off';
       recordedTabId = null;
+      addRecordingListeners(recordingState);
+      sendFinalElementEvents(events);
       // TODO: Get final states of elements. Just use diffElementStates() maybe?
       break;
   }
