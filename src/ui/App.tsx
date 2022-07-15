@@ -40,7 +40,7 @@ export default function App() {
       />}></Route>
       <Route path='/tracking' element={<Tracking />}></Route>
       <Route path='/userTests' element={<UserTests />}></Route>
-      <Route path='*' element={<Navigate to='/recorder' />}></Route>
+      <Route path='*' element={<Navigate to='/pickerView' />}></Route>
     </Routes>
   </>;
 
