@@ -10,7 +10,7 @@ const elementStates: { [key: ParroteerId ]: ElementState } = {};
  */
 export function stopEventListeners() {
   document.removeEventListener('click', clickListener, { capture: true });
-  document.removeEventListener('keypress', keypressListener, { capture: true });
+  document.removeEventListener('keydown', keydownListener, { capture: true });
 }
 
 /**
@@ -24,7 +24,7 @@ export function startEventListeners(state: RecordingState) {
   console.log('Starting event listeners with recording state:', recordingState);
 
   document.addEventListener('click', clickListener, { capture: true });
-  document.addEventListener('keypress', keypressListener, { capture: true });
+  document.onkeydown = (e) => (keydownListener(e));
 }
 
 /**
@@ -61,10 +61,11 @@ function clickListener(event: MouseEvent) {
   });
 }
 
-function keypressListener(event: KeyboardEvent) {
-  console.log('keypress event occurred', event);
+function keydownListener(event: KeyboardEvent) {
+  console.log('keydown event occurred', event);
+  let key = event.key;
+  if (event.shiftKey) key = 'shift + ' + event.key;
 
-  const key = event.key;
   const code = event.code;
   const selector = getRelativeSelector(event.target);
   // OTHER: alt, shift, control keys also pressed?
@@ -86,6 +87,7 @@ function keypressListener(event: KeyboardEvent) {
     }
   });
 }
+
 
 
 

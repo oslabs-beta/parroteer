@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import '../styles/popup.scss';
 import Navbar from './components/Navbar';
 import Loading from './components/Loading';
@@ -36,7 +36,7 @@ export default function App() {
       <Route path='/recorder' element={<Recorder
         recordingState={recordingState}
         setRecordingState={setRecordingState}
-      
+
       />}></Route>
       <Route path='/tracking' element={<Tracking />}></Route>
       <Route path='/userTests' element={<UserTests />}></Route>
