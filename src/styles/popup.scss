@@ -144,3 +144,26 @@ nav {
   100% { width: 100%; }
 }
 
+.wrong-tab-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #344799;
+  justify-content: center;
+  align-items: center;
+  p {
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: $font-fredoka;
+    text-align: center;
+  }
+  button {
+    height: 30px;
+    width: 280px;
+    border: 1px white solid;
+    border-radius: .25rem;
+    color: #fff;
+    background-color: #84CED7;
+    margin: 8px;
+    font-size: 1.1em;
+  }
+}
