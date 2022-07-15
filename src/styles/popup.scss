@@ -11,10 +11,12 @@
   --parrot-orange: #F0AD2C;
 }
 
+$parrot-blue: #425EA9;
+$font-fredoka: 'Fredoka One';
+
 main {
   width: 100%;
   height: 100%;
-  border-radius: .5rem;
 }
 
 * {
@@ -60,31 +62,23 @@ h1 {
   background-color: #fff;
 }
 
-/* .popup-padded {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-} */
-
 nav {
   display: flex;
   flex-flow: row wrap;
   width: 100%;
   font-size: 1.1em;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    flex: 1;
+    height: 1.6em;
+    text-align: center;
+  }
 }
 
-nav > a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-
-  color: black;
-  flex: 1;
-  height: 1.6em;
-  text-align: center;
-}
 
 #root > section {
   height: 100%;
@@ -107,3 +101,46 @@ nav > a {
 #testsLink, #testsView {
   background-color: salmon;
 }
+
+.loading-page {
+  background-color: #3d82b4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  img {
+    height: fit-content;
+    width: fit-content;
+  }
+  p {
+    font-family: 'Fredoka One';
+    color: #fff;
+    font-size: 1.2rem;
+  }
+}
+
+.loading-container {
+  background: rgba(255,255,255,0.1);
+  justify-content: flex-start;
+  border-radius: 100px;
+  align-items: center;
+  position: relative;
+  padding: 0 5px;
+  display: flex;
+  height: 30px;
+  width: 250px;
+}
+
+.loading-bar {
+  animation: load 5s normal forwards;
+  border-radius: 100px;
+  background: var(--parrot-yellow);
+  height: 30px;
+  width: 0;
+}
+
+@keyframes load {
+  0% { width: 5; }
+  100% { width: 100%; }
+}
+

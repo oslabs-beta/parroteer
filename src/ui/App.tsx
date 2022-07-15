@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import '../styles/popup.css';
+import '../styles/popup.scss';
 import Navbar from './components/Navbar';
+import Loading from './components/Loading';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Recorder from './recorder/Recorder';
 import Tracking from './tracking/Tracking';
@@ -44,6 +45,6 @@ export default function App() {
   </>;
 
   return (
-    isLoaded ? (onCorrectTab ? application : <h1>Wrong Tab</h1>) : <h1>Hello there</h1>
+    isLoaded ? (onCorrectTab ? application : <h1>Wrong Tab</h1>) : <Loading/>
   );
 }
