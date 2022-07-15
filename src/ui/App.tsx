@@ -34,7 +34,6 @@ export default function App() {
  
     <Routes>
       <Route path='/pickerView' element={<PickerView
-        recordingState={recordingState}
         setRecordingState={setRecordingState}
       />}></Route>
       <Route path='/recorderView' element={<RecorderView />}></Route>
