@@ -35,7 +35,9 @@
     "no-trailing-spaces": ["warn", {
       "skipBlankLines": true,
       "ignoreComments": true
-    }]
+    }],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   },
   "settings": {
     "react": { "version": "detect"}
