@@ -13,19 +13,19 @@ export default function App() {
   const [recordingState, setRecordingState] = useState('');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
 
-  // useEffect(() => {
-  //   chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
-  //     setRecordingState(res.recordingState);
-  //     setIsLoaded(true);
-  //     if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
-  //     if (res.recordingState === 'recording') {
-  //       chrome.action.setBadgeBackgroundColor({color: [255, 0, 0, 255]});
-  //       chrome.action.setBadgeText({text: ''});
-  //       chrome.runtime.sendMessage({ type: 'begin-pick-elements' });
-  //       setRecordingState('pre-recording');
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
+      setRecordingState(res.recordingState);
+      setIsLoaded(true);
+      if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
+      if (res.recordingState === 'recording') {
+        chrome.action.setBadgeBackgroundColor({color: [255, 0, 0, 255]});
+        chrome.action.setBadgeText({text: ''});
+        chrome.runtime.sendMessage({ type: 'begin-pick-elements' });
+        setRecordingState('pre-recording');
+      }
+    });
+  }, []);
 
 
   const application =

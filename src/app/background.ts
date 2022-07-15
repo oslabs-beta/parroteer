@@ -1,6 +1,5 @@
 import { CSSSelector, ElementState, MutationEvent, RecordingState, UserInputEvent } from '../types/Events';
 import { RuntimeMessage } from '../types/Runtime';
-import sendFinalElementEvents from './modules/testGenerator';
 
 // This script does not communicate with the DOM
 console.log('Running background script (see chrome extensions page)');
@@ -73,9 +72,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       break;
     case 'stop-recording':
       recordingState = 'off';
-      recordedTabId = null;
-      addRecordingListeners(recordingState);
-      sendFinalElementEvents(events);
+      stopRecordingListeners();
       // TODO: Get final states of elements. Just use diffElementStates() maybe?
       break;
   }
@@ -89,7 +86,12 @@ function addRecordingListeners(recState: RecordingState) {
   recordedTabId = activeTabId;
   console.log('ADDDING RECORDING LISTENERS FOR TABID', recordedTabId);
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
+}
 
+function stopRecordingListeners() {
+  console.log('Stopping RECORDING LISTENERS FOR TABID', recordedTabId);
+  chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: 'off' } });
+  recordedTabId = null;
 }
 
 /// Tab event listeners
