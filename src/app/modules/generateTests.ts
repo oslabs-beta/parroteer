@@ -1,17 +1,17 @@
-
+import endent from 'endent';
 import {PickedElementEvent, MutationEvent, UserInputEvent } from '../../types/Events';
 
 type Events = (UserInputEvent | MutationEvent | PickedElementEvent)[]
 
-const importPuppeteer = 'const puppeteer = require(\'puppeteer\');\n';
-const header =
-`describe('This is a unit test', () => {
-  it('passes this test', async () => {
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
-    await page.goto('http://localhost:8080');
+const importPuppeteer = 'const puppeteer = require(\'puppeteer\');';
+const header = endent`
+  describe('This is a unit test', () => {
+    it('passes this test', async () => {
+      const browser = await puppeteer.launch({ headless: false });
+      const page = await browser.newPage();
+      await page.goto('http://localhost:8080');
 `;
-    // TODO: capture url in background
+// TODO: capture url in background
 
 const footer =
 `    await browser.close();
@@ -21,51 +21,66 @@ const footer =
 const jestOutline = (event: MutationEvent) => {
   let change;
   
-  let expectations = '';
+  const expectations: string[] = [];
   for (const key in event) {
     if (key === 'textContent') change = 'textContent';
     else if (key === 'value') change = 'value';
     else if(key === 'class') change = 'classList.value';
     else continue;
-    expectations += `\t\texpect(el.${change}).toEqual(${event[key]})\n`;
+    expectations.push(`expect(el.${change}).toEqual('${event[key]}');`);
   }
-  return `\t\tawait page.waitFor('[data-parroteer-id="${event.parroteerId}"]').then(el => {\n${expectations}})`;
+
+  const expectStr = endent`
+    await page.waitFor('[data-parroteer-id="${event.parroteerId}"]').then(el => {
+      ${expectations.join('\n')}
+    });
+  `;
+  return indent(expectStr, 2);
   // return waitFor + `\t\tawait expect(${event.parroteerId}).${change});\n`;
 };
 
+// console.log(jestOutline({ type: 'mutation', parroteerId: '90435034905-fasdf-43tfdg-34trq3gngiogn', textContent: 'hi', class: 'testclass' }));
+
 const puppeteerEventOutline = (event: UserInputEvent) => {
-  let eventType;
-  if (event.eventType === 'click') eventType = 'click';
-  else eventType = 'keyboard.press';
-  // TODO: access parroteer id properly
-  return `\t\tawait page.${eventType}('[data-parroteer-id="${event.parroteerId}"]');\n`;
+  const eventType = (event.eventType === 'click' ? 'click' : 'keyboard.press');
+  const puppetStr = `await page.${eventType}('[data-parroteer-id="${event.parroteerId}"]');`;
+  return indent(puppetStr, 2);
 };
 
 const pickEvent = (event: PickedElementEvent) => {
-  return `\t\tawait page.waitFor("${event.initialSelector}").then(el => el.dataset.parroteerId = "${event.parroteerId}")\n`;
+  return `await page.waitFor("${event.initialSelector}").then(el => el.dataset.parroteerId = "${event.parroteerId}")`;
 };
 
 export default function sendFinalElementEvents(events: Events) {
-  let outputStr = importPuppeteer + header;
+  const outputSections: string[] = [];
+  outputSections.push(importPuppeteer, header);
+
   for (const event of events) {
     const {type} = event;
     // logic for events using puppeteer to simulate user clicks
     switch (type) {
       case 'input':
-        outputStr += puppeteerEventOutline(event as UserInputEvent);
+        outputSections.push(puppeteerEventOutline(event as UserInputEvent));
         break;
       case 'mutation':
-        outputStr += jestOutline(event as MutationEvent);
+        outputSections.push(jestOutline(event as MutationEvent));
         break;
       case 'picked-element':
-        outputStr += pickEvent(event as PickedElementEvent);
+        outputSections.push(pickEvent(event as PickedElementEvent));
         break;
       default:
         console.log(`how did ${type} get in here???`);
         break;
     }
   }
-  return outputStr + footer;
+
+  outputSections.push(footer);
+  return outputSections.join('\n');
+}
+
+function indent(str: string, tabs = 0) {
+  const lines = str.split('\n');
+  return lines.map(line => '\t'.repeat(tabs) + line).join('\n');
 }
   
 /* 
