@@ -3,16 +3,20 @@ import {PickedElementEvent, MutationEvent, UserInputEvent } from '../../types/Ev
 
 type Events = (UserInputEvent | MutationEvent | PickedElementEvent)[]
 
-
 const importPuppeteer = 'const puppeteer = require(\'puppeteer\');\n';
-const header = `describe('This is a unit test', () => {
+const header =
+`describe('This is a unit test', () => {
   it('passes this test', async () => {
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
-    await page.goto('http://localhost:8080');\n`;
+    await page.goto('http://localhost:8080');
+`;
     // TODO: capture url in background
 
-const footer = '\n\t\tawait browser.close();\n\t\t});\n\t}\n);';
+const footer =
+`    await browser.close();
+  });
+});`;
 
 const jestOutline = (event: MutationEvent) => {
   let change;
