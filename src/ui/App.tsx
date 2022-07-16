@@ -6,16 +6,19 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Recorder from './recorder/Recorder';
 import Tracking from './tracking/Tracking';
 import UserTests from './userTests/UserTests';
+import WrongTab from './components/WrongTab';
 
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [recordingState, setRecordingState] = useState('');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
+  const [recordingTab, setRecordingTab] = useState(null);
 
   useEffect(() => {
     chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
       setRecordingState(res.recordingState);
+      setRecordingTab(res.recordedTabId);
       setIsLoaded(true);
       if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
       if (res.recordingState === 'recording') {
@@ -25,7 +28,7 @@ export default function App() {
         setRecordingState('pre-recording');
       }
     });
-  }, []);
+  }, [onCorrectTab]);
 
 
   const application =
@@ -44,7 +47,12 @@ export default function App() {
     </Routes>
   </>;
 
+  const wrongTab = <WrongTab
+    recordingTab={recordingTab}
+    setOnCorrectTab={setOnCorrectTab}
+  />;
+
   return (
-    isLoaded ? (onCorrectTab ? application : <h1>Wrong Tab</h1>) : <Loading/>
+    isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
   );
 }

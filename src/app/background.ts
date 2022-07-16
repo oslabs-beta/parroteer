@@ -95,7 +95,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
  * Message the content script and instruct it to add event listeners and observer
  */
 function addRecordingListeners(recState: RecordingState) {
-  recordedTabId = activeTabId;
+  recordedTabId = recordedTabId || activeTabId;
   console.log('ADDDING RECORDING LISTENERS FOR TABID', recordedTabId);
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
 }

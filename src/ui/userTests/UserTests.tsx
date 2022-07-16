@@ -1,5 +1,3 @@
-import React from 'react';
-
 const UserTests = () => {
   return (<section id="testsView">hello</section>);
 };
