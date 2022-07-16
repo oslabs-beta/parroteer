@@ -1,4 +1,4 @@
-import sendFinalElementEvents from '../src/app/modules/generateTests';
+import createTestsFromEvents from '../src/app/modules/generateTests';
 import endent from 'endent';
 
 describe('Basic test generation', () => {
@@ -14,6 +14,6 @@ describe('Basic test generation', () => {
         });
       });
     `;
-    expect(sendFinalElementEvents([])).toEqual(basicTest);
+    expect(createTestsFromEvents([])).toEqual(basicTest);
   });
 });

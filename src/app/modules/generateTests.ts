@@ -1,7 +1,5 @@
 import endent from 'endent';
-import {PickedElementEvent, MutationEvent, UserInputEvent } from '../../types/Events';
-
-type Events = (UserInputEvent | MutationEvent | PickedElementEvent)[]
+import {PickedElementEvent, MutationEvent, UserInputEvent, StoredEvent } from '../../types/Events';
 
 const importPuppeteer = 'const puppeteer = require(\'puppeteer\');';
 const header = endent`
@@ -18,6 +16,10 @@ const footer =
   });
 });`;
 
+/**
+ * Finds the element associated with the provided MutationEvent
+ * and generates Jest `expect` statements for each change
+ */
 const jestOutline = (event: MutationEvent) => {
   let change;
   
@@ -41,17 +43,29 @@ const jestOutline = (event: MutationEvent) => {
 
 // console.log(jestOutline({ type: 'mutation', parroteerId: '90435034905-fasdf-43tfdg-34trq3gngiogn', textContent: 'hi', class: 'testclass' }));
 
+
+/**
+ * Finds the element associated with the provided UserInputEvent
+ * and mimics the input event that happened with it using Puppeteer
+ */
 const puppeteerEventOutline = (event: UserInputEvent) => {
   const eventType = (event.eventType === 'click' ? 'click' : 'keyboard.press');
   const puppetStr = `await page.${eventType}('[data-parroteer-id="${event.parroteerId}"]');`;
   return indent(puppetStr, 2);
 };
 
+/**
+ * Finds the element associated with a PickedElementEvent
+ * and assigns it the parroter Id that it should have
+ */
 const pickEvent = (event: PickedElementEvent) => {
   return `await page.waitFor("${event.initialSelector}").then(el => el.dataset.parroteerId = "${event.parroteerId}")`;
 };
 
-export default function sendFinalElementEvents(events: Events) {
+/**
+ * Creates a full test from a set of Events
+ */
+export default function createTestsFromEvents(events: StoredEvent[]) {
   const outputSections: string[] = [];
   outputSections.push(importPuppeteer, header);
 
@@ -82,6 +96,27 @@ function indent(str: string, tabs = 0) {
   const lines = str.split('\n');
   return lines.map(line => '\t'.repeat(tabs) + line).join('\n');
 }
+
+/* const inputEvent: UserInputEvent = {
+  type: 'input',
+  eventType: 'click',
+  parroteerId: '980458ad3-adsf34-df342-adsf898f',
+  selector: '#test > div'
+};
+const mutationEvent: MutationEvent = {
+  type: 'mutation',
+  textContent: 'hi',
+  class: 'class1 class2',
+  parroteerId: '980458ad3-adsf34-df342-adsf898f'
+};
+const pickedElementEvent: PickedElementEvent = {
+  type: 'picked-element',
+  initialSelector: '#test > div',
+  parroteerId: '980458ad3-adsf34-df342-adsf898f'
+};
+
+const events: StoredEvent[] = [pickedElementEvent, inputEvent, mutationEvent];
+console.log(createTestsFromEvents(events)); */
   
 /* 
 		await page.waitFor("#chapters").then(el => el.dataset.parroteerId = "503203bc-d26b-4c6a-95a9-529938487b3d")		await page.waitFor("#per_chapter").then(el => el.dataset.parroteerId = "7447de0a-d127-48a9-917c-13d03f4154d2")		await page.waitFor("div > .CodeMirror-line > span > .cm-comment").then(el => el.dataset.parroteerId = "0330c8c5-7907-4690-90de-ff544e656ee7")await browser.close();});});
