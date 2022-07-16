@@ -45,12 +45,7 @@ function clickListener(event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
   }
-<<<<<<< HEAD
-
-  const target = event.target as HTMLElement;
-=======
   
->>>>>>> dev
   const selector = getRelativeSelector(target);
   console.log('Element clicked:', selector);
   const mutations = diffElementStates();
@@ -62,7 +57,8 @@ function clickListener(event: MouseEvent) {
         type: 'input',
         selector,
         eventType: event.type,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        parroteerId: target.dataset.parroteerId
       },
       prevMutations: mutations
     }
@@ -71,6 +67,7 @@ function clickListener(event: MouseEvent) {
 
 function keydownListener(event: KeyboardEvent) {
   console.log('keydown event occurred', event);
+  const target = event.target as HTMLElement;
   const key = event.key;
   const shift = event.shiftKey;
   const code = event.code;
@@ -90,7 +87,8 @@ function keydownListener(event: KeyboardEvent) {
         code,
         selector,
         eventType: event.type,
-        timestamp: event.timeStamp
+        timestamp: event.timeStamp,
+        parroteerId: target.dataset.parroteerId
       },
       prevMutations: mutations
     }
