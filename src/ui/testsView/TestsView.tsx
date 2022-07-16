@@ -1,11 +1,20 @@
-import ExportButton from '../components/ExportButton';
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { dracula } from '@uiw/codemirror-theme-dracula';
+
 
 const TestsView = () => {
-  const test = 'hello!';
+
   return (
     <section id="testsView">
-      <p>Tests View</p>
-      <ExportButton text={test} />
+      <CodeMirror
+        placeholder={'//No tests yet :('}
+        value={'hello'}
+        theme={dracula}
+        height='400px'
+        width='400px'
+        extensions={[javascript({ jsx: true })]}
+      />
     </section>);
 };
 
