@@ -152,3 +152,16 @@ nav {
     font-size: 1.1em;
   }
 }
+
+button.export {
+  cursor: pointer;
+}
+
+.hov {
+  &:hover {
+    filter: brightness(1.1);
+  }
+  &:active {
+    filter: brightness(0.9);
+  }
+}
