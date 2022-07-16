@@ -1,9 +1,10 @@
-import {EditorView, basicSetup} from "codemirror"
-import {javascript} from "@codemirror/lang-javascript"
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { dracula } from '@uiw/codemirror-theme-dracula';
+
 
 const TestsView = () => {
-
-  const doc = `const puppeteer = require('puppeteer');
+  const tests = `const puppeteer = require('puppeteer');
   describe('This is a unit test', () => {
     it('passes this test', async () => {
       const browser = await puppeteer.launch({headless: false});
@@ -22,17 +23,115 @@ const TestsView = () => {
   })		await page.click('[data-parroteer-id="undefined"]');
   
       await browser.close();
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
+      blah
       });
     }
   );`;
 
-  new EditorView({
-    extensions: [basicSetup, javascript()],
-    parent: document.body
-  });
-
   return (
     <section id="testsView">
+      <CodeMirror
+        placeholder={'//No tests yet :('}
+        value={tests}
+        theme={dracula}
+        height='400px'
+        width='400px'
+        extensions={[javascript({ jsx: true })]}
+      />
     </section>);
 };
 
