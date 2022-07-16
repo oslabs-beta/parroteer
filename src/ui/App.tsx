@@ -16,22 +16,22 @@ export default function App() {
   const [recordingTab, setRecordingTab] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
-      console.log(res.recordingState);
-      setRecordingState(res.recordingState);
-      setRecordingTab(res.recordedTabId);
-      setIsLoaded(true);
-      if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
-      if (res.recordingState === 'recording') {
-        navigate('/recorderView');
-      } else if (res.recordingState === 'pre-recording'){
-        navigate('/pickerView');
-      } else if (res.recordingState === 'off'){
-        navigate('/pickerView');
-      }
-    });
-  }, [onCorrectTab]);
+  // useEffect(() => {
+  //   chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
+  //     console.log(res.recordingState);
+  //     setRecordingState(res.recordingState);
+  //     setRecordingTab(res.recordedTabId);
+  //     setIsLoaded(true);
+  //     if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
+  //     if (res.recordingState === 'recording') {
+  //       navigate('/recorderView');
+  //     } else if (res.recordingState === 'pre-recording'){
+  //       navigate('/pickerView');
+  //     } else if (res.recordingState === 'off'){
+  //       navigate('/pickerView');
+  //     }
+  //   });
+  // }, [onCorrectTab]);
 
 // Why element not component?
 // Why Routes and not Router?
@@ -65,6 +65,7 @@ export default function App() {
   />;
 
   return (
-    isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
+    // isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
+    <TestsView />
   );
 }
