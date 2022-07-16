@@ -14,6 +14,7 @@
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
     "@types/chrome": "^0.0.193",
+    "@types/dedent": "^0.7.0",
     "@types/jest": "^28.1.6",
     "@types/react": "^17.0.47",
     "@types/react-dom": "^17.0.17",
@@ -40,6 +41,7 @@
   },
   "dependencies": {
     "cross-env": "^7.0.3",
+    "endent": "^2.1.0",
     "eslint": "^8.18.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
