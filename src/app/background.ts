@@ -1,5 +1,6 @@
 import { ElementState, MutationEvent, ParroteerId, RecordingState, UserInputEvent, PickedElementEvent } from '../types/Events';
 import { RuntimeMessage } from '../types/Runtime';
+// import senfFinalElements from './modules/generateTests';
 
 // This script does not communicate with the DOM
 console.log('Running background script (see chrome extensions page)');
@@ -85,6 +86,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
     case 'stop-recording':
       recordingState = 'off';
       stopRecordingListeners();
+      // sendResponse(senfFinalElements(events));
       // TODO: Get final states of elements. Just use diffElementStates() maybe?
       break;
   }
