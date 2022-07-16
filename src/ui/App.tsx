@@ -6,18 +6,21 @@ import {Routes, Route, useNavigate} from 'react-router-dom';
 import PickerView from './pickerView/PickerView';
 import RecorderView from './recorderView/RecorderView';
 import TestsView from './testsView/TestsView';
+import WrongTab from './components/WrongTab';
 
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [recordingState, setRecordingState] = useState('');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
+  const [recordingTab, setRecordingTab] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
       console.log(res.recordingState);
       setRecordingState(res.recordingState);
+      setRecordingTab(res.recordedTabId);
       setIsLoaded(true);
       if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
       if (res.recordingState === 'recording') {
@@ -28,7 +31,7 @@ export default function App() {
         navigate('/pickerView');
       }
     });
-  }, []);
+  }, [onCorrectTab]);
 
 // Why element not component?
 // Why Routes and not Router?
@@ -56,7 +59,12 @@ export default function App() {
     <NavButtons/>
   </>;
 
+  const wrongTab = <WrongTab
+    recordingTab={recordingTab}
+    setOnCorrectTab={setOnCorrectTab}
+  />;
+
   return (
-    isLoaded ? (onCorrectTab ? application : <h1>Wrong Tab</h1>) : <Loading/>
+    isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
   );
 }

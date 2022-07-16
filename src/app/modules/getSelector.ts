@@ -6,7 +6,7 @@ import { CssSelector } from '../../types/Events';
  * @param height How many parents above the element to check. `height` of 0 means only check given element. Default 3
  */
 export default function getRelativeSelector(target: EventTarget, height = 3) { // EventTarget could be: Element, Document, Window
-  if (!(target instanceof Element)) return;
+  if (!(target instanceof HTMLElement) || target instanceof HTMLHtmlElement) return;
   const selectors: CssSelector[] = [];
 
   let currElement = target;
