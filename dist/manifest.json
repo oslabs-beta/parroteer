@@ -7,6 +7,7 @@
     "48": "./icons/parrot_48.png",
     "128": "./icons/parrot_128.png"
   },
+  "permissions": ["downloads"],
   "description": "No-code test automation solution for end-to-end testing",
   "homepage_url": "https://github.com/oslabs-beta/parroteer",
   "action": {

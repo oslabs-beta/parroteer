@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       break;
     }
     case 'get-element-states': {
-      // Iterate over all selectures in payload 
+      // Iterate over all selectures in payload
       // Look up those elements in the DOM and get their state
       const payload = message.payload as string[];
       const elementStates: { [key: ParroteerId]: ElementState } = {};

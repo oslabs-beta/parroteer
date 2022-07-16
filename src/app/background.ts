@@ -63,11 +63,14 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
               }
             );
           }
+
           break;
         }
         case 'recording': {
           // Message should include the event that occurred as well as any mutations that occurred prior to it
+
           if (prevMutations) events.push(...prevMutations);
+          console.log('prevMutations', prevMutations);
           events.push(event);
 
           console.log('Current event log:', events);

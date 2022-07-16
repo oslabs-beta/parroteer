@@ -8,7 +8,10 @@ export interface MutationEvent extends Partial<ElementState>, StoredEvent {}
 
 export interface UserInputEvent extends StoredEvent {
   selector: CssSelector,
-  eventType: string
+  eventType: string,
+  key?: string,
+  code?: string,
+  shift?: boolean
 }
 
 export type CssSelector = string;
@@ -27,3 +30,4 @@ export type RecordingState = 'pre-recording' | 'recording' | 'off';
 export interface PickedElementEvent extends StoredEvent {
   initialSelector: CssSelector
 }
+

@@ -10,6 +10,7 @@ const elementStates: { [key: ParroteerId ]: ElementState } = {};
  */
 export function stopEventListeners() {
   document.removeEventListener('click', clickListener, { capture: true });
+  document.removeEventListener('keydown', keydownListener, { capture: true });
 }
 
 /**
@@ -23,12 +24,13 @@ export function startEventListeners(state: RecordingState) {
   console.log('Starting event listeners with recording state:', recordingState);
 
   document.addEventListener('click', clickListener, { capture: true });
+  document.onkeydown = (e) => (keydownListener(e));
 }
 
 /**
  * Gets the selector of the target element, then sends a message to the background with the
  * event details and details on any element changes that occurred.
- * 
+ *
  * If `recordingState` is 'pre-recording', prevents the event from going to any elements
  * or triggering default behavior.
  */
@@ -55,12 +57,44 @@ function clickListener(event: MouseEvent) {
         type: 'input',
         selector,
         eventType: event.type,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        parroteerId: target.dataset.parroteerId
       },
       prevMutations: mutations
     }
   });
 }
+
+function keydownListener(event: KeyboardEvent) {
+  console.log('keydown event occurred', event);
+  const target = event.target as HTMLElement;
+  const key = event.key;
+  const shift = event.shiftKey;
+  const code = event.code;
+
+  const selector = getRelativeSelector(event.target);
+  // OTHER: alt, shift, control keys also pressed?
+  // const ctrlKey = event.ctrlKey;
+  const mutations = diffElementStates();
+
+  chrome.runtime.sendMessage({
+    type: 'event-triggered',
+    payload: {
+      event: {
+        type: 'input',
+        key,
+        shift,
+        code,
+        selector,
+        eventType: event.type,
+        timestamp: event.timeStamp,
+        parroteerId: target.dataset.parroteerId
+      },
+      prevMutations: mutations
+    }
+  });
+}
+
 
 /**
  * Tracks an element based on the provided selector and watches it for changes
@@ -125,7 +159,7 @@ function diffElementStates() {
         ...elChanges
       });
     }
-    
+
     // TODO? Show whether stuff was added or removed?
     elementStates[parroteerId] = currState;
   }
