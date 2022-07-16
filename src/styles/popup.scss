@@ -172,3 +172,16 @@ nav {
 ::-webkit-scrollbar-corner {
   background: #161a31;
 }
+
+button.export {
+  cursor: pointer;
+}
+
+.hov {
+  &:hover {
+    filter: brightness(1.1);
+  }
+  &:active {
+    filter: brightness(0.9);
+  }
+}
