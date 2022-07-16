@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/popup.scss';
 import NavButtons from './components/NavButtons';
 import Loading from './components/Loading';
-import {Routes, Route, Navigate, useNavigate} from 'react-router-dom';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 import PickerView from './pickerView/PickerView';
 import RecorderView from './recorderView/RecorderView';
 import TestsView from './testsView/TestsView';
@@ -53,10 +53,7 @@ export default function App() {
 
     </Routes>
 
-    <NavButtons
-      recordingState={recordingState}
-      setRecordingState={setRecordingState}
-    />
+    <NavButtons/>
   </>;
 
   return (
