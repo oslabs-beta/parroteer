@@ -2,8 +2,12 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 
+interface StateProps {
+  recordingState: string,
+  setRecordingState: (str: string) => void
+}
 
-const NavButtons = () => {
+const NavButtons = (props: StateProps) => {
   const navigate = useNavigate();
 
   return (
