@@ -1,4 +1,4 @@
-import React, {FunctionComponent, ReactNode, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 interface RecProps {
   recordingState: string,
@@ -11,7 +11,9 @@ const Recorder = (props: RecProps) => {
   // const [recordingState, setRecordingState] = useState(props.recordingState);
   // const [button, setButton] = useState('pick');
   const {recordingState, setRecordingState} = props;
+  // const [tests, setTests] = useState('');
   let curButtons;
+
 
   const onRecordClick = () => {
     setRecordingState('recording');
@@ -43,8 +45,8 @@ const Recorder = (props: RecProps) => {
 
   const onEndClick = () => {
     setRecordingState('off');
-    chrome.runtime.sendMessage({ type: 'stop-recording' });
     chrome.action.setBadgeText({text: ''});
+    chrome.runtime.sendMessage({ type: 'stop-recording' });
   };
 
   const buttonStyle = {
