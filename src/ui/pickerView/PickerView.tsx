@@ -1,7 +1,8 @@
 import React from 'react';
+import { RecordingState } from '../../types/Events';
 
 interface PickerProps {
-  setRecordingState: (str: string) => void
+  setRecordingState: (str: RecordingState) => void
 }
 
 const PickerView = (props: PickerProps) => {

@@ -1,8 +1,9 @@
 import React from 'react';
+import { RecordingState } from '../../types/Events';
 
 interface RecProps {
   recordingState: string,
-  setRecordingState: (str: string) => void
+  setRecordingState: (str: RecordingState) => void
 }
 
 const RecorderView = (props: RecProps) => {
