@@ -41,13 +41,14 @@ function clickListener(event: MouseEvent) {
   if (recordingState === 'pre-recording') {
     // If picking elements and the element already has a parroteer ID, do nothing
     if ('parroteerId' in target.dataset) return;
-    
+
     event.stopPropagation();
     event.preventDefault();
   }
-  
+
   const selector = getRelativeSelector(target);
   console.log('Element clicked:', selector);
+  console.log('Element state', elementStates);
   const mutations = diffElementStates();
 
   chrome.runtime.sendMessage({

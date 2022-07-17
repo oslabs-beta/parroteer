@@ -1,11 +1,15 @@
 import React from 'react';
+// import textList from '../components/TextList';
+import { ElementState } from '../../types/Events';
 
 interface PickerProps {
   setRecordingState: (str: string) => void
+  elementState: ElementState;
 }
 
 const PickerView = (props: PickerProps) => {
-  const {setRecordingState} = props;
+  const {setRecordingState, elementState} = props;
+  console.log(elementState);
 
   const onPickElClick = () => {
     setRecordingState('pre-recording');
@@ -13,11 +17,13 @@ const PickerView = (props: PickerProps) => {
     chrome.action.setBadgeText({text: 'PICK'});
     chrome.action.setBadgeBackgroundColor({color: 'green'});
   };
-  
+
   return (
     <section id="pickerView">
       <p>Picker View</p>
       <button onClick={onPickElClick}>Pick Elements</button>
+      {/* <p> {elementState} </p> */}
+      {/* {textList} */}
     </section>
   );
 };

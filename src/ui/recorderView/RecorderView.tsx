@@ -1,12 +1,17 @@
 import React from 'react';
+import TextList from '../components/TextList';
+import { UserInputEvent, MutationEvent } from '../../types/Events';
 
 interface RecProps {
   recordingState: string,
   setRecordingState: (str: string) => void
+  events: (UserInputEvent | MutationEvent)[];
 }
 
+
+
 const RecorderView = (props: RecProps) => {
-  const {recordingState, setRecordingState} = props;
+  const {recordingState, setRecordingState, events} = props;
   // const [tests, setTests] = useState('');
   let curButtons;
 
@@ -43,7 +48,6 @@ const RecorderView = (props: RecProps) => {
     border: 'none',
   };
 
-
   const buttons = {
     record: <button style={buttonStyle} onClick={onRecordClick}><img src='./icons/record-button.png' /></button>,
     pause: <button style={buttonStyle} onClick={onPauseClick}><img src='./icons/pause-button.png' /></button>,
@@ -57,12 +61,16 @@ const RecorderView = (props: RecProps) => {
   } else {
     curButtons = buttons.record;
   }
-  
+
+
+
   return (
     <section id="recorderView">
       <p>Recorder View</p>
       {curButtons}
       {recordingState === 'off' ? null : buttons.end}
+
+      <TextList events={events}/>
     </section>
   );
 };
@@ -76,5 +84,5 @@ export default RecorderView;
 
 
 
-  
+
 

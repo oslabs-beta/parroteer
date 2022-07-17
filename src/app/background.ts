@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
   switch (message.type) {
     case 'popup-opened':
       // setTimeout(() => console.log('this is something alright'));
-      sendResponse({recordingState, recordedTabId, activeTabId});
+      sendResponse({recordingState, recordedTabId, activeTabId, elementStates, events});
       break;
     case 'begin-recording': {
       console.log('In begin-recording switch case');
@@ -62,6 +62,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
                 console.log('Picked elements:', elementStates);
               }
             );
+
           }
 
           break;
