@@ -8,8 +8,8 @@ const TextList = (props :TextProps) => {
   console.log('list', props);
 
   const textItems = props.events.map((event:UserInputEvent | MutationEvent) => {
-    const {type, initialSelector, parroteerId} = event;
-     return <li></li>
+    // const {type, initialSelector, parroteerId} = event;
+    //  return <li></li>
   })
 
   return (

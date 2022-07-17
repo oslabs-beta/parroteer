@@ -2,10 +2,11 @@
   "compilerOptions": {
     "sourceMap": true,
     "target": "es6",
-    "module": "commonjs",
+    "module": "es6",
     "jsx": "react-jsx",
     "noImplicitAny": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules",
