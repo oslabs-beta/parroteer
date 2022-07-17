@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
+/** @type {import('webpack').Configuration} */
 module.exports = {
   mode: process.env.NODE_ENV,
   devtool: 'inline-source-map',
@@ -16,6 +17,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
+  },
+  watchOptions: {
+    ignored: /node_modules/
   },
   module: {
     rules: [
