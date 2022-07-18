@@ -173,8 +173,10 @@ nav {
   background: #161a31;
 }
 
-button.export {
+button.export, button.icon {
   cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .hov {
