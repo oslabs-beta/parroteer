@@ -139,7 +139,7 @@ export function getCurrState(parroteerId: ParroteerId): ElementState {
  * Determines if/what changes have occurred with any watched elements between
  * their current state and previously tracked state
  */
-function diffElementStates() {
+export function diffElementStates() {
   const changedStates: MutationEvent[] = [];
 
   for (const parroteerId in elementStates) {

@@ -1,6 +1,7 @@
 // This script has access to the DOM
 
 import * as listeners from './modules/eventListeners';
+import {diffElementStates} from './modules/eventListeners';
 // import observer, {targetNode, config} from './modules/mutationObserver';
 import { enableHighlight, disableHighlight } from './modules/elementPicker';
 import { RuntimeMessage } from '../types/Runtime';
@@ -40,6 +41,9 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       const elInfo = listeners.watchElement(selector);
       sendResponse(elInfo);
       break;
+    }
+    case 'final-diff': {
+      sendResponse(diffElementStates());
     }
   }
 });

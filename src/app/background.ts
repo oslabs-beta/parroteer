@@ -11,6 +11,7 @@ console.log('Running background script (see chrome extensions page)');
 let activeTabId: number;
 let recordedTabId: number;
 let recordingState: RecordingState = 'off';
+let tests: string;
 const events: (UserInputEvent | MutationEvent)[] = [];
 
 // Initialize object to track element states
@@ -46,11 +47,14 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
         case 'pre-recording': {
           if (event.eventType === 'click') {
             // When an element is clicked in pre-recording (aka pick mode), track element and notify the content script
+            if (activeTabId !== recordedTabId) {
+              throw new Error('Cannot pick elements on wrong tab');
+            }
             const selector = event.selector;
 
             // {type: 'picked-element event, parroteerId, initalSelector}
 
-            chrome.tabs.sendMessage( activeTabId, { type: 'watch-element', payload: selector },
+            chrome.tabs.sendMessage( recordedTabId, { type: 'watch-element', payload: selector },
               (elInfo: { state: ElementState, parroteerId: ParroteerId }) => {
                 elementStates[elInfo.parroteerId] = elInfo.state;
                 const pickedElementEvent: PickedElementEvent = {
@@ -85,7 +89,10 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       break;
     case 'stop-recording':
       recordingState = 'off';
+      lastElementStateDiff();
       stopRecordingListeners();
+      sendResponse(events);
+
       // sendResponse(senfFinalElements(events));
       // TODO: Get final states of elements. Just use diffElementStates() maybe?
       break;
@@ -106,6 +113,11 @@ function stopRecordingListeners() {
   console.log('Stopping RECORDING LISTENERS FOR TABID', recordedTabId);
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: 'off' } });
   recordedTabId = null;
+}
+
+function lastElementStateDiff() {
+  console.log('LAST STATE DIFF');
+  chrome.tabs.sendMessage(recordedTabId, { type: 'final-diff'}, (res) => events.push(...res));
 }
 
 /// Tab event listeners

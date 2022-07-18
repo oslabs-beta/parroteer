@@ -15,6 +15,7 @@ export default function App() {
   const [recordingState, setRecordingState] = useState<RecordingState>('off');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
   const [recordingTab, setRecordingTab] = useState(null);
+  const [tests, setTests] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
