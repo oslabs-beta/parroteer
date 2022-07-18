@@ -7,11 +7,12 @@ import PickerView from './pickerView/PickerView';
 import RecorderView from './recorderView/RecorderView';
 import TestsView from './testsView/TestsView';
 import WrongTab from './components/WrongTab';
+import { RecordingState } from '../types/Events';
 
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [recordingState, setRecordingState] = useState('');
+  const [recordingState, setRecordingState] = useState<RecordingState>('off');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
   const [recordingTab, setRecordingTab] = useState(null);
   const [elementState, setElementState] = useState({});
@@ -69,7 +70,7 @@ export default function App() {
 
     </Routes>
 
-    <NavButtons/>
+    <NavButtons recordingState={recordingState} />
   </>;
 
   const wrongTab = <WrongTab

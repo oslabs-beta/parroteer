@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import TextList from '../components/TextList';
 import { UserInputEvent, MutationEvent } from '../../types/Events';
 
@@ -6,6 +7,13 @@ interface RecProps {
   recordingState: string,
   setRecordingState: (str: string) => void
   events: (UserInputEvent | MutationEvent)[];
+=======
+import { RecordingState } from '../../types/Events';
+
+interface RecProps {
+  recordingState: string,
+  setRecordingState: (str: RecordingState) => void
+>>>>>>> dev
 }
 
 

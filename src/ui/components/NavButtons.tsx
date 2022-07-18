@@ -1,19 +1,53 @@
 
-import React from 'react';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
+import { RecordingState } from '../../types/Events';
+import BackIcon from './BackIcon';
+import NextIcon from './NextIcon';
 
-const NavButtons = () => {
+interface NavButtonsProps {
+  recordingState: RecordingState
+}
+
+type NavChoice = 'PICK' | 'RECORD' | 'TESTS';
+type NavRoute = [path: string, text: string];
+
+const Nav: Record<NavChoice, NavRoute> = {
+  PICK: ['/pickerView', 'Pick\nElements'],
+  RECORD: ['/recorderView', 'Record'],
+  TESTS: ['/testsView', 'View Tests']
+};
+
+const NavButtons = ({ recordingState }: NavButtonsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  let backPath = '', backText = 'Back';
+  let nextPath = '', nextText = 'Next';
+
+  // Set next/back buttons and paths depending on current location
+  switch (location.pathname) {
+    case '/pickerView':
+      [nextPath, nextText] = Nav.RECORD;
+      break;
+    case '/recorderView':
+      [backPath, backText] = Nav.PICK;
+      [nextPath, nextText] = Nav.TESTS;
+
+      // if (recordingState === 'recording') [nextPath, nextText] = Nav.TESTS;
+      // TODO: Need a better way to detect if a recording has been started;
+      // user should be able to go forward after starting a recording - including if they've now stopped it,
+      // but maybe shouldn't if they haven't started one yet in the current session
+      break;
+    case '/testsView':
+      [backPath, backText] = Nav.RECORD;
+      [nextPath] = Nav.PICK;
+      nextText = 'Restart';
+      break;
+  }
 
   return (
-    <nav>
-      <p>Pathname: {location.pathname}</p>
-      <Link to='/pickerView' id='pickerLink'>Element Picker</Link>
-      <Link to='/recorderView' id='recorderLink'>Recording</Link>
-      <Link to='/testsView' id='testsLink'>Tests</Link>
-      <button onClick={() => navigate(-1)}>Back</button>
-      <button onClick={() => navigate(1)}>Next</button>
+    <nav className='nav-buttons'>
+      <button className="back" disabled={!backPath} onClick={() => navigate(backPath)}><BackIcon />{backText}</button>
+      <button className="next" disabled={!nextPath} onClick={() => navigate(nextPath)}>{nextText} <NextIcon /></button>
     </nav>
   );
 };
