@@ -15,7 +15,7 @@ export default function App() {
   const [recordingState, setRecordingState] = useState<RecordingState>('off');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
   const [recordingTab, setRecordingTab] = useState(null);
-  const [elementState, setElementState] = useState({});
+  // const [elementState, setElementState] = useState({});
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ export default function App() {
 
       setRecordingState(res.recordingState);
       setRecordingTab(res.recordedTabId);
-      setElementState(res.elementStates);
+      // setElementState(res.elementStates);
       setEvents(res.events);
       setIsLoaded(true);
 
@@ -57,7 +57,7 @@ export default function App() {
       <Route path='/pickerView' element={
         <PickerView
           setRecordingState={setRecordingState}
-          elementState={elementState}
+          events={events}
         />}/>
       <Route path='/recorderView' element={
         <RecorderView

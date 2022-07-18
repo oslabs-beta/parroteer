@@ -55,8 +55,8 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
                 elementStates[elInfo.parroteerId] = elInfo.state;
                 const pickedElementEvent: PickedElementEvent = {
                   type: 'picked-element',
-                  initialSelector: selector,
                   displaySelector: event.displaySelector,
+                  selector: event.selector,
                   parroteerId: elInfo.parroteerId
                 };
                 events.push(pickedElementEvent);

@@ -61,8 +61,8 @@ const RecorderView = (props: RecProps) => {
     curButtons = buttons.record;
   }
 
-  const textItems = props.events.map((event, i) => {
-    const {type, displaySelector } = event;
+  const textItems = events.map((event, i) => {
+    const {type, selector } = event;
 
     if (type === 'input') {
       // ex: Pressed A key on div#id.class
@@ -72,16 +72,19 @@ const RecorderView = (props: RecProps) => {
         : eventType === 'keydown' ? `Pressed ${key} key on `
         : 'Unknown Event on '
       );
-      const displayText = action + displaySelector;
+      const displayText = action + selector;
       return <li key={i}>{displayText}</li>;
     } else if (type === 'mutation') {
       // { pID: '34tgds', textContent: 'hello', class: 'newclass' }
       // ex: Property on element changed to
       const listItems = [];
       for (const _key in event) {
+        let mutationCount = 0;
         const key = _key as keyof MutationEvent;
-        if (['textContent', 'value', 'class'].includes(key))
-          listItems.push(<li>&quot;{key}&quot; on {displaySelector} changed to {event[key]}</li>);
+        if (['textContent', 'value', 'class'].includes(key)) {
+          mutationCount++;
+          listItems.push(<li key={i + '.' + mutationCount}>&quot;{key}&quot; on {selector} changed to {event[key]}</li>);
+        }
       }
       return (<>{listItems}</>);
     } else {

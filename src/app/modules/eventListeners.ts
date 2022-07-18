@@ -106,10 +106,7 @@ function keydownListener(event: KeyboardEvent) {
  */
 export function watchElement(selector: CssSelector) {
   const parroteerId = assignParroteerId(selector);
-  elementStates[parroteerId] = {
-    ...getCurrState(parroteerId),
-    initialSelector: selector
-  };
+  elementStates[parroteerId] = getCurrState(parroteerId);
   return {
     state: elementStates[parroteerId],
     parroteerId
@@ -169,6 +166,7 @@ function diffElementStates() {
       changedStates.push({
         type: 'mutation',
         displaySelector: getFullSelector(el),
+        selector: getRelativeSelector(el),
         parroteerId,
         ...elChanges
       });
