@@ -1,4 +1,4 @@
-import { ElementState, MutationEvent, ParroteerId, RecordingState, UserInputEvent, PickedElementEvent } from '../types/Events';
+import { ElementState, EventLog, MutationEvent, ParroteerId, RecordingState, UserInputEvent, PickedElementEvent } from '../types/Events';
 import { RuntimeMessage } from '../types/Runtime';
 // import senfFinalElements from './modules/generateTests';
 
@@ -11,7 +11,7 @@ console.log('Running background script (see chrome extensions page)');
 let activeTabId: number;
 let recordedTabId: number;
 let recordingState: RecordingState = 'off';
-const events: (UserInputEvent | MutationEvent)[] = [];
+const events: EventLog = [];
 
 // Initialize object to track element states
 const elementStates: { [key: ParroteerId]: ElementState } = {};
@@ -56,6 +56,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
                 const pickedElementEvent: PickedElementEvent = {
                   type: 'picked-element',
                   initialSelector: selector,
+                  displaySelector: event.displaySelector,
                   parroteerId: elInfo.parroteerId
                 };
                 events.push(pickedElementEvent);

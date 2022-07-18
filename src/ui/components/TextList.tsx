@@ -1,24 +1,17 @@
-import { UserInputEvent, MutationEvent } from '../../types/Events';
-
 interface TextProps {
-  events: (UserInputEvent | MutationEvent)[];
+  children?: JSX.Element | JSX.Element[]
 }
 
-const TextList = (props :TextProps) => {
-  console.log('list', props);
-
-  const textItems = props.events.map((event:UserInputEvent | MutationEvent) => {
-    // const {type, initialSelector, parroteerId} = event;
-    //  return <li></li>
-  })
-
+const TextList = ({ children }: TextProps) => {
+  // TODO: Add styling and scrolling
   return (
     <ul>
-      {textItems}
+      {children}
     </ul>
-  )
-}
+  );
+};
 
 export default TextList;
+
 
 

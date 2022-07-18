@@ -1,22 +1,13 @@
 import React from 'react';
-<<<<<<< HEAD
 import TextList from '../components/TextList';
-import { UserInputEvent, MutationEvent } from '../../types/Events';
+import { EventLog, RecordingState, MutationEvent } from '../../types/Events';
 
-interface RecProps {
-  recordingState: string,
-  setRecordingState: (str: string) => void
-  events: (UserInputEvent | MutationEvent)[];
-=======
-import { RecordingState } from '../../types/Events';
 
 interface RecProps {
   recordingState: string,
   setRecordingState: (str: RecordingState) => void
->>>>>>> dev
+  events: EventLog;
 }
-
-
 
 const RecorderView = (props: RecProps) => {
   const {recordingState, setRecordingState, events} = props;
@@ -70,15 +61,42 @@ const RecorderView = (props: RecProps) => {
     curButtons = buttons.record;
   }
 
+  const textItems = props.events.map((event, i) => {
+    const {type, displaySelector } = event;
 
+    if (type === 'input') {
+      // ex: Pressed A key on div#id.class
+      const {eventType, key} = event;
+      const action = (
+        eventType === 'click' ? 'Clicked '
+        : eventType === 'keydown' ? `Pressed ${key} key on `
+        : 'Unknown Event on '
+      );
+      const displayText = action + displaySelector;
+      return <li key={i}>{displayText}</li>;
+    } else if (type === 'mutation') {
+      // { pID: '34tgds', textContent: 'hello', class: 'newclass' }
+      // ex: Property on element changed to
+      const listItems = [];
+      for (const _key in event) {
+        const key = _key as keyof MutationEvent;
+        if (['textContent', 'value', 'class'].includes(key))
+          listItems.push(<li>&quot;{key}&quot; on {displaySelector} changed to {event[key]}</li>);
+      }
+      return (<>{listItems}</>);
+    } else {
+      return null;
+    }
+  });
 
   return (
     <section id="recorderView">
       <p>Recorder View</p>
       {curButtons}
       {recordingState === 'off' ? null : buttons.end}
-
-      <TextList events={events}/>
+      <TextList>
+        { textItems }
+      </TextList>
     </section>
   );
 };

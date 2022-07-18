@@ -1,4 +1,4 @@
-import getRelativeSelector from './getSelector';
+import getRelativeSelector, { getFullSelector } from './getSelector';
 import { CssSelector, ParroteerId, ElementState, MutationEvent, RecordingState } from '../../types/Events';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -47,6 +47,7 @@ function clickListener(event: MouseEvent) {
   }
 
   const selector = getRelativeSelector(target);
+  const displaySelector = getFullSelector(target);
   console.log('Element clicked:', selector);
   console.log('Element state', elementStates);
   const mutations = diffElementStates();
@@ -57,6 +58,7 @@ function clickListener(event: MouseEvent) {
       event: {
         type: 'input',
         selector,
+        displaySelector,
         eventType: event.type,
         timestamp: Date.now(),
         parroteerId: target.dataset.parroteerId
@@ -73,7 +75,8 @@ function keydownListener(event: KeyboardEvent) {
   const shift = event.shiftKey;
   const code = event.code;
 
-  const selector = getRelativeSelector(event.target);
+  const selector = getRelativeSelector(target);
+  const displaySelector = getFullSelector(target);
   // OTHER: alt, shift, control keys also pressed?
   // const ctrlKey = event.ctrlKey;
   const mutations = diffElementStates();
@@ -87,6 +90,7 @@ function keydownListener(event: KeyboardEvent) {
         shift,
         code,
         selector,
+        displaySelector,
         eventType: event.type,
         timestamp: event.timeStamp,
         parroteerId: target.dataset.parroteerId
@@ -123,12 +127,19 @@ export function assignParroteerId (selector: CssSelector) {
 }
 
 /**
+ * Finds an element by parroteerId
+ */
+function findElementByPId (parroteerId: ParroteerId) {
+  const selector = `[data-parroteer-id="${parroteerId}"]`;
+  const el: HTMLElement | HTMLInputElement = document.querySelector(selector);
+  return el;
+}
+
+/**
  * Gets the current state of an element by its CSS selector
  */
 export function getCurrState(parroteerId: ParroteerId): ElementState {
-  // [type="submit"]
-  const selector = `[data-parroteer-id="${parroteerId}"]`;
-  const el: HTMLElement | HTMLInputElement = document.querySelector(selector);
+  const el = findElementByPId(parroteerId);
   return {
     class: el.classList?.value,
     textContent: el.innerText,
@@ -154,8 +165,10 @@ function diffElementStates() {
     const elChanges = diffState(prevState, currState);
     if (elChanges) {
       console.log(`Watched element "${parroteerId}" changed state. New properties:`, elChanges);
+      const el = findElementByPId(parroteerId);
       changedStates.push({
         type: 'mutation',
+        displaySelector: getFullSelector(el),
         parroteerId,
         ...elChanges
       });

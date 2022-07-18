@@ -1,9 +1,9 @@
 import React from 'react';
 // import textList from '../components/TextList';
-import { ElementState } from '../../types/Events';
+import { ElementState, RecordingState } from '../../types/Events';
 
 interface PickerProps {
-  setRecordingState: (str: string) => void
+  setRecordingState: (str: RecordingState) => void
   elementState: ElementState;
 }
 
