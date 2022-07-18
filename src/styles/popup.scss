@@ -185,3 +185,38 @@ button.export {
     filter: brightness(0.9);
   }
 }
+
+.nav-buttons {
+  $icon-width: 1.4em;
+  font-size: 1.2em;
+
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+
+  button {
+    &.next::before, &.back::after {
+      content: '';
+      width: $icon-width;
+    }
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+
+    font-size: 1.25em;
+    font-family: 'Source Sans Pro';
+    font-weight: bold;
+    padding: 0.25em 0;
+
+    .icon {
+      height: $icon-width;
+      width: $icon-width;
+    }
+
+    &[disabled] .icon {
+      filter: opacity(0.25);
+    }
+  }
+}
