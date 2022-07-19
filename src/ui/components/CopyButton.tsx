@@ -6,7 +6,7 @@ export default function CopyButton({ text }: CopyButtonProps) {
   const handleClick = () => navigator.clipboard.writeText(text);
 
   return (
-    <button className="icon hov" onClick={handleClick}>
+    <button className="icon copy hov" onClick={handleClick}>
       <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path d="M13 7H7V5H13V7Z" fill="currentColor"></path>
         <path d="M13 11H7V9H13V11Z" fill="currentColor"></path>
