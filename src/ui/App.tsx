@@ -52,9 +52,13 @@ export default function App() {
         <RecorderView
           recordingState={recordingState}
           setRecordingState={setRecordingState}
+          setTests={setTests}
         />}/>
       <Route path='/testsView' element={
-        <TestsView />}/>
+        <TestsView
+          tests={tests}
+          setTests={setTests}
+        />}/>
 
     </Routes>
 

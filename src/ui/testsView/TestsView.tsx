@@ -3,10 +3,13 @@ import { javascript } from '@codemirror/lang-javascript';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import { useEffect, useState } from 'react';
 
+interface testProps {
+  tests: string,
+  setTests?: (string: string) => void
+}
 
-const TestsView = () => {
-
-  const [tests, setTests] = useState('');
+const TestsView = (props: testProps) => {
+  const {tests} = props;
 
   // useEffect()
 

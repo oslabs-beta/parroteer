@@ -1,5 +1,6 @@
 import { ElementState, MutationEvent, ParroteerId, RecordingState, UserInputEvent, PickedElementEvent } from '../types/Events';
 import { RuntimeMessage } from '../types/Runtime';
+import createTestsFromEvents from './modules/generateTests';
 // import senfFinalElements from './modules/generateTests';
 
 // This script does not communicate with the DOM
@@ -11,7 +12,7 @@ console.log('Running background script (see chrome extensions page)');
 let activeTabId: number;
 let recordedTabId: number;
 let recordingState: RecordingState = 'off';
-let tests: string;
+let tests = '';
 const events: (UserInputEvent | MutationEvent)[] = [];
 
 // Initialize object to track element states
@@ -91,10 +92,8 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       recordingState = 'off';
       lastElementStateDiff();
       stopRecordingListeners();
-      sendResponse(events);
-
-      // sendResponse(senfFinalElements(events));
-      // TODO: Get final states of elements. Just use diffElementStates() maybe?
+      tests = createTestsFromEvents(events);
+      sendResponse(tests);
       break;
   }
 });
@@ -117,6 +116,7 @@ function stopRecordingListeners() {
 
 function lastElementStateDiff() {
   console.log('LAST STATE DIFF');
+  // TODO: check if syntax with res is correct
   chrome.tabs.sendMessage(recordedTabId, { type: 'final-diff'}, (res) => events.push(...res));
 }
 

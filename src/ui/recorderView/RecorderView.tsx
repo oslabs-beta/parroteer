@@ -4,10 +4,11 @@ import { RecordingState } from '../../types/Events';
 interface RecProps {
   recordingState: string,
   setRecordingState: (str: RecordingState) => void
+  setTests: (str: string) => void
 }
 
 const RecorderView = (props: RecProps) => {
-  const {recordingState, setRecordingState} = props;
+  const {recordingState, setRecordingState, setTests} = props;
   // const [tests, setTests] = useState('');
   let curButtons;
 
@@ -36,7 +37,9 @@ const RecorderView = (props: RecProps) => {
   const onEndClick = () => {
     setRecordingState('off');
     chrome.action.setBadgeText({text: ''});
-    chrome.runtime.sendMessage({ type: 'stop-recording' });
+    chrome.runtime.sendMessage({ type: 'stop-recording' }).then((res) => {
+      setTests(res);
+    });
   };
 
   const buttonStyle = {
