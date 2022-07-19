@@ -1,6 +1,7 @@
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { dracula } from '@uiw/codemirror-theme-dracula';
+import CopyButton from '../components/CopyButton';
 import { useEffect, useState } from 'react';
 
 interface testProps {
@@ -23,6 +24,7 @@ const TestsView = (props: testProps) => {
         width='400px'
         extensions={[javascript({ jsx: true })]}
       />
+      <CopyButton text={tests} />
     </section>);
 };
 

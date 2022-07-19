@@ -173,8 +173,10 @@ nav {
   background: #161a31;
 }
 
-button.export {
+button.export, button.icon {
   cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .hov {
@@ -217,6 +219,21 @@ button.export {
 
     &[disabled] .icon {
       filter: opacity(0.25);
+    }
+  }
+}
+
+#testsView {
+  position: relative;
+  
+  .icon {
+    position: absolute;
+    z-index: 50;
+
+    &.copy {
+      bottom: 0.5rem;
+      right: 0.5rem;
+      filter: invert(0.9);
     }
   }
 }
