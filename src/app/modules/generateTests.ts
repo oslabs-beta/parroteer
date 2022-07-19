@@ -63,7 +63,7 @@ const jestOutline = (event: MutationEvent) => {
   }
 
   const expectStr = endent`
-    await page.waitFor('[data-parroteer-id="${event.parroteerId}"]').then(el => {
+    await page.waitForSelector('[data-parroteer-id="${event.parroteerId}"]').then(el => {
       ${expectations.join('\n')}
     });
   `;
@@ -79,8 +79,10 @@ const jestOutline = (event: MutationEvent) => {
  * and mimics the input event that happened with it using Puppeteer
  */
 const puppeteerEventOutline = (event: UserInputEvent) => {
-  const eventType = (event.eventType === 'click' ? 'click' : 'keyboard.press');
-  const puppetStr = `await page.${eventType}('[data-parroteer-id="${event.parroteerId}"]');`;
+  let eventType;
+  if (event.eventType === 'click') eventType = `click('[data-parroteer-id="${event.parroteerId}"]')`;
+  else eventType = `keyboard.press('${event.key}')`;
+  const puppetStr = `await page.${eventType};`;
   return indent(puppetStr, 2);
 };
 
@@ -89,7 +91,7 @@ const puppeteerEventOutline = (event: UserInputEvent) => {
  * and assigns it the parroter Id that it should have
  */
 const pickEvent = (event: PickedElementEvent) => {
-  const pickStr = `await page.waitFor("${event.selector}").then(el => el.dataset.parroteerId = "${event.parroteerId}");`;
+  const pickStr = `await page.waitForSelector("${event.selector}").then(el => el.dataset.parroteerId = "${event.parroteerId}");`;
   return indent(pickStr, 2);
 };
 
