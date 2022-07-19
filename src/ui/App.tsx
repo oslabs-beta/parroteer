@@ -31,7 +31,7 @@ export default function App() {
       // setElementState(res.elementStates);
       setEvents(res.events);
       setIsLoaded(true);
-
+      setTests(res.tests);
       if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
       if (res.recordingState === 'recording') {
         navigate('/recorderView');
