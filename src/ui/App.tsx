@@ -16,14 +16,22 @@ export default function App() {
   const [onCorrectTab, setOnCorrectTab] = useState(true);
   const [recordingTab, setRecordingTab] = useState(null);
   const [tests, setTests] = useState('');
+  // const [elementState, setElementState] = useState({});
+  const [events, setEvents] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
       console.log(res.recordingState);
+      console.log('Popup elementStates', res.elementStates);
+      console.log('Popup events', res.events);
+
       setRecordingState(res.recordingState);
       setRecordingTab(res.recordedTabId);
+      // setElementState(res.elementStates);
+      setEvents(res.events);
       setIsLoaded(true);
+
       if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
       if (res.recordingState === 'recording') {
         navigate('/recorderView');
@@ -33,7 +41,10 @@ export default function App() {
         navigate('/pickerView');
       }
     });
+
+
   }, [onCorrectTab]);
+
 
 // Why element not component?
 // Why Routes and not Router?
@@ -41,17 +52,19 @@ export default function App() {
   const application =
   <>
     <h1>Parroteer</h1>
- 
+
     <Routes>
 
       <Route path='/pickerView' element={
         <PickerView
           setRecordingState={setRecordingState}
+          events={events}
         />}/>
       <Route path='/recorderView' element={
         <RecorderView
           recordingState={recordingState}
           setRecordingState={setRecordingState}
+          events={events}
         />}/>
       <Route path='/testsView' element={
         <TestsView />}/>
