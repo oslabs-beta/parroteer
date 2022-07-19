@@ -13,6 +13,7 @@ let activeTabId: number;
 let recordedTabId: number;
 let recordingState: RecordingState = 'off';
 let tests = '';
+let recordingURL: string;
 const events: EventLog = [];
 
 // Initialize object to track element states
@@ -94,7 +95,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       recordingState = 'off';
       lastElementStateDiff();
       stopRecordingListeners();
-      tests = createTestsFromEvents(events);
+      tests = createTestsFromEvents(events, recordingURL);
       sendResponse(tests);
       break;
   }
@@ -106,6 +107,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
  */
 function addRecordingListeners(recState: RecordingState) {
   recordedTabId = recordedTabId || activeTabId;
+  chrome.tabs.get(recordedTabId, (res) => recordingURL = res.url);
   console.log('ADDDING RECORDING LISTENERS FOR TABID', recordedTabId);
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
 }
