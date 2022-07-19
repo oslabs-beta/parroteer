@@ -12,8 +12,10 @@ export default function createTestsFromEvents(events: StoredEvent[], url = 'http
         const browser = await puppeteer.launch({ headless: false });
         const page = await browser.newPage();
         await page.goto('${url}');
+
+        // Used to store elements returned by awaiting \`waitForSelector\` as \`.then()\` does not pass in element
+        let el;
   `;
-  // TODO: capture url in background
 
   const footer =
 `    await browser.close();
@@ -63,9 +65,8 @@ const jestOutline = (event: MutationEvent) => {
   }
 
   const expectStr = endent`
-    await page.waitForSelector('[data-parroteer-id="${event.parroteerId}"]').then(el => {
-      ${expectations.join('\n')}
-    });
+    el = await page.waitForSelector('[data-parroteer-id="${event.parroteerId}"]');
+    ${expectations.join('\n')}
   `;
   return indent(expectStr, 2);
   // return waitFor + `\t\tawait expect(${event.parroteerId}).${change});\n`;
@@ -91,7 +92,10 @@ const puppeteerEventOutline = (event: UserInputEvent) => {
  * and assigns it the parroter Id that it should have
  */
 const pickEvent = (event: PickedElementEvent) => {
-  const pickStr = `await page.waitForSelector("${event.selector}").then(el => el.dataset.parroteerId = "${event.parroteerId}");`;
+  const pickStr = endent`
+    el = await page.waitForSelector("${event.selector}");
+    el.dataset.parroteerId = "${event.parroteerId}";
+  `;
   return indent(pickStr, 2);
 };
 
