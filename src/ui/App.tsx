@@ -7,7 +7,7 @@ import PickerView from './pickerView/PickerView';
 import RecorderView from './recorderView/RecorderView';
 import TestsView from './testsView/TestsView';
 import WrongTab from './components/WrongTab';
-import { RecordingState } from '../types/Events';
+import { RecordingState, EventLog } from '../types/Events';
 
 
 export default function App() {
@@ -15,8 +15,9 @@ export default function App() {
   const [recordingState, setRecordingState] = useState<RecordingState>('off');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
   const [recordingTab, setRecordingTab] = useState(null);
+  const [tests, setTests] = useState('');
   // const [elementState, setElementState] = useState({});
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<EventLog>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,10 +64,14 @@ export default function App() {
         <RecorderView
           recordingState={recordingState}
           setRecordingState={setRecordingState}
+          setTests={setTests}
           events={events}
         />}/>
       <Route path='/testsView' element={
-        <TestsView />}/>
+        <TestsView
+          tests={tests}
+          setTests={setTests}
+        />}/>
 
     </Routes>
 
