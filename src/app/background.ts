@@ -13,10 +13,10 @@ let activeTabId: number;
 let recordedTabId: number;
 let recordingState: RecordingState = 'off';
 let tests = '';
-const events: EventLog = [];
+let events: EventLog = [];
 
 // Initialize object to track element states
-const elementStates: { [key: ParroteerId]: ElementState } = {};
+let elementStates: { [key: ParroteerId]: ElementState } = {};
 
 // Listen for messages from popup or content script
 chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendResponse) => {
@@ -97,6 +97,16 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       tests = createTestsFromEvents(events);
       sendResponse(tests);
       break;
+    case 'restart-recording':
+      console.log('in restart recording');
+      recordingState = 'off';
+      // addRecordingListeners(recordingState);
+      tests = '';
+      events = [];
+      elementStates = {};
+      console.log('restart recording', tests, 'events', events, 'elementState', elementStates);
+      sendResponse({tests, events, recordingState});
+      break;
   }
 });
 
@@ -106,7 +116,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
  */
 function addRecordingListeners(recState: RecordingState) {
   recordedTabId = recordedTabId || activeTabId;
-  console.log('ADDDING RECORDING LISTENERS FOR TABID', recordedTabId);
+  console.log('ADDING RECORDING LISTENERS FOR TABID', recordedTabId);
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
 }
 
