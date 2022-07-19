@@ -1,17 +1,25 @@
 export interface StoredEvent {
+  type: 'input' | 'mutation' | 'picked-element',
   parroteerId: ParroteerId,
-  timestamp?: number,
-  type: 'input' | 'mutation' | 'picked-element'
+  selector: CssSelector,
+  displaySelector: CssSelector,
+  timestamp?: number
 }
 
-export interface MutationEvent extends Partial<ElementState>, StoredEvent {}
+export interface MutationEvent extends Partial<ElementState>, StoredEvent {
+  type: 'mutation'
+}
 
 export interface UserInputEvent extends StoredEvent {
-  selector: CssSelector,
+  type: 'input',
   eventType: string,
   key?: string,
   code?: string,
   shift?: boolean
+}
+
+export interface PickedElementEvent extends StoredEvent {
+  type: 'picked-element'
 }
 
 export type CssSelector = string;
@@ -21,13 +29,9 @@ export type ParroteerId = string;
 export interface ElementState {
   class?: string,
   textContent?: string,
-  value?: string,
-  initialSelector?: CssSelector
+  value?: string
 }
 
 export type RecordingState = 'pre-recording' | 'recording' | 'off';
 
-export interface PickedElementEvent extends StoredEvent {
-  initialSelector: CssSelector
-}
-
+export type EventLog = (PickedElementEvent | UserInputEvent | MutationEvent)[];
