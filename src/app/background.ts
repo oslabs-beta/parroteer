@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
   switch (message.type) {
     case 'popup-opened':
       // setTimeout(() => console.log('this is something alright'));
-      sendResponse({recordingState, recordedTabId, activeTabId, elementStates, events});
+      sendResponse({recordingState, recordedTabId, activeTabId, elementStates, events, tests});
       break;
     case 'begin-recording': {
       console.log('In begin-recording switch case');
