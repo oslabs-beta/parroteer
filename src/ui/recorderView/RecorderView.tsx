@@ -1,14 +1,18 @@
 import React from 'react';
-import { RecordingState } from '../../types/Events';
+import TextList from '../components/TextList';
+import { EventLog, RecordingState, MutationEvent } from '../../types/Events';
+
 
 interface RecProps {
   recordingState: string,
   setRecordingState: (str: RecordingState) => void
   setTests: (str: string) => void
+  events: EventLog
 }
 
+
 const RecorderView = (props: RecProps) => {
-  const {recordingState, setRecordingState, setTests} = props;
+  const {recordingState, setRecordingState, events, setTests} = props;
   // const [tests, setTests] = useState('');
   let curButtons;
 
@@ -47,7 +51,6 @@ const RecorderView = (props: RecProps) => {
     border: 'none',
   };
 
-
   const buttons = {
     record: <button style={buttonStyle} onClick={onRecordClick}><img src='./icons/record-button.png' /></button>,
     pause: <button style={buttonStyle} onClick={onPauseClick}><img src='./icons/pause-button.png' /></button>,
@@ -61,12 +64,46 @@ const RecorderView = (props: RecProps) => {
   } else {
     curButtons = buttons.record;
   }
-  
+
+  const textItems = events.map((event, i) => {
+    const {type, selector } = event;
+
+    if (type === 'input') {
+      // ex: Pressed A key on div#id.class
+      const {eventType, key} = event;
+      const action = (
+        eventType === 'click' ? 'Clicked '
+        : eventType === 'keydown' ? `Pressed ${key} key on `
+        : 'Unknown Event on '
+      );
+      const displayText = action + selector;
+      return <li key={i}>{displayText}</li>;
+    } else if (type === 'mutation') {
+      // { pID: '34tgds', textContent: 'hello', class: 'newclass' }
+      // ex: Property on element changed to
+      const listItems = [];
+      for (const _key in event) {
+        let mutationCount = 0;
+        const key = _key as keyof MutationEvent;
+        if (['textContent', 'value', 'class'].includes(key)) {
+          mutationCount++;
+          listItems.push(<li key={i + '.' + mutationCount}>&quot;{key}&quot; on {selector} changed to {event[key]}</li>);
+        }
+      }
+      return (<>{listItems}</>);
+    } else {
+      return null;
+    }
+  });
+
   return (
     <section id="recorderView">
       <p>Recorder View</p>
       {curButtons}
       {recordingState === 'off' ? null : buttons.end}
+      <TextList>
+        { textItems }
+      </TextList>
     </section>
   );
 };
@@ -80,5 +117,5 @@ export default RecorderView;
 
 
 
-  
+
 

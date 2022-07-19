@@ -14,7 +14,7 @@ export default function createTestsFromEvents(events: StoredEvent[], url = 'http
         await page.goto('${url}');
   `;
   // TODO: capture url in background
-  
+
   const footer =
 `    await browser.close();
   });
@@ -52,7 +52,7 @@ export default function createTestsFromEvents(events: StoredEvent[], url = 'http
  */
 const jestOutline = (event: MutationEvent) => {
   let change;
-  
+
   const expectations: string[] = [];
   for (const key in event) {
     if (key === 'textContent') change = 'textContent';
@@ -91,16 +91,16 @@ const puppeteerEventOutline = (event: UserInputEvent) => {
  * and assigns it the parroter Id that it should have
  */
 const pickEvent = (event: PickedElementEvent) => {
-  const pickStr = `await page.waitForSelector("${event.initialSelector}").then(el => el.dataset.parroteerId = "${event.parroteerId}");`;
+  const pickStr = `await page.waitForSelector("${event.selector}").then(el => el.dataset.parroteerId = "${event.parroteerId}");`;
   return indent(pickStr, 2);
 };
 
 /**
  * Indents a block of text (per line) by the specified amount of 'tabs' (using spaces)
- * @param text 
+ * @param text
  * @param tabs The number of tabs to indent by
  * @param tabSize How many spaces a tab should be
- * @returns 
+ * @returns
  */
 function indent(text: string, tabs = 0, tabSize = 2) {
   const lines = text.split('\n');
