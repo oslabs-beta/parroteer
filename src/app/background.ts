@@ -92,11 +92,14 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
     case 'pause-recording':
       break;
     case 'stop-recording':
-      recordingState = 'off';
-      lastElementStateDiff();
-      stopRecordingListeners();
-      tests = createTestsFromEvents(events, recordingURL);
-      sendResponse(tests);
+      lastElementStateDiff().then(() => {
+        recordingState = 'off';
+        stopRecordingListeners();
+        console.log(events);
+        tests = createTestsFromEvents(events, recordingURL);
+        sendResponse(tests);
+      });
+
       break;
     case 'restart-recording':
       console.log('in restart recording');
@@ -129,9 +132,14 @@ function stopRecordingListeners() {
 }
 
 function lastElementStateDiff() {
-  console.log('LAST STATE DIFF');
-  // TODO: check if syntax with res is correct
-  chrome.tabs.sendMessage(recordedTabId, { type: 'final-diff'}, (res) => events.push(...res));
+  return new Promise((resolve, reject) => {
+    console.log(`%c${'Going INTO EVENTS'}`, 'background-color: green', events);
+    chrome.tabs.sendMessage(recordedTabId, { type: 'final-diff'}, (res) => {
+      console.log(res),
+      events.push(...res);
+      resolve(null);
+    });
+  });
 }
 
 /// Tab event listeners
