@@ -14,6 +14,7 @@
   --yellow: #F8D13D;
   --med-yellow: #F0AD2B;
   --orange:  #EC5A3E;
+  --peach: #ff866f;
   --dark-gray: #212121;
   --med-gray: #303030;
   --light-gray: #424242;
@@ -29,6 +30,7 @@ $dark-blue: #344799;
 $yellow: #F8D13D;
 $med-yellow: #F0AD2B;
 $orange:  #EC5A3E;
+$peach: #ff866f;
 $dark-gray: #212121;
 $med-gray: #303030;
 $light-gray: #424242;
@@ -102,7 +104,7 @@ header {
 }
 
 .loading-page {
-  background-color: #fff;
+  background-color: #424242;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -149,21 +151,36 @@ header {
   background-color: #fff;
   justify-content: center;
   align-items: center;
+  background-color: $light-gray;
+ 
   p {
-    font-size: 1.2rem;
+    font-size: 1.2em;
     color: #fff;
     font-family: $font-poppins;
     text-align: center;
   }
+
   button {
-    height: 30px;
-    width: 280px;
-    border: 1px white solid;
-    border-radius: .25rem;
+    border: none;
     color: #fff;
+    font-size: 1.2em;
+    padding: 9px;
+    margin: 0.5em;
+    width: 85%;
+  }
+
+  .findTab-btn {
     background-color: $med-blue;
-    margin: 8px;
-    font-size: 1.1em;
+  }
+
+  .endTabSession-btn {
+    background-color: $orange;
+  }
+
+  .wrongTab-wrapper {
+    background-color: #303030;
+    padding: 1em 2em;
+    margin: 0 2.5em 1.5em 2.5em;
   }
 }
 
@@ -187,21 +204,6 @@ header {
 
 ::-webkit-scrollbar-corner {
   background: $med-gray;
-}
-
-#testsView {
-  position: relative;
-
-  .icon {
-    position: absolute;
-    z-index: 50;
-
-    &.copy {
-      bottom: 0.5rem;
-      right: 0.5rem;
-      filter: invert(0.9);
-    }
-  }
 }
 
 .scroll-list {
@@ -361,6 +363,50 @@ button {
   font-variation-settings: 'wght' 600;
  }
 
+ #testsView {
+  position: relative;
+
+  .icon {
+    position: absolute;
+    z-index: 50;
+
+    &.copy {
+      bottom: 0.5rem;
+      right: 0.5rem;
+    }
+  }
+}
+
+.copy-btn {
+  height: 2.5em;
+  width: 2.5em;
+  background: $med-teal;
+  border-radius: 50%;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  z-index: 5;
+  display: flex;
+  box-shadow: 0px 2px 10px 0px rgb(0 0 0 / 40%);
+  border: 0px;
+  transition: all .2s ease-out;
+}
+
+.copy-btn:hover {
+  background: $light-teal;
+  border: 0px;
+  transform: scale(1.1);
+  transition: all .2s ease-out;
+}
+
+.copy-icon {
+  font-size: 1.7em;
+  color: #fff;
+  font-variation-settings: 'wght' 600;
+ }
+
+
 .record-icon {
   color: $orange;
   font-size: 3em;
@@ -441,3 +487,18 @@ header {
  #recorderView .actionBtns p {
   margin-left: .5em;
  }
+
+ /* Code theme */
+
+ .ͼ1c {
+  color: $med-yellow;
+}
+
+.ͼ1a {
+  color: $peach;
+}
+
+.ͼ15 .cm-gutters {
+  background-color: #282a36;
+  color: $light-gray;
+}
