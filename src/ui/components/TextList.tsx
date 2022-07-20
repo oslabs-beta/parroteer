@@ -5,7 +5,7 @@ interface TextProps {
 const TextList = ({ children }: TextProps) => {
   // TODO: Add styling and scrolling
   return (
-    <ul>
+    <ul className="scroll-list">
       {children}
     </ul>
   );
