@@ -50,9 +50,9 @@ const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRes
 
   return (
     <nav className='nav-buttons'>
-      <button className="back" disabled={!backPath} onClick={() => navigate(backPath)}><BackIcon />{backText}</button>
+      <button className="back" disabled={!backPath} onClick={() => navigate(backPath)}><i className="back-icon material-symbols-outlined ">navigate_before</i>{backText}</button>
       {/* if current buttion is 'restart' then call restart handler  */}
-      <button className="next" disabled={!nextPath} onClick={nextText === 'Restart' ? () => handleRestart() : () => navigate(nextPath)}>{nextText} <NextIcon /></button>
+      <button className="next" disabled={!nextPath} onClick={nextText === 'Restart' ? () => handleRestart() : () => navigate(nextPath)}>{nextText} <i className="next-icon material-symbols-outlined ">navigate_next</i></button>
     </nav>
   );
 };
