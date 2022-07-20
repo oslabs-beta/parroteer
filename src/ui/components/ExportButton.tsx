@@ -10,7 +10,7 @@ export default function ExportButton({ text }: ExportButtonProps) {
   };
 
   return (
-    <button className='export hov' onClick={handleExport}>
+    <button className='icon export hov' onClick={handleExport}>
       <img src='./icons/file_export.png'/>
     </button>
   );
