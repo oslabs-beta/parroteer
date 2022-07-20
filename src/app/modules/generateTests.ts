@@ -25,7 +25,7 @@ export default function createTestsFromEvents(events: StoredEvent[], url = 'http
   const footer =
 `  });
 
-  afterAll(() => {
+  afterAll(async () => {
     await browser.close();
   });
 });
