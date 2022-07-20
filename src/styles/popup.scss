@@ -15,6 +15,7 @@
   --dark-gray: #212121;
   --med-gray: #303030;
   --light-gray: #424242;
+  --extra-light-gray: #878787;
 }
 
 $light_teal: #EDF8F9;
@@ -28,6 +29,8 @@ $orange:  #EC5A3E;
 $dark-gray: #212121;
 $med-gray: #303030;
 $light-gray: #424242;
+$extra-light-gray: #878787;
+$light-gray-blue: #EBF1F4;
 
 $font-mont: 'Montserrat Alternates', sans-serif;
 $font-poppins: 'Poppins';
@@ -116,7 +119,7 @@ body, #root {
 header {
   display: flex;
   box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-  background-color: #000000;
+  background-color: $med-gray;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -200,22 +203,21 @@ header {
 }
 
 ::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+  width: 1em;
 }
 
 ::-webkit-scrollbar-track {
-  background: #161a31;
+  background: $med-gray;
 }
 
-
 ::-webkit-scrollbar-thumb {
-  background: #f06d06;
-  border-radius: .25rem;
+  background: $light-gray-blue;
+  border-radius: 0.5em;
+  border: 2px solid $med-gray;
 }
 
 ::-webkit-scrollbar-corner {
-  background: #161a31;
+  background: $med-gray;
 }
 
 button.export, button.icon {
@@ -304,6 +306,7 @@ button.export, button.icon {
   max-height: 300px;
   overflow: auto;
   width: 95%;
+  background-color: $med-gray;
   // font-family: monospace;
 
   li {
