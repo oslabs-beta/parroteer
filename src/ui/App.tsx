@@ -18,6 +18,7 @@ export default function App() {
   const [tests, setTests] = useState('');
   // const [elementState, setElementState] = useState({});
   const [events, setEvents] = useState<EventLog>([]);
+  const [restartSwitch, setRestartSwitch] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function App() {
       // setElementState(res.elementStates);
       setEvents(res.events);
       setIsLoaded(true);
-
+      setTests(res.tests);
       if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
       if (res.recordingState === 'recording') {
         navigate('/recorderView');
@@ -43,7 +44,7 @@ export default function App() {
     });
 
 
-  }, [onCorrectTab]);
+  }, [onCorrectTab, restartSwitch]);
 
 
 // Why element not component?
@@ -75,7 +76,11 @@ export default function App() {
 
     </Routes>
 
-    <NavButtons recordingState={recordingState} />
+    <NavButtons
+      recordingState={recordingState}
+      setRestartSwitch={setRestartSwitch}
+      restartSwitch={restartSwitch}
+    />
   </>;
 
   const wrongTab = <WrongTab
