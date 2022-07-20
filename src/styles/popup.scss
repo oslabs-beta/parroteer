@@ -42,12 +42,25 @@ body, #root {
 header {
   background-color: #3d82b4;
   display: flex;
-  flex-direction: column;
   width: 100%;
-  img {
-    color: #fff;
-    height: 30px;
-    width: 30px;
+  button {
+    background: none;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    right: 3px;
+    align-self: auto;
+    padding: 5px;
+    border: none;
+    top: 3px;
+    img {
+      position: absolute;
+      right: 3px;
+      filter: invert(100%);
+      top: 3px;
+      height: 30px;
+      width: 30px;
+    }
   }
 }
 

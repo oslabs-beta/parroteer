@@ -1,11 +1,14 @@
 
 import {Link, useNavigate, useLocation} from 'react-router-dom';
-import { RecordingState } from '../../types/Events';
+import { RecordingState, EventLog } from '../../types/Events';
 import BackIcon from './BackIcon';
 import NextIcon from './NextIcon';
 
 interface NavButtonsProps {
   recordingState: RecordingState
+  restartSwitch: boolean
+  setRestartSwitch: (bool: boolean) => void
+  handleRestart: () => void
 }
 
 type NavChoice = 'PICK' | 'RECORD' | 'TESTS';
@@ -17,7 +20,7 @@ const Nav: Record<NavChoice, NavRoute> = {
   TESTS: ['/testsView', 'View Tests']
 };
 
-const NavButtons = ({ recordingState }: NavButtonsProps) => {
+const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRestart }: NavButtonsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   let backPath = '', backText = 'Back';
@@ -44,10 +47,12 @@ const NavButtons = ({ recordingState }: NavButtonsProps) => {
       break;
   }
 
+
   return (
     <nav className='nav-buttons'>
       <button className="back" disabled={!backPath} onClick={() => navigate(backPath)}><BackIcon />{backText}</button>
-      <button className="next" disabled={!nextPath} onClick={() => navigate(nextPath)}>{nextText} <NextIcon /></button>
+      {/* if current buttion is 'restart' then call restart handler  */}
+      <button className="next" disabled={!nextPath} onClick={nextText === 'Restart' ? () => handleRestart() : () => navigate(nextPath)}>{nextText} <NextIcon /></button>
     </nav>
   );
 };

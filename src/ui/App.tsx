@@ -18,32 +18,39 @@ export default function App() {
   const [tests, setTests] = useState('');
   // const [elementState, setElementState] = useState({});
   const [events, setEvents] = useState<EventLog>([]);
+  const [restartSwitch, setRestartSwitch] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
-  //     console.log(res.recordingState);
-  //     console.log('Popup elementStates', res.elementStates);
-  //     console.log('Popup events', res.events);
+  useEffect(() => {
+    chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
+      console.log(res.recordingState);
+      console.log('Popup elementStates', res.elementStates);
+      console.log('Popup events', res.events);
 
-  //     setRecordingState(res.recordingState);
-  //     setRecordingTab(res.recordedTabId);
-  //     // setElementState(res.elementStates);
-  //     setEvents(res.events);
-  //     setIsLoaded(true);
-  //     setTests(res.tests);
-  //     if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
-  //     if (res.recordingState === 'recording') {
-  //       navigate('/recorderView');
-  //     } else if (res.recordingState === 'pre-recording'){
-  //       navigate('/pickerView');
-  //     } else if (res.recordingState === 'off'){
-  //       navigate('/pickerView');
-  //     }
-  //   });
+      setRecordingState(res.recordingState);
+      setRecordingTab(res.recordedTabId);
+      // setElementState(res.elementStates);
+      setEvents(res.events);
+      setIsLoaded(true);
+      setTests(res.tests);
+      if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
+      if (res.recordingState === 'recording') {
+        navigate('/recorderView');
+      } else if (res.recordingState === 'pre-recording'){
+        navigate('/pickerView');
+      } else if (res.recordingState === 'off'){
+        navigate('/pickerView');
+      }
+    });
+  }, [onCorrectTab, restartSwitch]);
 
-
-  // }, [onCorrectTab]);
+  const handleRestart = () => {
+    chrome.runtime.sendMessage({type: 'restart-recording'});
+    console.log('onclick handleRestart');
+    chrome.action.setBadgeText({text: ''});
+    setRestartSwitch(!restartSwitch);
+    navigate('/pickerView');
+  };
 
 
 // Why element not component?
@@ -52,8 +59,8 @@ export default function App() {
   const application =
   <>
     <header>
-      <img src="./icons/restart.svg" alt="restart icon" />
       <h1>Parroteer</h1>
+      <button onClick={handleRestart}><img src="./icons/restart.svg" alt="restart icon" /></button>
     </header>
     <Routes>
 
@@ -77,7 +84,12 @@ export default function App() {
 
     </Routes>
 
-    <NavButtons recordingState={recordingState} />
+    <NavButtons
+      handleRestart={handleRestart}
+      recordingState={recordingState}
+      setRestartSwitch={setRestartSwitch}
+      restartSwitch={restartSwitch}
+    />
   </>;
 
   const wrongTab = <WrongTab
@@ -86,7 +98,6 @@ export default function App() {
   />;
 
   return (
-    // isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
-    application
+    isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
   );
 }
