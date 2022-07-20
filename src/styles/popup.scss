@@ -151,21 +151,36 @@ header {
   background-color: #fff;
   justify-content: center;
   align-items: center;
+  background-color: $light-gray;
+ 
   p {
-    font-size: 1.2rem;
+    font-size: 1.2em;
     color: #fff;
     font-family: $font-poppins;
     text-align: center;
   }
+
   button {
-    height: 30px;
-    width: 280px;
-    border: 1px white solid;
-    border-radius: .25rem;
+    border: none;
     color: #fff;
+    font-size: 1.2em;
+    padding: 9px;
+    margin: 0.5em;
+    width: 85%;
+  }
+
+  .findTab-btn {
     background-color: $med-blue;
-    margin: 8px;
-    font-size: 1.1em;
+  }
+
+  .endTabSession-btn {
+    background-color: $orange;
+  }
+
+  .wrongTab-wrapper {
+    background-color: #303030;
+    padding: 1em 2em;
+    margin: 0 2.5em 1.5em 2.5em;
   }
 }
 
