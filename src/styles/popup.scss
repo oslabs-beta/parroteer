@@ -1,18 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 
 :root {
-  --parrot-yellow: #F8D13C;
-  --parrot-red: #EC5A3E;
-  --parrot-light-blue: #84CED7;
-  --parrot-blue: #425EA9;
-  --parrot-dark-blue: #344799;
-  --parrot-orange: #F0AD2C;
+  --light_teal: #EDF8F9;
+  --teal: #84CED7;
+  --light-blue: #DADFEE;
+  --light-gray-blue: #EBF1F4;
+  --med-blue: #236ce1;
+  --dark-blue: #344799;
+  --yellow: #F8D13D;
+  --med-yellow: #F0AD2B;
+  --orange:  #EC5A3E;
 }
 
-$parrot-blue: #425EA9;
-$font-fredoka: 'Fredoka One';
+$light_teal: #EDF8F9;
+$teal: #84CED7;
+$light-blue: #DADFEE;
+$med-blue: #236ce1;
+$dark-blue: #344799;
+$yellow: #F8D13D;
+$med-yellow: #F0AD2B;
+$orange:  #EC5A3E;
+$font-mont: 'Montserrat Alternates', sans-serif;
 
 main {
   width: 100%;
@@ -39,19 +49,24 @@ body, #root {
   font-family: 'Source Sans Pro';
 }
 
-h1 {
-  margin: 0;
+header {
   display: flex;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  background-color: #fff;
   justify-content: center;
   align-items: center;
-  padding: 0.4rem;
   width: 100%;
-  font-family: 'Fredoka One';
-  /* letter-spacing: 2px; */
-  font-size: 3em;
-  /* color: #ffe269; */
-  color: white;
-  background-color: #3d82b4;
+
+  h1 {
+    margin: 0;
+    padding: 0.4rem;
+    font-family: $font-mont;
+    letter-spacing: -2px; 
+    font-size: 3em;
+    font-weight: 500;
+    font-style: italic;
+    color: $med-blue;
+  }
 }
 
 #root {
@@ -61,13 +76,6 @@ h1 {
   align-items: center;
   background-color: #fff;
 }
-
-nav {
-  // display: flex;
-  // flex-flow: row wrap;
-  // font-size: 1.1em;
-}
-
 
 #root > section {
   height: 100%;
@@ -79,17 +87,8 @@ nav {
   // padding: 1rem;
 }
 
-// #pickerLink, #pickerView {
-// }
-
-// #recorderLink, #recorderView {
-// }
-
-// #testsLink, #testsView {
-// }
-
 .loading-page {
-  background-color: #3d82b4;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -99,7 +98,7 @@ nav {
     width: fit-content;
   }
   p {
-    font-family: 'Fredoka One';
+    font-family: 'Source Sans Pro';
     color: #fff;
     font-size: 1.2rem;
   }
@@ -120,7 +119,7 @@ nav {
 .loading-bar {
   animation: load 5s normal forwards;
   border-radius: 100px;
-  background: var(--parrot-yellow);
+  background: var(--yellow);
   height: 30px;
   width: 0;
 }
@@ -133,13 +132,13 @@ nav {
 .wrong-tab-page {
   display: flex;
   flex-direction: column;
-  background-color: #344799;
+  background-color: #fff;
   justify-content: center;
   align-items: center;
   p {
     font-size: 1.2rem;
     color: #fff;
-    font-family: $font-fredoka;
+    font-family: 'Source Sans Pro';
     text-align: center;
   }
   button {
@@ -148,7 +147,7 @@ nav {
     border: 1px white solid;
     border-radius: .25rem;
     color: #fff;
-    background-color: #84CED7;
+    background-color: $med-blue;
     margin: 8px;
     font-size: 1.1em;
   }

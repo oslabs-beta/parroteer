@@ -52,7 +52,10 @@ export default function App() {
 // No switch?
   const application =
   <>
-    <h1>Parroteer</h1>
+    <header>
+      <h1>Parroteer</h1>
+      <img src="././icons/parrot_48.png"></img>
+    </header>
 
     <Routes>
 
