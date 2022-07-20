@@ -39,6 +39,31 @@ body, #root {
   font-family: 'Source Sans Pro';
 }
 
+header {
+  background-color: #3d82b4;
+  display: flex;
+  width: 100%;
+  button {
+    background: none;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    right: 3px;
+    align-self: auto;
+    padding: 5px;
+    border: none;
+    top: 3px;
+    img {
+      position: absolute;
+      right: 3px;
+      filter: invert(100%);
+      top: 3px;
+      height: 30px;
+      width: 30px;
+    }
+  }
+}
+
 h1 {
   margin: 0;
   display: flex;
@@ -51,7 +76,6 @@ h1 {
   font-size: 3em;
   /* color: #ffe269; */
   color: white;
-  background-color: #3d82b4;
 }
 
 #root {
