@@ -1,8 +1,6 @@
 
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import { RecordingState, EventLog } from '../../types/Events';
-import BackIcon from './BackIcon';
-import NextIcon from './NextIcon';
 
 interface NavButtonsProps {
   recordingState: RecordingState
