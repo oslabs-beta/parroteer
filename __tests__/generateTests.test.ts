@@ -12,22 +12,27 @@ const debugScript = endent`
 `;
 const testURL = 'https://eloquentjavascript.net';
 
-function escapeRegExp(string: string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
-function stripWhitespace(string: string) {
-  return string.replace(/\s*/g, '');
-}
-
-function regexCode(string: string, tabs = 0, tabSize = 2) {
-  const indented = indent(string, tabs, tabSize)
-  return new RegExp(escapeRegExp(indented));
-}
-
-/* function escapeCode(string: string) {
-  return 
-} */
+const inputEvent: UserInputEvent = {
+  type: 'input',
+  eventType: 'click',
+  parroteerId: '980458ad3-adsf34-df342-adsf898f',
+  selector: '#test > div',
+  displaySelector: ''
+};
+const mutationEvent: MutationEvent = {
+  type: 'mutation',
+  textContent: 'hi',
+  class: 'class1 class2',
+  parroteerId: '980458ad3-adsf34-df342-adsf898f',
+  selector: '',
+  displaySelector: ''
+};
+const pickedElementEvent: PickedElementEvent = {
+  type: 'picked-element',
+  selector: '#test > div',
+  parroteerId: '980458ad3-adsf34-df342-adsf898f',
+  displaySelector: ''
+};
 
 describe('Basic test generation', () => {
   it('should generate basic test setup', () => {
@@ -45,7 +50,7 @@ describe('Basic test generation', () => {
   `;
     const testBlock = endent`
       it('passes this test', async () => {
-        await page.goto('http://localhost:8080');
+        await page.goto('${testURL}');
         // Temporary variable to store elements when finding and making assertions
         let element;
     `;
@@ -56,47 +61,21 @@ describe('Basic test generation', () => {
     `;
 
     const generatedTests = createTestsFromEvents([], testURL, debugScript);
-    console.log(describe);
-    console.log(escapeRegExp(generatedTests));
-    console.log(!!generatedTests.match(describe));
-    
-    expect(generatedTests).toMatch(regexCode(imports));
-    expect(generatedTests).toMatch(regexCode(describe));
-    expect(generatedTests).toMatch(regexCode(before, 1));
-    expect(generatedTests).toMatch(indent(testBlock, 1));
-    expect(generatedTests).toMatch(indent(teardown, 1));
+    expect(generatedTests).toMatch(codeToRegex(imports));
+    expect(generatedTests).toMatch(codeToRegex(describe));
+    expect(generatedTests).toMatch(codeToRegex(before, 1));
+    expect(generatedTests).toMatch(codeToRegex(testBlock, 1));
+    expect(generatedTests).toMatch(codeToRegex(teardown, 1));
   });
 
-  it('should display comment when tests events is empty', () => {
+  it('should display comment when events is empty', () => {
     const noEventText = '// No events were recorded';
     const generatedTests = createTestsFromEvents([], testURL, debugScript);
     // console.log(generatedTests);
-    expect(generatedTests).toMatch(noEventText);
+    expect(generatedTests).toMatch(codeToRegex(noEventText));
   });
 
-  it('should generate a test for an event list with 1 picked-element event, 1 input event, and 1 mutation event', () => {
-    const inputEvent: UserInputEvent = {
-      type: 'input',
-      eventType: 'click',
-      parroteerId: '980458ad3-adsf34-df342-adsf898f',
-      selector: '#test > div',
-      displaySelector: ''
-    };
-    const mutationEvent: MutationEvent = {
-      type: 'mutation',
-      textContent: 'hi',
-      class: 'class1 class2',
-      parroteerId: '980458ad3-adsf34-df342-adsf898f',
-      selector: '',
-      displaySelector: ''
-    };
-    const pickedElementEvent: PickedElementEvent = {
-      type: 'picked-element',
-      selector: '#test > div',
-      parroteerId: '980458ad3-adsf34-df342-adsf898f',
-      displaySelector: ''
-    };
-    
+  it('should generate a test for an event log with 1 of each event type', () => {
     const events: StoredEvent[] = [pickedElementEvent, inputEvent, mutationEvent];
     
     const testScript = endent`
@@ -110,7 +89,25 @@ describe('Basic test generation', () => {
     `;
 
     const generatedTests = createTestsFromEvents(events, testURL, debugScript);
-    // console.log(generatedTests);
-    expect(generatedTests).toMatch(indent(testScript, 2));
+    console.log(generatedTests);
+    expect(generatedTests).toMatch(codeToRegex(testScript, 2));
   });
+  
+  // TODO: Set up jest-puppeteer and assert that the code is valid and runs properly
 });
+
+/**
+ * Escapes a string for use in a regular expression
+ */
+// Big thanks to coolaj86 on StackOverflow for this! https://stackoverflow.com/a/6969486/12033249
+function escapeRegExp(string: string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+/**
+ * Converts a block of code into an escaped regular expression, with optional indentation
+ */
+function codeToRegex(string: string, tabs = 0, tabSize = 2) {
+  const indented = indent(string, tabs, tabSize)
+  return new RegExp(escapeRegExp(indented));
+}
