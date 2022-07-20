@@ -14,7 +14,7 @@ export default function ExportButton({ text }: ExportButtonProps) {
       <button className="export-btn" onClick={handleExport}>
         <i className="export-icon material-symbols-outlined">file_download</i>
       </button>
-      <p> Export test</p>
+      <p> Export test file</p>
     </>
   );
 }
