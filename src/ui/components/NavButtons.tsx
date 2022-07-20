@@ -8,6 +8,7 @@ interface NavButtonsProps {
   recordingState: RecordingState
   restartSwitch: boolean
   setRestartSwitch: (bool: boolean) => void
+  handleRestart: () => void
 }
 
 type NavChoice = 'PICK' | 'RECORD' | 'TESTS';
@@ -19,7 +20,7 @@ const Nav: Record<NavChoice, NavRoute> = {
   TESTS: ['/testsView', 'View Tests']
 };
 
-const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch }: NavButtonsProps) => {
+const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRestart }: NavButtonsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   let backPath = '', backText = 'Back';
@@ -45,15 +46,6 @@ const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch }: NavButt
       nextText = 'Restart';
       break;
   }
-
-  // declare another handle function
-  const handleRestart = () => {
-    chrome.runtime.sendMessage({type: 'restart-recording'});
-    console.log('onclick handleRestart');
-    setRestartSwitch(!restartSwitch);
-    navigate(nextPath);
-  };
-
 
 
   return (

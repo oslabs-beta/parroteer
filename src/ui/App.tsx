@@ -42,9 +42,15 @@ export default function App() {
         navigate('/pickerView');
       }
     });
-
-
   }, [onCorrectTab, restartSwitch]);
+
+  const handleRestart = () => {
+    chrome.runtime.sendMessage({type: 'restart-recording'});
+    console.log('onclick handleRestart');
+    chrome.action.setBadgeText({text: ''});
+    setRestartSwitch(!restartSwitch);
+    navigate('/pickerView');
+  };
 
 
 // Why element not component?
@@ -55,8 +61,8 @@ export default function App() {
     <header>
       <h1>Parroteer</h1>
       <img src="././icons/parrot_48.png"></img>
+      <button onClick={handleRestart}><img src="./icons/restart.svg" alt="restart icon" /></button>
     </header>
-
     <Routes>
 
       <Route path='/pickerView' element={
@@ -80,6 +86,7 @@ export default function App() {
     </Routes>
 
     <NavButtons
+      handleRestart={handleRestart}
       recordingState={recordingState}
       setRestartSwitch={setRestartSwitch}
       restartSwitch={restartSwitch}
