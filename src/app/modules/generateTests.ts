@@ -47,6 +47,16 @@ export default function createTestsFromEvents(events: StoredEvent[], url = 'http
     }
   `;
 
+  // Not used for now but might be useful later when adding delays
+  const asyncTimeoutFunc = endent`
+    /**
+     * Creates an asynchronous setTimeout which can be awaited
+     */
+    function asyncTimeout(delay) {
+      return new Promise(resolve => setTimeout(() => resolve(), delay));
+    }
+  `;
+
   const debug = debugScripts && endent`
     // Debug start
     ${debugScripts}
