@@ -118,7 +118,11 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
 function addRecordingListeners(recState: RecordingState) {
   recordedTabId = recordedTabId || activeTabId;
   chrome.tabs.get(recordedTabId, (res) => recordingURL = res.url);
+<<<<<<< HEAD
   console.log('ADDDING RECORDING LISTENERS FOR TABID', recordedTabId);
+=======
+  console.log('ADDING RECORDING LISTENERS FOR TABID', recordedTabId);
+>>>>>>> dev
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
 }
 
