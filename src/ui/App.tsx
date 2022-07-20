@@ -59,8 +59,10 @@ export default function App() {
   const application =
   <>
     <header>
+
+      <img className="logo-icon" src="././icons/parrot_48.png"></img>
       <h1>Parroteer</h1>
-      <button onClick={handleRestart}><img src="./icons/restart.svg" alt="restart icon" /></button>
+      <button onClick={handleRestart}><i className="restart-icon material-symbols-outlined ">restart_alt</i></button>
     </header>
     <Routes>
 

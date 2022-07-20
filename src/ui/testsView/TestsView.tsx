@@ -13,20 +13,20 @@ interface testProps {
 const TestsView = (props: testProps) => {
   const {tests} = props;
 
-  // useEffect()
-
   return (
     <section id="testsView">
+      <div className="actionBtns">
+        <ExportButton text={tests} />
+      </div>
       <CodeMirror
         placeholder={'//No tests yet :('}
         value={tests}
         theme={dracula}
-        height='400px'
+        height='300px'
         width='400px'
         extensions={[javascript({ jsx: true })]}
       />
       <CopyButton text={tests} />
-      <ExportButton text={tests} />
     </section>);
 };
 
