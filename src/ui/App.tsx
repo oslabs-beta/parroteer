@@ -20,30 +20,30 @@ export default function App() {
   const [events, setEvents] = useState<EventLog>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
-      console.log(res.recordingState);
-      console.log('Popup elementStates', res.elementStates);
-      console.log('Popup events', res.events);
+  // useEffect(() => {
+  //   chrome.runtime.sendMessage({type: 'popup-opened'}).then(res => {
+  //     console.log(res.recordingState);
+  //     console.log('Popup elementStates', res.elementStates);
+  //     console.log('Popup events', res.events);
 
-      setRecordingState(res.recordingState);
-      setRecordingTab(res.recordedTabId);
-      // setElementState(res.elementStates);
-      setEvents(res.events);
-      setIsLoaded(true);
-      setTests(res.tests);
-      if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
-      if (res.recordingState === 'recording') {
-        navigate('/recorderView');
-      } else if (res.recordingState === 'pre-recording'){
-        navigate('/pickerView');
-      } else if (res.recordingState === 'off'){
-        navigate('/pickerView');
-      }
-    });
+  //     setRecordingState(res.recordingState);
+  //     setRecordingTab(res.recordedTabId);
+  //     // setElementState(res.elementStates);
+  //     setEvents(res.events);
+  //     setIsLoaded(true);
+  //     setTests(res.tests);
+  //     if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
+  //     if (res.recordingState === 'recording') {
+  //       navigate('/recorderView');
+  //     } else if (res.recordingState === 'pre-recording'){
+  //       navigate('/pickerView');
+  //     } else if (res.recordingState === 'off'){
+  //       navigate('/pickerView');
+  //     }
+  //   });
 
 
-  }, [onCorrectTab]);
+  // }, [onCorrectTab]);
 
 
 // Why element not component?
@@ -51,8 +51,10 @@ export default function App() {
 // No switch?
   const application =
   <>
-    <h1>Parroteer</h1>
-
+    <header>
+      <img src="./icons/restart.svg" alt="restart icon" />
+      <h1>Parroteer</h1>
+    </header>
     <Routes>
 
       <Route path='/pickerView' element={
@@ -84,6 +86,7 @@ export default function App() {
   />;
 
   return (
-    isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
+    // isLoaded ? (onCorrectTab ? application : wrongTab) : <Loading/>
+    application
   );
 }
