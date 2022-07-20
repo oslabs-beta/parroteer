@@ -14,7 +14,7 @@ const PickerView = (props: PickerProps) => {
     setRecordingState('pre-recording');
     chrome.runtime.sendMessage({ type: 'begin-pick-elements' });
     chrome.action.setBadgeText({text: 'PICK'});
-    chrome.action.setBadgeBackgroundColor({color: 'green'});
+    chrome.action.setBadgeBackgroundColor({color: '#F0AD2B'});
   };
 
   const textItems = events.map((event, i) => {
