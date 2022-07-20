@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :root {
   --light_teal: #EDF8F9;
   --teal: #84CED7;
   --light-blue: #DADFEE;
   --light-gray-blue: #EBF1F4;
-  --med-blue: #236ce1;
+  --med-blue: #5270e1;
   --dark-blue: #344799;
   --yellow: #F8D13D;
   --med-yellow: #F0AD2B;
@@ -21,7 +22,7 @@
 $light_teal: #EDF8F9;
 $teal: #84CED7;
 $light-blue: #DADFEE;
-$med-blue: #236ce1;
+$med-blue: #5270e1;
 $dark-blue: #344799;
 $yellow: #F8D13D;
 $med-yellow: #F0AD2B;
@@ -256,12 +257,14 @@ button.export, button.icon {
     width: 50%;
     margin: 2.25%;
     border: none;
+    cursor: pointer;
     font-size: 1em;
     font-family: $font-poppins;
     font-weight: bold;
     padding: 0.5em 0;
     text-transform: uppercase;
     background-color: $med-blue;
+    background-size: 300% 100%;
     color: #fff;
 
     .icon {
@@ -276,6 +279,10 @@ button.export, button.icon {
     &[disabled] {
       color: #878787;
       background-color: $light-gray;
+    }
+
+    :hover {
+      background-color: $dark-blue;
     }
   }
 }
@@ -305,6 +312,8 @@ button.export, button.icon {
   padding-left: 0px;
   max-height: 300px;
   overflow: auto;
+  overflow-y: auto;
+  white-space: nowrap;
   width: 95%;
   background-color: $med-gray;
   // font-family: monospace;
@@ -352,14 +361,39 @@ button.export, button.icon {
   -webkit-transition: all .2s ease-out;
   transition: all .2s ease-out;
   cursor: pointer;
-
-  :hover {
-    background: $yellow;
-    border: 0px;
-    -webkit-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    transform: scale(1.1);
-    -webkit-transition: all .2s ease-out;
-    transition: all .2s ease-out;
-  }
 }
+
+.add-button:hover {
+  background: $yellow;
+  border: 0px;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+  -webkit-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+}
+
+.material-symbols-outlined {
+  font-size: 3em;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.record-btn {
+  color: $orange;
+ }
+
+ .pause-btn {
+  color: $yellow;
+ }
+
+ .stop-btn {
+  color: $med-yellow;
+ }
+
+ .play-btn {
+  color: $teal;
+ }

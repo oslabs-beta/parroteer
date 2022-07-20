@@ -52,10 +52,10 @@ const RecorderView = (props: RecProps) => {
   };
 
   const buttons = {
-    record: <button style={buttonStyle} onClick={onRecordClick}><img src='./icons/record-button.png' /></button>,
-    pause: <button style={buttonStyle} onClick={onPauseClick}><img src='./icons/pause-button.png' /></button>,
-    Resume: <button style={buttonStyle} onClick={onResumeClick}><img src='./icons/play-button.png' /></button>,
-    end: <button style={buttonStyle} onClick={onEndClick}><img src='./icons/stop-button.png' /></button>
+    record: <button style={buttonStyle} onClick={onRecordClick}><i className="record-btn material-symbols-outlined ">radio_button_checked</i></button>,
+    pause: <button style={buttonStyle} onClick={onPauseClick}><i className="pause-btn material-symbols-outlined ">pause_circle</i></button>,
+    Resume: <button style={buttonStyle} onClick={onResumeClick}><i className="play-btn material-symbols-outlined ">play_circle</i></button>,
+    end: <button style={buttonStyle} onClick={onEndClick}><i className="stop-btn material-symbols-outlined ">stop_circle</i></button>
   };
 
   // set the buttons that show up in recorder tab
@@ -98,9 +98,11 @@ const RecorderView = (props: RecProps) => {
 
   return (
     <section id="recorderView">
-      <p>Recorder View</p>
-      {curButtons}
-      {recordingState === 'off' ? null : buttons.end}
+      <div className="actionBtns">
+        {curButtons}
+        {recordingState === 'off' ? null : buttons.end}
+        <p>Start recording</p>
+      </div>
       <TextList>
         { textItems }
       </TextList>
