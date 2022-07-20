@@ -4,37 +4,78 @@ import {PickedElementEvent, MutationEvent, UserInputEvent, StoredEvent } from '.
 /**
  * Creates a full test from an array of StoredEvents
  */
-export default function createTestsFromEvents(events: StoredEvent[], url = 'http://localhost:8080') {
-  const importPuppeteer = 'const puppeteer = require(\'puppeteer\');';
+export default function createTestsFromEvents(events: StoredEvent[], url = 'http://localhost:8080', debugScripts = '') {
+  const imports = 'const puppeteer = require(\'puppeteer\');';
   const header = endent`
     describe('End-to-end test', () => {
+      /** @type {puppeteer.Browser} */ let browser;
+      /** @type {puppeteer.Page} */ let page;
+    
+      beforeAll(async () => {
+        browser = await puppeteer.launch({ headless: false });
+        page = await browser.newPage();
+      });
+
       it('passes this test', async () => {
-        const browser = await puppeteer.launch({ headless: false });
-        const page = await browser.newPage();
         await page.goto('${url}');
-  `;
-  // TODO: capture url in background
+        // Temporary variable to store elements when finding and making assertions
+        let element;
+`;
 
   const footer =
-`    await browser.close();
+`  });
+
+  afterAll(async () => {
+    await browser.close();
   });
-});`;
+});
+`;
 
-  const outputSections: string[] = [];
-  outputSections.push(importPuppeteer + '\n', header + '\n');
+  const getPropFunc = endent`
+    /**
+     * Gets the value of a property from an Puppeteer element.
+     * @param {puppeteer.ElementHandle<Element>} element
+     * @param {puppeteer.HandleOr<keyof Element> | 'class'} property Passing in 'class' will return the full class string.
+     */
+    async function getProp(element, property) {
+      switch (property) {
+        case 'class':
+          return await element.getProperty('classList').then(cL => cL.getProperty('value')).then(val => val.jsonValue());
+        default:
+          return await element.getProperty(property).then(val => val.jsonValue());
+      }
+    }
+  `;
 
+  // Not used for now but might be useful later when adding delays
+  const asyncTimeoutFunc = endent`
+    /**
+     * Creates an asynchronous setTimeout which can be awaited
+     */
+    function asyncTimeout(delay) {
+      return new Promise(resolve => setTimeout(() => resolve(), delay));
+    }
+  `;
+
+  const debug = debugScripts && endent`
+    // Debug start
+    ${debugScripts}
+    // Debug end
+  `;
+
+  const formattedEvents: string[] = [];
   for (const event of events) {
     const {type} = event;
     // logic for events using puppeteer to simulate user clicks
     switch (type) {
       case 'input':
-        outputSections.push(puppeteerEventOutline(event as UserInputEvent));
+        formattedEvents.push(puppeteerEventOutline(event as UserInputEvent));
         break;
       case 'mutation':
-        outputSections.push(jestOutline(event as MutationEvent));
+        formattedEvents.push(jestOutline(event as MutationEvent));
         break;
       case 'picked-element':
-        outputSections.push(pickEvent(event as PickedElementEvent));
+        formattedEvents.push(pickEvent(event as PickedElementEvent));
         break;
       default:
         console.log(`how did ${type} get in here???`);
@@ -42,8 +83,19 @@ export default function createTestsFromEvents(events: StoredEvent[], url = 'http
     }
   }
 
-  outputSections.push('\n' + footer);
-  return outputSections.join('\n');
+  const eventsSection = formattedEvents.length > 0 ? formattedEvents.join('\n') : '// No events were recorded';
+
+  const fullScript = endent`
+    ${imports}
+
+    ${header}
+    ${debug && indent('\n' + debug + '\n', 2)}
+    ${indent(eventsSection, 2)}
+    ${footer}
+
+    ${getPropFunc}
+  `;
+  return fullScript;
 }
 
 /**
@@ -51,27 +103,19 @@ export default function createTestsFromEvents(events: StoredEvent[], url = 'http
  * and generates Jest `expect` statements for each change
  */
 const jestOutline = (event: MutationEvent) => {
-  let change;
-
   const expectations: string[] = [];
-  for (const key in event) {
-    if (key === 'textContent') change = 'textContent';
-    else if (key === 'value') change = 'value';
-    else if(key === 'class') change = 'classList.value';
-    else continue;
-    expectations.push(`expect(el.${change}).toEqual('${event[key]}');`);
+  const checkProps = ['textContent', 'value', 'class'];
+  for (const prop in event) {
+    if (!checkProps.includes(prop)) continue;
+    expectations.push(`expect(getProp(element, '${prop}')).resolves.toEqual('${event[prop as keyof MutationEvent]}');`);
   }
 
   const expectStr = endent`
-    await page.waitForSelector('[data-parroteer-id="${event.parroteerId}"]').then(el => {
-      ${expectations.join('\n')}
-    });
+    element = await page.$('[data-parroteer-id="${event.parroteerId}"]');
+    ${expectations.join('\n')}
   `;
-  return indent(expectStr, 2);
-  // return waitFor + `\t\tawait expect(${event.parroteerId}).${change});\n`;
+  return expectStr;
 };
-
-// console.log(jestOutline({ type: 'mutation', parroteerId: '90435034905-fasdf-43tfdg-34trq3gngiogn', textContent: 'hi', class: 'testclass' }));
 
 
 /**
@@ -79,11 +123,15 @@ const jestOutline = (event: MutationEvent) => {
  * and mimics the input event that happened with it using Puppeteer
  */
 const puppeteerEventOutline = (event: UserInputEvent) => {
-  let eventType;
-  if (event.eventType === 'click') eventType = `click('[data-parroteer-id="${event.parroteerId}"]')`;
-  else eventType = `keyboard.press('${event.key}')`;
-  const puppetStr = `await page.${eventType};`;
-  return indent(puppetStr, 2);
+  const { selector } = event;
+  let puppetStr;
+  if (event.eventType === 'click') {
+    puppetStr = endent`
+      await page.waitForSelector('${selector}').then(el => el.click());
+    `;
+  }
+  else puppetStr = `await page.keyboard.press('${event.key}')`;
+  return puppetStr;
 };
 
 /**
@@ -91,8 +139,12 @@ const puppeteerEventOutline = (event: UserInputEvent) => {
  * and assigns it the parroter Id that it should have
  */
 const pickEvent = (event: PickedElementEvent) => {
-  const pickStr = `await page.waitForSelector("${event.selector}").then(el => el.dataset.parroteerId = "${event.parroteerId}");`;
-  return indent(pickStr, 2);
+  const pickStr = endent`
+    await page.waitForSelector('${event.selector}').then((el) => {
+      el.evaluate(el => el.dataset.parroteerId = '${event.parroteerId}');
+    });
+  `;
+  return pickStr;
 };
 
 /**
@@ -102,7 +154,7 @@ const pickEvent = (event: PickedElementEvent) => {
  * @param tabSize How many spaces a tab should be
  * @returns
  */
-function indent(text: string, tabs = 0, tabSize = 2) {
+export function indent(text: string, tabs = 0, tabSize = 2) {
   const lines = text.split('\n');
   return lines.map(line => ' '.repeat(tabSize).repeat(tabs) + line).join('\n');
 }

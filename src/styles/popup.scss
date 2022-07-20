@@ -225,7 +225,7 @@ button.export, button.icon {
       content: '';
       width: $icon-width;
     }
-    
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -249,7 +249,7 @@ button.export, button.icon {
 
 #testsView {
   position: relative;
-  
+
   .icon {
     position: absolute;
     z-index: 50;
@@ -257,6 +257,12 @@ button.export, button.icon {
     &.copy {
       bottom: 0.5rem;
       right: 0.5rem;
+      filter: invert(0.9);
+    }
+
+    &.export {
+      bottom: 0.5rem;
+      left: 0.5rem;
       filter: invert(0.9);
     }
   }
