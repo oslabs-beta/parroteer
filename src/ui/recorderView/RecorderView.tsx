@@ -46,16 +46,11 @@ const RecorderView = (props: RecProps) => {
     });
   };
 
-  const buttonStyle = {
-    background: 'none',
-    border: 'none',
-  };
-
   const buttons = {
-    record: <button style={buttonStyle} onClick={onRecordClick}><i className="record-btn material-symbols-outlined ">radio_button_checked</i></button>,
-    pause: <button style={buttonStyle} onClick={onPauseClick}><i className="pause-btn material-symbols-outlined ">pause_circle</i></button>,
-    Resume: <button style={buttonStyle} onClick={onResumeClick}><i className="play-btn material-symbols-outlined ">play_circle</i></button>,
-    end: <button style={buttonStyle} onClick={onEndClick}><i className="stop-btn material-symbols-outlined ">stop_circle</i></button>
+    record: <button onClick={onRecordClick}><i className="record-icon material-symbols-outlined ">radio_button_checked</i></button>,
+    pause: <button onClick={onPauseClick}><i className="pause-icon material-symbols-outlined ">pause_circle</i></button>,
+    Resume: <button onClick={onResumeClick}><i className="play-icon material-symbols-outlined ">play_circle</i></button>,
+    end: <button onClick={onEndClick}><i className="stop-icon material-symbols-outlined ">stop_circle</i></button>
   };
 
   // set the buttons that show up in recorder tab

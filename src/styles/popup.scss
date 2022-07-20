@@ -221,72 +221,6 @@ header {
   background: $med-gray;
 }
 
-button.export, button.icon {
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
-.hov {
-  &:hover {
-    filter: brightness(1.1);
-  }
-  &:active {
-    filter: brightness(0.9);
-  }
-}
-
-.nav-buttons {
-  $icon-width: 1.4em;
-  font-size: 1.2em;
-
-  display: flex;
-  flex-flow: row nowrap;
-  width: 100%;
-  background-color: $med-gray;
-
-  button {
-    &.next::before, &.back::after {
-      content: '';
-      width: $icon-width;
-    }
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 50%;
-    margin: 2.25%;
-    border: none;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: $font-poppins;
-    font-weight: bold;
-    padding: 0.5em 0;
-    text-transform: uppercase;
-    background-color: $med-blue;
-    background-size: 300% 100%;
-    color: #fff;
-
-    .icon {
-      height: $icon-width;
-      width: $icon-width;
-    }
-
-    &[disabled] .icon {
-      filter: opacity(0.25);
-    }
-
-    &[disabled] {
-      color: #878787;
-      background-color: $light-gray;
-    }
-
-    :hover {
-      background-color: $dark-blue;
-    }
-  }
-}
-
 #testsView {
   position: relative;
 
@@ -326,6 +260,59 @@ button.export, button.icon {
     border-bottom: 3px solid $med-gray;
     background-color: $light-gray;
   }
+}
+
+button {
+  background: none;
+  border: none;
+ };
+
+ .nav-buttons {
+  $icon-width: 1.4em;
+  font-size: 1.2em;
+
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+  background-color: $med-gray;
+
+  button {
+    &.next::before, &.back::after {
+      content: '';
+      width: $icon-width;
+    }
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+    margin: 2.25%;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: $font-poppins;
+    font-weight: bold;
+    padding: 0.5em 0;
+    text-transform: uppercase;
+    background-color: $med-blue;
+    background-size: 300% 100%;
+    color: #fff;
+
+    .icon {
+      height: $icon-width;
+      width: $icon-width;
+    }
+
+    &[disabled] {
+      color: #878787;
+      background-color: $light-gray;
+    }
+
+  }
+}
+
+.nav-buttons button:hover {
+  background-color: $dark-blue;
 }
 
 .actionBtns {
@@ -382,18 +369,38 @@ button.export, button.icon {
   'opsz' 48
 }
 
-.record-btn {
+.add-icon {
+  color: #fff;
+  font-size: 1em;
+}
+
+.record-icon {
   color: $orange;
  }
 
- .pause-btn {
+ .pause-icon {
   color: $yellow;
  }
 
- .stop-btn {
+ .stop-icon {
   color: $med-yellow;
  }
 
- .play-btn {
+ .play-icon {
   color: $teal;
  }
+
+ .restart-icon {
+  color: #fff;
+ }
+
+ .next-icon {
+  color: #fff;
+  font-size: 1.5em;
+ }
+
+ .back-icon {
+  font-size: 1.5em;
+ }
+
+

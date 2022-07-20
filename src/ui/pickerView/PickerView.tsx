@@ -30,7 +30,7 @@ const PickerView = (props: PickerProps) => {
   return (
     <section id="pickerView">
       <div className="actionBtns">
-        <button className="add-button" onClick={onPickElClick}>+</button>
+        <button className="add-button" onClick={onPickElClick}><i className="add-icon material-symbols-outlined ">add</i></button>
         <p>Pick elements</p>
       </div>
       <TextList>
