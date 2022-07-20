@@ -14,6 +14,7 @@
   --yellow: #F8D13D;
   --med-yellow: #F0AD2B;
   --orange:  #EC5A3E;
+  --peach: #ff866f;
   --dark-gray: #212121;
   --med-gray: #303030;
   --light-gray: #424242;
@@ -29,6 +30,7 @@ $dark-blue: #344799;
 $yellow: #F8D13D;
 $med-yellow: #F0AD2B;
 $orange:  #EC5A3E;
+$peach: #ff866f;
 $dark-gray: #212121;
 $med-gray: #303030;
 $light-gray: #424242;
@@ -441,3 +443,18 @@ header {
  #recorderView .actionBtns p {
   margin-left: .5em;
  }
+
+ /* Code theme */
+
+ .ͼ1c {
+  color: $med-yellow;
+}
+
+.ͼ1a {
+  color: $peach;
+}
+
+.ͼ15 .cm-gutters {
+  background-color: #282a36;
+  color: $light-gray;
+}
