@@ -5,32 +5,46 @@ import { UserInputEvent, PickedElementEvent, MutationEvent, StoredEvent } from '
 const debugScript = endent`
   await page.evaluate(() => {
     document.querySelector('#cover').addEventListener('click', () => {
-      document.querySelector('#cover > p').classList.toggle('test');
+      document.querySelector('#cover > p').classList.add('test');
+      document.querySelector('#cover > h1').classList.add('test');
       document.querySelector('#cover > h1').innerText = 'hi';
     });
   });
 `;
 const testURL = 'https://eloquentjavascript.net';
 
-const inputEvent: UserInputEvent = {
-  type: 'input',
-  eventType: 'click',
-  parroteerId: '980458ad3-adsf34-df342-adsf898f',
-  selector: '#test > div',
+const pickedElementEvent1: PickedElementEvent = {
+  type: 'picked-element',
+  selector: '#cover > p',
+  parroteerId: 'f064152d-766c-4b5f-be3f-e483cfee07c7',
   displaySelector: ''
 };
-const mutationEvent: MutationEvent = {
+const pickedElementEvent2: PickedElementEvent = {
+  type: 'picked-element',
+  selector: '#cover > h1',
+  parroteerId: '345bb623-0069-4c5c-9dbd-ce3faaa8f50e',
+  displaySelector: ''
+};
+const inputEvent1: UserInputEvent = {
+  type: 'input',
+  eventType: 'click',
+  parroteerId: '',
+  selector: '#cover > h1',
+  displaySelector: ''
+};
+const mutationEvent1: MutationEvent = {
   type: 'mutation',
-  textContent: 'hi',
-  class: 'class1 class2',
-  parroteerId: '980458ad3-adsf34-df342-adsf898f',
+  class: 'test',
+  parroteerId: 'f064152d-766c-4b5f-be3f-e483cfee07c7',
   selector: '',
   displaySelector: ''
 };
-const pickedElementEvent: PickedElementEvent = {
-  type: 'picked-element',
-  selector: '#test > div',
-  parroteerId: '980458ad3-adsf34-df342-adsf898f',
+const mutationEvent2: MutationEvent = {
+  type: 'mutation',
+  class: 'test',
+  textContent: 'hi',
+  parroteerId: '345bb623-0069-4c5c-9dbd-ce3faaa8f50e',
+  selector: '',
   displaySelector: ''
 };
 
@@ -55,7 +69,7 @@ describe('Basic test generation', () => {
         let element;
     `;
     const teardown = endent`
-      afterAll(() => {
+      afterAll(async () => {
         await browser.close();
       });
     `;
@@ -75,17 +89,22 @@ describe('Basic test generation', () => {
     expect(generatedTests).toMatch(codeToRegex(noEventText));
   });
 
-  it('should generate a test for an event log with 1 of each event type', () => {
-    const events: StoredEvent[] = [pickedElementEvent, inputEvent, mutationEvent];
+  it('should generate a proper test for a simple set of events', () => {
+    const events: StoredEvent[] = [pickedElementEvent1, pickedElementEvent2, inputEvent1, mutationEvent1, mutationEvent2];
     
     const testScript = endent`
-      await page.waitForSelector('#test > div').then((el) => {
-        el.evaluate(el => el.dataset.parroteerId = '980458ad3-adsf34-df342-adsf898f');
+      await page.waitForSelector('#cover > p').then((el) => {
+        el.evaluate(el => el.dataset.parroteerId = 'f064152d-766c-4b5f-be3f-e483cfee07c7');
       });
-      await page.waitForSelector('#test > div').then(el => el.click());
-      element = await page.$('[data-parroteer-id="980458ad3-adsf34-df342-adsf898f"]');
+      await page.waitForSelector('#cover > h1').then((el) => {
+        el.evaluate(el => el.dataset.parroteerId = '345bb623-0069-4c5c-9dbd-ce3faaa8f50e');
+      });
+      await page.waitForSelector('#cover > h1').then(el => el.click());
+      element = await page.$('[data-parroteer-id="f064152d-766c-4b5f-be3f-e483cfee07c7"]');
+      expect(getProp(element, 'class')).resolves.toEqual('test');
+      element = await page.$('[data-parroteer-id="345bb623-0069-4c5c-9dbd-ce3faaa8f50e"]');
+      expect(getProp(element, 'class')).resolves.toEqual('test');
       expect(getProp(element, 'textContent')).resolves.toEqual('hi');
-      expect(getProp(element, 'class')).resolves.toEqual('class1 class2');
     `;
 
     const generatedTests = createTestsFromEvents(events, testURL, debugScript);
