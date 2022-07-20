@@ -4,8 +4,9 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :root {
-  --light_teal: #EDF8F9;
-  --teal: #84CED7;
+  --extra-light-teal: #EDF8F9;
+  --light-teal: #84CED7;
+  --med-teal: #27adbe;
   --light-blue: #DADFEE;
   --light-gray-blue: #EBF1F4;
   --med-blue: #5270e1;
@@ -19,8 +20,9 @@
   --extra-light-gray: #878787;
 }
 
-$light_teal: #EDF8F9;
-$teal: #84CED7;
+$extra-light-teal: #EDF8F9;
+$light-teal: #84CED7;
+$med-teal: #27adbe;
 $light-blue: #DADFEE;
 $med-blue: #5270e1;
 $dark-blue: #344799;
@@ -61,50 +63,12 @@ body, #root {
   font-family: 'Source Sans Pro';
 }
 
-// header {
-//   background-color: #3d82b4;
-//   display: flex;
-//   width: 100%;
-//   button {
-//     background: none;
-//     height: 40px;
-//     width: 40px;
-//     position: absolute;
-//     right: 3px;
-//     align-self: auto;
-//     padding: 5px;
-//     border: none;
-//     top: 3px;
-//     img {
-//       position: absolute;
-//       right: 3px;
-//       filter: invert(100%);
-//       top: 3px;
-//       height: 30px;
-//       width: 30px;
-//     }
-//   }
-// }
-
-// h1 {
-//   margin: 0;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   padding: 0.4rem;
-//   width: 100%;
-//   font-family: 'Fredoka One';
-//   /* letter-spacing: 2px; */
-//   font-size: 3em;
-//   /* color: #ffe269; */
-//   color: white;
-// }
-
 #root {
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
+  max-height: 400px;
 }
 
 #root > section {
@@ -124,14 +88,14 @@ header {
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 0.5em 0em 0.5em 1em;
 
   h1 {
     margin: 0;
-    padding: 0.4rem;
     font-family: $font-mont;
-    letter-spacing: -2px; 
-    font-size: 3em;
-    font-weight: 500;
+    letter-spacing: -1px; 
+    font-size: 2.5em;
+    font-weight: 600;
     font-style: italic;
     color: #fff;
   }
@@ -203,7 +167,11 @@ header {
   }
 }
 
-::-webkit-scrollbar {
+::-webkit-scrollbar:horizontal {
+  width: 1em;
+}
+
+::-webkit-scrollbar:vertical {
   width: 1em;
 }
 
@@ -233,24 +201,19 @@ header {
       right: 0.5rem;
       filter: invert(0.9);
     }
-
-    &.export {
-      bottom: 0.5rem;
-      left: 0.5rem;
-      filter: invert(0.9);
-    }
   }
 }
 
 .scroll-list {
-  padding-left: 0px;
   max-height: 300px;
+  min-height: 300px;
+  margin: 0;
+  padding: 0;
   overflow: auto;
   overflow-y: auto;
   white-space: nowrap;
   width: 95%;
   background-color: $med-gray;
-  // font-family: monospace;
 
   li {
     color: #fff;
@@ -265,7 +228,17 @@ header {
 button {
   background: none;
   border: none;
+  cursor: pointer!important;
  };
+
+ .material-symbols-outlined {
+  font-size: 2em;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
 
  .nav-buttons {
   $icon-width: 1.4em;
@@ -304,7 +277,7 @@ button {
     }
 
     &[disabled] {
-      color: #878787;
+      color: $extra-light-gray;
       background-color: $light-gray;
     }
 
@@ -313,85 +286,133 @@ button {
 
 .nav-buttons button:hover {
   background-color: $dark-blue;
+  transition: all .2s ease-out;
+}
+
+.nav-buttons button[disabled]:hover {
+  background-color: $light-gray;
 }
 
 .actionBtns {
+  display: flex;
+  align-items: center;
   width: 100%;
   background-color: $dark-gray;
-  padding: 1em;
+  padding: .5em;
+  padding-left: 1.5em;
 }
 
-.add-button {
-  height: 40px;
-  width: 40px;
+.add-btn {
+  height: 1.3em;
+  width: 1.3em;
+  font-size:2em;
   background: $med-yellow;
   border-radius: 50%;
   color: #fff;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
   align-items: center;
-  font-size: 24px;
-  font-size: 1.5rem;
   font-weight: 500;
   z-index: 5;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   box-shadow: 0px 2px 10px 0px rgb(0 0 0 / 40%);
   border: 0px;
-  -webkit-transition: all .2s ease-out;
   transition: all .2s ease-out;
-  cursor: pointer;
 }
 
-.add-button:hover {
+.add-btn:hover {
   background: $yellow;
   border: 0px;
-  -webkit-transform: scale(1.1);
-  -ms-transform: scale(1.1);
   transform: scale(1.1);
-  -webkit-transition: all .2s ease-out;
   transition: all .2s ease-out;
-}
-
-.material-symbols-outlined {
-  font-size: 3em;
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48
 }
 
 .add-icon {
-  color: #fff;
   font-size: 1em;
+  color: #fff;
+  font-variation-settings: 'wght' 600;
 }
+
+.export-btn {
+  height: 2.5em;
+  width: 2.5em;
+  background: $med-teal;
+  border-radius: 50%;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  z-index: 5;
+  display: flex;
+  box-shadow: 0px 2px 10px 0px rgb(0 0 0 / 40%);
+  border: 0px;
+  transition: all .2s ease-out;
+}
+
+.export-btn:hover {
+  background: $light-teal;
+  border: 0px;
+  transform: scale(1.1);
+  transition: all .2s ease-out;
+}
+
+.export-icon {
+  font-size: 1.7em;
+  color: #fff;
+  font-variation-settings: 'wght' 600;
+ }
 
 .record-icon {
   color: $orange;
+  font-size: 3em;
+  transition: all .2s ease-out;
  }
 
- .pause-icon {
+.record-icon:hover  {
+  transform: scale(1.1);
+  transition: all .2s ease-out;
+}
+
+.pause-icon {
   color: $yellow;
+  font-size: 3em;
+  transition: all .2s ease-out;
  }
+
+ .pause-icon:hover  {
+  transform: scale(1.1);
+  transition: all .2s ease-out;
+}
 
  .stop-icon {
   color: $med-yellow;
+  font-size: 3em;
+  transition: all .2s ease-out;
  }
 
+ .stop-icon:hover  {
+  transform: scale(1.1);
+  transition: all .2s ease-out;
+}
+
  .play-icon {
-  color: $teal;
- }
+  color: $light-teal;
+  transition: all .2s ease-out;
+}
+
+.play-icon:hover {
+  transform: scale(1.1);
+  transition: all .2s ease-out;
+}
+
+header {
+  button {
+    margin-left: auto;
+  }
+}
 
  .restart-icon {
   color: #fff;
+  font-size: 2.5em;
  }
 
  .next-icon {
@@ -403,4 +424,20 @@ button {
   font-size: 1.5em;
  }
 
+ .actionBtns p {
+  font-size: 1.3em;
+  margin-left: 1em;
+ }
 
+ .logo-icon {
+  transform: scaleX(-1);
+  width: 40px;
+ }
+
+ #recorderView .actionBtns {
+  padding-left: .5em;
+ }
+
+ #recorderView .actionBtns p {
+  margin-left: .5em;
+ }

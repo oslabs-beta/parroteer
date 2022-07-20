@@ -96,7 +96,7 @@ const RecorderView = (props: RecProps) => {
       <div className="actionBtns">
         {curButtons}
         {recordingState === 'off' ? null : buttons.end}
-        <p>Start recording</p>
+        <p>Start/stop recording</p>
       </div>
       <TextList>
         { textItems }
