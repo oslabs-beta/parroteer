@@ -1,17 +1,17 @@
 import CodeMirror from '@uiw/react-codemirror';
+import { useState, useEffect } from 'react';
 import { javascript } from '@codemirror/lang-javascript';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import CopyButton from '../components/CopyButton';
 import ExportButton from '../components/ExportButton';
-import { useEffect, useState } from 'react';
 
-interface testProps {
-  tests: string,
-  setTests?: (string: string) => void
-}
+// interface testProps {
+//   tests: string,
+//   setTests?: (string: string) => void
+// }
 
-const TestsView = (props: testProps) => {
-  const {tests} = props;
+const TestsView = () => {
+  // const {tests} = props;
   const [newTests, setNewTests] = useState('');
   const [isLoaded, setisLoaded] = useState(false);
   useEffect(() => {

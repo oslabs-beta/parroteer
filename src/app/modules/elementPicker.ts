@@ -24,11 +24,10 @@ export function enableHighlight() {
   // Style highlighter
   Object.assign(highlightElement.style, {
     backgroundColor: '#F8D13C55',
-    color: '#425EA9',
     zIndex: '1000000',
     position: 'fixed',
     pointerEvents: 'none',
-    border: '2px dashed rgba(66, 94, 169, 0.9)'
+    border: '1.8px dashed #ca8c11'
   });
 
   // Style popup
@@ -36,8 +35,10 @@ export function enableHighlight() {
     position: 'absolute',
     bottom: 'calc(100% + 2px)',
     left: '50%',
-    backgroundColor: '#ffc5baee',
+    backgroundColor: '#f6d867',
     fontWeight: 'bold',
+    fontFamily: 'monospace',
+    color: '#ca8c11',
     width: 'max-content',
     borderRadius: '0.5em',
     padding: '0.1em 0.5em',

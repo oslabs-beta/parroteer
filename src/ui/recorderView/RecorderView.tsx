@@ -22,21 +22,21 @@ const RecorderView = (props: RecProps) => {
     setRecordingState('recording');
     chrome.runtime.sendMessage({ type: 'begin-recording' });
     chrome.action.setBadgeText({text: 'REC'});
-    chrome.action.setBadgeBackgroundColor({color: 'red'});
+    chrome.action.setBadgeBackgroundColor({color: '#ff401b'});
   };
 
   const onPauseClick = () => {
     setRecordingState('pre-recording');
     chrome.runtime.sendMessage({ type: 'pause-recording' });
     chrome.action.setBadgeText({text: 'PICK'});
-    chrome.action.setBadgeBackgroundColor({color: 'green'});
+    chrome.action.setBadgeBackgroundColor({color: '#ffd700'});
   };
 
   const onResumeClick = () => {
     setRecordingState('recording');
     chrome.runtime.sendMessage({ type: 'begin-recording' });
     chrome.action.setBadgeText({text: 'REC'});
-    chrome.action.setBadgeBackgroundColor({color: 'red'});
+    chrome.action.setBadgeBackgroundColor({color: '#ff401b'});
   };
 
 

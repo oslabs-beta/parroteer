@@ -14,6 +14,7 @@
   --yellow: #F8D13D;
   --med-yellow: #F0AD2B;
   --orange:  #EC5A3E;
+  --peach: #ff866f;
   --dark-gray: #212121;
   --med-gray: #303030;
   --light-gray: #424242;
@@ -29,6 +30,7 @@ $dark-blue: #344799;
 $yellow: #F8D13D;
 $med-yellow: #F0AD2B;
 $orange:  #EC5A3E;
+$peach: #ff866f;
 $dark-gray: #212121;
 $med-gray: #303030;
 $light-gray: #424242;
@@ -50,10 +52,11 @@ main {
 html {
   background: none;
   width: 400px;
-  height: 400px;
   font-size: 16px;
   font-family: $font-poppins;
   color: #fff;
+  background-image: url('././img/stacked-waves-haikei.png');
+  background-position: center;
 }
 
 body, #root {
@@ -68,7 +71,11 @@ body, #root {
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  max-height: 400px;
+  // max-height: 400px;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 #root > section {
@@ -78,17 +85,18 @@ body, #root {
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  background-color: $med-gray;
+  // background-color: $med-gray;
 }
 
 header {
   display: flex;
   box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-  background-color: $med-gray;
+  // background-color: $med-gray;
   justify-content: center;
   align-items: center;
   width: 100%;
   padding: 0.5em 0em 0.5em 1em;
+  background-color: rgb(33 33 33 / 47%);
 
   h1 {
     margin: 0;
@@ -101,8 +109,10 @@ header {
   }
 }
 
+/* Loader component */
+
 .loading-page {
-  background-color: #fff;
+  background-color: #424242;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -143,85 +153,103 @@ header {
   100% { width: 100%; }
 }
 
+/* Wrong tab component */
+
 .wrong-tab-page {
   display: flex;
   flex-direction: column;
   background-color: #fff;
   justify-content: center;
   align-items: center;
+  background-color: $light-gray;
+ 
   p {
-    font-size: 1.2rem;
+    font-size: 1.2em;
     color: #fff;
     font-family: $font-poppins;
     text-align: center;
   }
+
   button {
-    height: 30px;
-    width: 280px;
-    border: 1px white solid;
-    border-radius: .25rem;
+    border: none;
     color: #fff;
+    font-size: 1.2em;
+    padding: 9px;
+    margin: 0.5em;
+    width: 85%;
+  }
+
+  .findTab-btn {
     background-color: $med-blue;
-    margin: 8px;
-    font-size: 1.1em;
+  }
+
+  .endTabSession-btn {
+    background-color: $orange;
+  }
+
+  .wrongTab-wrapper {
+    background-color: #303030;
+    padding: 1em 2em;
+    margin: 0 2.5em 1.5em 2.5em;
   }
 }
 
-::-webkit-scrollbar:horizontal {
-  width: 1em;
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 1.3em;
 }
 
-::-webkit-scrollbar:vertical {
-  width: 1em;
-}
 
-::-webkit-scrollbar-track {
-  background: $med-gray;
-}
+// ::-webkit-scrollbar:horizontal {
+//   width: 1em;
+// }
+
+// ::-webkit-scrollbar:vertical {
+//   width: 1em;
+// }
+
+// ::-webkit-scrollbar-track {
+//   background: $med-gray;
+// }
 
 ::-webkit-scrollbar-thumb {
   background: $light-gray-blue;
-  border-radius: 0.5em;
-  border: 2px solid $med-gray;
 }
 
 ::-webkit-scrollbar-corner {
-  background: $med-gray;
+  background: rgb(255 255 255 / 0%);
 }
 
-#testsView {
-  position: relative;
-
-  .icon {
-    position: absolute;
-    z-index: 50;
-
-    &.copy {
-      bottom: 0.5rem;
-      right: 0.5rem;
-      filter: invert(0.9);
-    }
-  }
-}
+/* Scroll list component */
 
 .scroll-list {
   max-height: 300px;
   min-height: 300px;
   margin: 0;
-  padding: 0;
+  padding: .5em 0;
   overflow: auto;
   overflow-y: auto;
   white-space: nowrap;
   width: 95%;
-  background-color: $med-gray;
+  background-color: rgb(40 40 40 / 61%);
 
   li {
     color: #fff;
     padding: 0.5em;
     list-style: none;
     line-height: 1.5em;
-    border-bottom: 3px solid $med-gray;
-    background-color: $light-gray;
+    // border-bottom: 3px solid 3px solid rgb(0 0 0 / 31%);
+    background-color: #42424273;
+    margin: 0.3em 1em;
+  }
+}
+
+/* Buttons */
+
+header {
+  button {
+    margin-left: auto;
   }
 }
 
@@ -247,7 +275,7 @@ button {
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
-  background-color: $med-gray;
+  // background-color: $med-gray;
 
   button {
     &.next::before, &.back::after {
@@ -267,7 +295,7 @@ button {
     font-weight: bold;
     padding: 0.5em 0;
     text-transform: uppercase;
-    background-color: $med-blue;
+    background-color: $dark-blue;
     background-size: 300% 100%;
     color: #fff;
 
@@ -277,29 +305,29 @@ button {
     }
 
     &[disabled] {
-      color: $extra-light-gray;
-      background-color: $light-gray;
+      color: rgb(130 130 130 / 61%);
+      background-color: #232323a3;
     }
 
   }
 }
 
 .nav-buttons button:hover {
-  background-color: $dark-blue;
+  background-color: $med-blue;
   transition: all .2s ease-out;
 }
 
 .nav-buttons button[disabled]:hover {
-  background-color: $light-gray;
+  background-color: #232323a3;
 }
 
 .actionBtns {
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: $dark-gray;
-  padding: .5em;
-  padding-left: 1.5em;
+  background-color: #212121c7;
+  padding: .5em .5em .5em 1.5em;
+  margin-bottom: 1em;
 }
 
 .add-btn {
@@ -361,6 +389,43 @@ button {
   font-variation-settings: 'wght' 600;
  }
 
+ #testsView {
+  position: relative;
+  .copy-btn {
+    height: 2.5em;
+    width: 2.5em;
+    background: #27adbe;
+    border-radius: 50%;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    z-index: 5;
+    display: flex;
+    box-shadow: 0px 2px 10px 0pxrgba(0,0,0,.4);
+    border: 0px;
+    transition: all .2s ease-out;
+    bottom: 2em;
+    right: 1.5em;
+    position: absolute;
+    z-index: 50;
+  }
+  
+  .copy-btn:hover {
+    background: $light-teal;
+    border: 0px;
+    transform: scale(1.1);
+    transition: all .2s ease-out;
+  }
+  
+  .copy-icon {
+    font-size: 1.7em;
+    color: #fff;
+    font-variation-settings: 'wght' 600;
+   }
+
+}
+
 .record-icon {
   color: $orange;
   font-size: 3em;
@@ -404,12 +469,6 @@ button {
   transition: all .2s ease-out;
 }
 
-header {
-  button {
-    margin-left: auto;
-  }
-}
-
  .restart-icon {
   color: #fff;
   font-size: 2.5em;
@@ -441,3 +500,18 @@ header {
  #recorderView .actionBtns p {
   margin-left: .5em;
  }
+
+ /* CodeMirror theme */
+
+ .ͼ1c {
+  color: $med-yellow;
+}
+
+.ͼ1a {
+  color: $peach;
+}
+
+.ͼ15 .cm-gutters {
+  background-color: #282a36;
+  color: $light-gray;
+}

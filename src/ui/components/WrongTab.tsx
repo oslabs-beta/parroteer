@@ -17,11 +17,14 @@ const WrongTab = (props: WrongTabProps) => {
 
   return (
     <main className="wrong-tab-page">
-      <p>You&#8217;re crrently recording somewhere else!!!</p>
-      <p>Please navigate back to that tab :)</p>
       <img src='./icons/parrot_48.png' alt="parrot" />
-      <button onClick={handleGoToRecordingTab}>find it for me pls</button>
-      <button onClick={handleEndSession}>End recording session on that tab</button>
+      <div className="wrongTab-wrapper">
+        <p>Oops!</p>
+        <p>You are recording on a different tab.</p>
+        <p><b>Please navigate back to that tab to continue your recording session.</b></p>
+      </div>
+      <button className="findTab-btn" onClick={handleGoToRecordingTab}>Take me to my tab</button>
+      <button className="endTabSession-btn" onClick={handleEndSession}>End recording session on tab</button>
     </main>
   );
 };
