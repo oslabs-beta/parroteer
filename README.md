@@ -78,7 +78,7 @@ We also know there are further improvements we can make in how element changes a
 ## Our Team
 <table><tbody><tr>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048247-6ae956ab-da6a-44dd-b43b-2ccb71414b5e.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048247-6ae956ab-da6a-44dd-b43b-2ccb71414b5e.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Alex Rokosz</strong>
     <br/>
@@ -87,7 +87,7 @@ We also know there are further improvements we can make in how element changes a
     <a href="https://www.linkedin.com/in/alexanderrokosz/">LinkedIn</a>
   </td>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048245-bd80e3ab-fefd-4290-a5b6-6fb11669eafe.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048245-bd80e3ab-fefd-4290-a5b6-6fb11669eafe.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Alina Gasperino</strong>
     <br/>
@@ -96,7 +96,7 @@ We also know there are further improvements we can make in how element changes a
     <a href="https://www.linkedin.com/in/alinagasperino/">LinkedIn</a>
   </td>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048242-9201e19e-1f29-4dda-97cd-59c32e06767b.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048242-9201e19e-1f29-4dda-97cd-59c32e06767b.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Eric Wells</strong>
     <br/>
@@ -105,7 +105,7 @@ We also know there are further improvements we can make in how element changes a
     <a href="https://www.linkedin.com/in/ewells2275/">LinkedIn</a>
   </td>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048249-2384e70d-8a10-4fc9-b12f-bff75a900ab3.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048249-2384e70d-8a10-4fc9-b12f-bff75a900ab3.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Erin Zhuang</strong>
     <br/>
