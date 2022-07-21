@@ -45,12 +45,23 @@ const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRes
       break;
   }
 
+  const nextIcon = (
+    nextText === 'Restart' ? <i className="restart-icon material-symbols-outlined ">restart_alt</i>
+    : <i className="next-icon material-symbols-outlined" style={{height: '75%'}}>navigate_next</i>
+  );
+  let nextClass = 'next';
+  if (nextText === 'restart') nextClass += ' restart'
 
   return (
     <nav className='nav-buttons'>
-      <button className="back" disabled={!backPath} onClick={() => navigate(backPath)}><i className="back-icon material-symbols-outlined ">navigate_before</i>{backText}</button>
+      <button className="back" disabled={!backPath} onClick={() => navigate(backPath)}>
+        <i className="back-icon material-symbols-outlined ">navigate_before</i>
+        {backText}
+      </button>
       {/* if current buttion is 'restart' then call restart handler  */}
-      <button className="next" disabled={!nextPath} onClick={nextText === 'Restart' ? () => handleRestart() : () => navigate(nextPath)}>{nextText} <i className="next-icon material-symbols-outlined ">navigate_next</i></button>
+      <button className={nextClass} disabled={!nextPath} onClick={nextText === 'Restart' ? () => handleRestart() : () => navigate(nextPath)}>
+        {nextText}{nextIcon}
+      </button>
     </nav>
   );
 };
