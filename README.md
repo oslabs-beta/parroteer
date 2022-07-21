@@ -1,5 +1,5 @@
-<!-- parroteer banner -->
-### *No-code test automation solution for end-to-end testing*
+![Parroteer_Banner_1640x410](https://user-images.githubusercontent.com/1347847/180268705-d02a2d6a-092c-4835-a3b3-812d1259868a.png)
+### *No-code test automation tool for end-to-end testing*
 
 ## Table of Contents
 - [About](#about-parroteer)
