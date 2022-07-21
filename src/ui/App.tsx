@@ -81,7 +81,6 @@ export default function App() {
         <RecorderView
           recordingState={recordingState}
           setRecordingState={setRecordingState}
-          setTests={setTests}
           events={events}
           onEndClick={onEndClick}
         />}/>

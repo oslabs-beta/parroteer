@@ -6,14 +6,13 @@ import { EventLog, RecordingState, MutationEvent } from '../../types/Events';
 interface RecProps {
   recordingState: string,
   setRecordingState: (str: RecordingState) => void
-  setTests: (str: string) => void
   events: EventLog
   onEndClick: () => void
 }
 
 
 const RecorderView = (props: RecProps) => {
-  const {recordingState, setRecordingState, events, setTests, onEndClick} = props;
+  const {recordingState, setRecordingState, events, onEndClick} = props;
   // const [tests, setTests] = useState('');
   let curButtons;
 
