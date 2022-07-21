@@ -9,6 +9,7 @@ interface NavButtonsProps {
   restartSwitch: boolean
   setRestartSwitch: (bool: boolean) => void
   handleRestart: () => void
+  onEndClick: () => void
 }
 
 type NavChoice = 'PICK' | 'RECORD' | 'TESTS';
@@ -20,7 +21,7 @@ const Nav: Record<NavChoice, NavRoute> = {
   TESTS: ['/testsView', 'View Tests']
 };
 
-const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRestart }: NavButtonsProps) => {
+const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRestart, onEndClick }: NavButtonsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   let backPath = '', backText = 'Back';
@@ -47,12 +48,21 @@ const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRes
       break;
   }
 
+  const handleNext = () => {
+    if (nextText === 'Restart') return handleRestart();
+    else if (nextText === 'View Tests') {
+      navigate(nextPath);
+      return onEndClick();
+    }
+    else return navigate(nextPath);
+  };
+
 
   return (
     <nav className='nav-buttons'>
       <button className="back" disabled={!backPath} onClick={() => navigate(backPath)}><i className="back-icon material-symbols-outlined ">navigate_before</i>{backText}</button>
       {/* if current buttion is 'restart' then call restart handler  */}
-      <button className="next" disabled={!nextPath} onClick={nextText === 'Restart' ? () => handleRestart() : () => navigate(nextPath)}>{nextText} <i className="next-icon material-symbols-outlined ">navigate_next</i></button>
+      <button className="next" disabled={!nextPath} onClick={() => handleNext()}>{nextText} <i className="next-icon material-symbols-outlined ">navigate_next</i></button>
     </nav>
   );
 };

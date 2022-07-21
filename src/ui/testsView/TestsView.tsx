@@ -12,22 +12,30 @@ interface testProps {
 
 const TestsView = (props: testProps) => {
   const {tests} = props;
+  const [newTests, setNewTests] = useState('');
+  const [isLoaded, setisLoaded] = useState(false);
+  useEffect(() => {
+    chrome.runtime.sendMessage({ type: 'get-tests' }).then((res) => {
+      setNewTests(res);
+    });
+    setisLoaded(true);
+  }, []);
 
-  return (
+  return ( isLoaded ?
     <section id="testsView">
       <div className="actionBtns">
-        <ExportButton text={tests} />
+        <ExportButton text={newTests} />
       </div>
       <CodeMirror
         placeholder={'//No tests yet :('}
-        value={tests}
+        value={newTests}
         theme={dracula}
         height='300px'
         width='400px'
         extensions={[javascript({ jsx: true })]}
       />
-      <CopyButton text={tests} />
-    </section>);
+      <CopyButton text={newTests} />
+    </section> : <section id='testView'></section>);
 };
 
 export default TestsView;
