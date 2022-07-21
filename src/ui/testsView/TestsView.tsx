@@ -1,32 +1,41 @@
 import CodeMirror from '@uiw/react-codemirror';
+import { useState, useEffect } from 'react';
 import { javascript } from '@codemirror/lang-javascript';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import CopyButton from '../components/CopyButton';
 import ExportButton from '../components/ExportButton';
 
-interface testProps {
-  tests: string,
-  setTests?: (string: string) => void
-}
+// interface testProps {
+//   tests: string,
+//   setTests?: (string: string) => void
+// }
 
-const TestsView = (props: testProps) => {
-  const {tests} = props;
+const TestsView = () => {
+  // const {tests} = props;
+  const [newTests, setNewTests] = useState('');
+  const [isLoaded, setisLoaded] = useState(false);
+  useEffect(() => {
+    chrome.runtime.sendMessage({ type: 'get-tests' }).then((res) => {
+      setNewTests(res);
+    });
+    setisLoaded(true);
+  }, []);
 
-  return (
+  return ( isLoaded ?
     <section id="testsView">
       <div className="actionBtns">
-        <ExportButton text={tests} />
+        <ExportButton text={newTests} />
       </div>
       <CodeMirror
-        placeholder={'// No tests yet :('}
-        value={tests}
+        placeholder={'//No tests yet :('}
+        value={newTests}
         theme={dracula}
         height='300px'
         width='400px'
         extensions={[javascript({ jsx: true })]}
       />
-      <CopyButton text={tests} />
-    </section>);
+      <CopyButton text={newTests} />
+    </section> : <section id='testView'></section>);
 };
 
 export default TestsView;
