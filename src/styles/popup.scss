@@ -283,6 +283,14 @@ button {
       width: $icon-width;
     }
 
+    &.restart {
+      background-color: #b8493c;
+      i {
+        font-size: 2em;
+        margin: -0.5em 0;
+      }
+    }
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -315,6 +323,10 @@ button {
 .nav-buttons button:hover {
   background-color: $med-blue;
   transition: all .2s ease-out;
+
+  &.restart {
+    background-color: #fb5745;
+  }
 }
 
 .nav-buttons button[disabled]:hover {

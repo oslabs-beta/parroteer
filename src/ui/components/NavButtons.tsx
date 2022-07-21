@@ -50,7 +50,7 @@ const NavButtons = ({ recordingState, restartSwitch, setRestartSwitch, handleRes
     : <i className="next-icon material-symbols-outlined" style={{height: '75%'}}>navigate_next</i>
   );
   let nextClass = 'next';
-  if (nextText === 'restart') nextClass += ' restart'
+  if (nextText === 'Restart') nextClass += ' restart';
 
   return (
     <nav className='nav-buttons'>
