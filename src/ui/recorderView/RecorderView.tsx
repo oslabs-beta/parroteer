@@ -6,13 +6,13 @@ import { EventLog, RecordingState, MutationEvent } from '../../types/Events';
 interface RecProps {
   recordingState: string,
   setRecordingState: (str: RecordingState) => void
-  setTests: (str: string) => void
   events: EventLog
+  onEndClick: () => void
 }
 
 
 const RecorderView = (props: RecProps) => {
-  const {recordingState, setRecordingState, events, setTests} = props;
+  const {recordingState, setRecordingState, events, onEndClick} = props;
   // const [tests, setTests] = useState('');
   let curButtons;
 
@@ -38,13 +38,6 @@ const RecorderView = (props: RecProps) => {
     chrome.action.setBadgeBackgroundColor({color: '#ff401b'});
   };
 
-  const onEndClick = () => {
-    setRecordingState('off');
-    chrome.action.setBadgeText({text: ''});
-    chrome.runtime.sendMessage({ type: 'stop-recording' }).then((res) => {
-      setTests(res);
-    });
-  };
 
   const buttons = {
     record: <button onClick={onRecordClick}><i className="record-icon material-symbols-outlined ">radio_button_checked</i></button>,

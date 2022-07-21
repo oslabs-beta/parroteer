@@ -1,5 +1,5 @@
-<!-- parroteer banner -->
-### *No-code test automation solution for end-to-end testing*
+![Parroteer_Banner_1640x410](https://user-images.githubusercontent.com/1347847/180268705-d02a2d6a-092c-4835-a3b3-812d1259868a.png)
+### *No-code test automation tool for end-to-end testing*
 
 ## Table of Contents
 - [About](#about-parroteer)
@@ -35,8 +35,7 @@ Parroteer is currently pending approval on the Chrome Web Store but should be av
 Begin by navigating to the page you want to test, then click the Parroteer icon and select "Pick Elements". Now you can highlight and click the elements on the page that you want to watch for changes.
 
 <p float="left">
-<img src="https://user-images.githubusercontent.com/1347847/180234922-42166381-ada8-4c95-8cb2-208202a6e939.png" style="height: 7rem;" />
-<!-- <img src="https://user-images.githubusercontent.com/1347847/180239851-734bec83-8db3-4ff8-aee1-a1aa4ca04038.png" style="height: 7rem;" /> -->
+<img src="https://user-images.githubusercontent.com/1347847/180234922-42166381-ada8-4c95-8cb2-208202a6e939.png" style="height: 8rem;" />
 </p>
 
 
@@ -45,12 +44,12 @@ Once you're ready, you can go forward and start recording! Parroteer will begin 
 
 If say a new element appears on the page that you want to watch or maybe you realized you forgot one, just click the pause button in the extension popup and go back to pick more elements, then resume recording!
 
-<img src="https://user-images.githubusercontent.com/1347847/180239274-54a3f699-71f5-4aed-99aa-9f2a5bb175be.png" style="height: 7rem;" />
+<img src="https://user-images.githubusercontent.com/1347847/180272973-dfb01395-bea7-45d9-a277-421a8c83427a.png" style="height: 10rem;" />
 
 #### 3. View and save tests
 When you're all set, just find that friendly little parrot again in your extension bar and click the stop button. From there you can view, edit, and copy or export the Puppeteer scripts and Jest tests that are generated for you!
 
-<img src="https://user-images.githubusercontent.com/1347847/180239293-8cd77ce3-1c02-4b14-ab1a-aa946d88db4a.png" style="height: 7rem;" />
+<img src="https://user-images.githubusercontent.com/1347847/180273117-92fcec6f-90c2-4191-861c-c3026bec0f3a.png" style="height: 12rem;" />
 
 #### 4. Rinse and repeat
 When you're ready to start a new recording session or if at any point you want to cancel your current one, all you need to do is click the restart button in the top right.
