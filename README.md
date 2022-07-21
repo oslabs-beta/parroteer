@@ -30,16 +30,27 @@ Parroteer is currently pending approval on the Chrome Web Store but should be av
 
 ## Usage
 ### Creating tests
+
 #### 1. Pick elements to watch
 Begin by navigating to the page you want to test, then click the Parroteer icon and select "Pick Elements". Now you can highlight and click the elements on the page that you want to watch for changes.
+
+<p float="left">
+<img src="https://user-images.githubusercontent.com/1347847/180234922-42166381-ada8-4c95-8cb2-208202a6e939.png" style="height: 7rem;" />
+<!-- <img src="https://user-images.githubusercontent.com/1347847/180239851-734bec83-8db3-4ff8-aee1-a1aa4ca04038.png" style="height: 7rem;" /> -->
+</p>
+
 
 #### 2. Record!
 Once you're ready, you can go forward and start recording! Parroteer will begin tracking your clicks and key-presses on the page, and as any watched elements change, Parroteer will store these changes and create corresponding tests.
 
 If say a new element appears on the page that you want to watch or maybe you realized you forgot one, just click the pause button in the extension popup and go back to pick more elements, then resume recording!
 
+<img src="https://user-images.githubusercontent.com/1347847/180239274-54a3f699-71f5-4aed-99aa-9f2a5bb175be.png" style="height: 7rem;" />
+
 #### 3. View and save tests
 When you're all set, just find that friendly little parrot again in your extension bar and click the stop button. From there you can view, edit, and copy or export the Puppeteer scripts and Jest tests that are generated for you!
+
+<img src="https://user-images.githubusercontent.com/1347847/180239293-8cd77ce3-1c02-4b14-ab1a-aa946d88db4a.png" style="height: 7rem;" />
 
 #### 4. Rinse and repeat
 When you're ready to start a new recording session or if at any point you want to cancel your current one, all you need to do is click the restart button in the top right.
@@ -78,7 +89,7 @@ We also know there are further improvements we can make in how element changes a
 ## Our Team
 <table><tbody><tr>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048247-6ae956ab-da6a-44dd-b43b-2ccb71414b5e.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048247-6ae956ab-da6a-44dd-b43b-2ccb71414b5e.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Alex Rokosz</strong>
     <br/>
@@ -87,7 +98,7 @@ We also know there are further improvements we can make in how element changes a
     <a href="https://www.linkedin.com/in/alexanderrokosz/">LinkedIn</a>
   </td>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048245-bd80e3ab-fefd-4290-a5b6-6fb11669eafe.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048245-bd80e3ab-fefd-4290-a5b6-6fb11669eafe.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Alina Gasperino</strong>
     <br/>
@@ -96,7 +107,7 @@ We also know there are further improvements we can make in how element changes a
     <a href="https://www.linkedin.com/in/alinagasperino/">LinkedIn</a>
   </td>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048242-9201e19e-1f29-4dda-97cd-59c32e06767b.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048242-9201e19e-1f29-4dda-97cd-59c32e06767b.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Eric Wells</strong>
     <br/>
@@ -105,7 +116,7 @@ We also know there are further improvements we can make in how element changes a
     <a href="https://www.linkedin.com/in/ewells2275/">LinkedIn</a>
   </td>
   <td align="center" width="150">
-    <img src="https://user-images.githubusercontent.com/1347847/180048249-2384e70d-8a10-4fc9-b12f-bff75a900ab3.png" style="height: 5rem;" />
+    <img src="https://user-images.githubusercontent.com/1347847/180048249-2384e70d-8a10-4fc9-b12f-bff75a900ab3.png" style="height: 5rem; width: 5rem;" />
     <br/>
     <strong>Erin Zhuang</strong>
     <br/>

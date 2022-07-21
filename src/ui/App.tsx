@@ -15,7 +15,7 @@ export default function App() {
   const [recordingState, setRecordingState] = useState<RecordingState>('off');
   const [onCorrectTab, setOnCorrectTab] = useState(true);
   const [recordingTab, setRecordingTab] = useState(null);
-  const [tests, setTests] = useState('');
+  // const [tests, setTests] = useState('');
   // const [elementState, setElementState] = useState({});
   const [events, setEvents] = useState<EventLog>([]);
   const [restartSwitch, setRestartSwitch] = useState<boolean>(false);
@@ -32,7 +32,7 @@ export default function App() {
       // setElementState(res.elementStates);
       setEvents(res.events);
       setIsLoaded(true);
-      setTests(res.tests);
+      // setTests(res.tests);
       if (res.recordedTabId && (res.recordedTabId !== res.activeTabId)) setOnCorrectTab(false);
       if (res.recordingState === 'recording') {
         navigate('/recorderView');
@@ -50,6 +50,12 @@ export default function App() {
     chrome.action.setBadgeText({text: ''});
     setRestartSwitch(!restartSwitch);
     navigate('/pickerView');
+  };
+
+  const onEndClick = () => {
+    setRecordingState('off');
+    chrome.action.setBadgeText({text: ''});
+    chrome.runtime.sendMessage({ type: 'stop-recording' });
   };
 
 
@@ -77,11 +83,12 @@ export default function App() {
           setRecordingState={setRecordingState}
           setTests={setTests}
           events={events}
+          onEndClick={onEndClick}
         />}/>
       <Route path='/testsView' element={
         <TestsView
-          tests={tests}
-          setTests={setTests}
+          // tests={tests}
+          // setTests={setTests}
         />}/>
 
     </Routes>
@@ -91,6 +98,7 @@ export default function App() {
       recordingState={recordingState}
       setRestartSwitch={setRestartSwitch}
       restartSwitch={restartSwitch}
+      onEndClick={onEndClick}
     />
   </>;
 

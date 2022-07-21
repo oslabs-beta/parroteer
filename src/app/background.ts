@@ -25,9 +25,9 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
 
   switch (message.type) {
     case 'popup-opened':
-      // setTimeout(() => console.log('this is something alright'));
       sendResponse({recordingState, recordedTabId, activeTabId, elementStates, events, tests});
       break;
+
     case 'begin-recording': {
       console.log('In begin-recording switch case');
       recordingState = 'recording';
@@ -36,14 +36,14 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       // beginRecording();
       break;
     }
-    case 'begin-pick-elements': {
+
+    case 'begin-pick-elements':
       recordingState = 'pre-recording';
       addRecordingListeners(recordingState);
       // enableHighlight();
       break;
-    }
+
     case 'event-triggered': {
-      // TODO: Check to make sure activeTabId is recordedTabId
       const { event, prevMutations } = message.payload as { event: UserInputEvent, prevMutations?: MutationEvent[] };
       switch (recordingState) {
         case 'pre-recording': {
@@ -74,6 +74,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
 
           break;
         }
+        
         case 'recording': {
           // Message should include the event that occurred as well as any mutations that occurred prior to it
 
@@ -82,31 +83,35 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
           events.push(event);
 
           console.log('Current event log:', events);
-          // TODO: Notify the popup of the event and any differences in element states
-          // sendElementStates();
           break;
         }
       }
       break;
     }
+
     case 'pause-recording':
       break;
+
     case 'stop-recording':
-      recordingState = 'off';
       lastElementStateDiff();
+      recordingState = 'off';
       stopRecordingListeners();
+      console.log(events);
       tests = createTestsFromEvents(events, recordingURL);
-      sendResponse(tests);
+      // sendResponse(tests);
       break;
+
     case 'restart-recording':
       console.log('in restart recording');
       recordingState = 'off';
-      // addRecordingListeners(recordingState);
       tests = '';
       events = [];
       elementStates = {};
-      console.log('restart recording', tests, 'events', events, 'elementState', elementStates);
-      sendResponse({tests, events, recordingState});
+      recordedTabId = null;
+      break;
+
+    case 'get-tests':
+      sendResponse(tests);
       break;
   }
 });
@@ -125,13 +130,14 @@ function addRecordingListeners(recState: RecordingState) {
 function stopRecordingListeners() {
   console.log('Stopping RECORDING LISTENERS FOR TABID', recordedTabId);
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: 'off' } });
-  recordedTabId = null;
 }
 
 function lastElementStateDiff() {
-  console.log('LAST STATE DIFF');
-  // TODO: check if syntax with res is correct
-  chrome.tabs.sendMessage(recordedTabId, { type: 'final-diff'}, (res) => events.push(...res));
+  console.log(`%c${'Going INTO EVENTS'}`, 'background-color: green', events);
+  chrome.tabs.sendMessage(recordedTabId, { type: 'final-diff'}, (res) => {
+    console.log(res),
+    events.push(...res);
+  });
 }
 
 /// Tab event listeners
