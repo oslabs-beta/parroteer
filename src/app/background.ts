@@ -25,6 +25,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
 
   switch (message.type) {
     case 'popup-opened':
+      console.log(elementStates);
       sendResponse({recordingState, recordedTabId, activeTabId, elementStates, events, tests});
       break;
 
@@ -90,6 +91,10 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
     }
 
     case 'pause-recording':
+      recordingState = 'off';
+      stopRecordingListeners();
+      console.log(events);
+      tests = createTestsFromEvents(events, recordingURL);
       break;
 
     case 'stop-recording':
@@ -106,6 +111,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendRespo
       recordingState = 'off';
       tests = '';
       events = [];
+      stopRecordingListeners(Object.keys(elementStates));
       elementStates = {};
       recordedTabId = null;
       break;
@@ -127,9 +133,9 @@ function addRecordingListeners(recState: RecordingState) {
   chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: recState } });
 }
 
-function stopRecordingListeners() {
+function stopRecordingListeners(arr?: string[]) {
   console.log('Stopping RECORDING LISTENERS FOR TABID', recordedTabId);
-  chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: { recordingState: 'off' } });
+  chrome.tabs.sendMessage(recordedTabId, { type: 'add-listeners', payload: {idsToClear: arr, recordingState: 'off' } });
 }
 
 function lastElementStateDiff() {

@@ -7,7 +7,7 @@ const WrongTab = (props: WrongTabProps) => {
   const {recordingTab, setOnCorrectTab} = props;
 
   const handleEndSession = () => {
-    chrome.runtime.sendMessage({ type: 'stop-recording' });
+    chrome.runtime.sendMessage({ type: 'restart-recording' });
     setOnCorrectTab(true);
   };
 

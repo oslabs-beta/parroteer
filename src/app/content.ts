@@ -13,14 +13,19 @@ console.log('Running content script (see chrome devtools)');
 chrome.runtime.onMessage.addListener((message: RuntimeMessage, sender, sendResponse) => {
   switch (message.type) {
     case 'add-listeners': {
-      const { recordingState } = message.payload as { recordingState: RecordingState };
+      const {idsToClear, recordingState } = message.payload as {idsToClear: string[], recordingState: RecordingState };
       listeners.startEventListeners(recordingState);
       if (recordingState === 'pre-recording') enableHighlight();
       else {
         disableHighlight();
         if (recordingState === 'off') listeners.stopEventListeners();
       }
-      // observer.observe(targetNode, config);
+      if (idsToClear) {
+        idsToClear.forEach((id: ParroteerId) => {
+          const el = document.querySelector(`[data-parroteer-id="${id}"]`);
+          if (!(el instanceof HTMLElement)) return;
+          delete el.dataset.parroteerID;
+        });}
       break;
     }
     case 'get-element-states': {
