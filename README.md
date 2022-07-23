@@ -1,5 +1,15 @@
 ![Parroteer_Banner_1640x410](https://user-images.githubusercontent.com/1347847/180268705-d02a2d6a-092c-4835-a3b3-812d1259868a.png)
-### *No-code test automation tool for end-to-end testing*
+
+<div align="center">
+
+[![License](https://img.shields.io/github/license/oslabs-beta/parroteer?color=%2344BED7)](#license)
+[![Version_Badge](https://img.shields.io/github/package-json/v/oslabs-beta/parroteer?color=%2344BED7)](#about-parroteer)
+[![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen)](#contributions)
+<!-- https://shields.io/category/rating -->
+
+## *No-code test automation tool for end-to-end testing*
+
+</div>
 
 ## Table of Contents
 - [About](#about-parroteer)
