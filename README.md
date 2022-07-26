@@ -34,9 +34,7 @@ Parroteer allows you to generate end-to-end tests simply by using your website. 
 - View, edit, and copy or download generated code
 
 ## Installation
-You can find our extension in the Chrome Web Store (coming soon, please see below!) and click "Add to Chrome". Then just pin Parroteer to your extension toolbar and you're ready to go!
-
-Parroteer is currently pending approval on the Chrome Web Store but should be available within a few days! Please check back here soon and we will have a link so that everyone can give it a try 🙂
+You can find our extension in the [Chrome Web Store] and click "Add to Chrome". Then just pin Parroteer to your extension toolbar and you're ready to go!
 
 ## Usage
 ### Creating tests
